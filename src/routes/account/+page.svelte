@@ -61,10 +61,8 @@
 <div class="flex flex-col gap-4 md:gap-8 items-center justify-center text-4xl md:text-6xl h-full w-full font-medium bg-dark1">
 	<div id='vignette' class='fixed top-0 left-0 w-full h-full z-10 shadow-[inset_0_0_600px_rgba(0,0,0,1)]' />
 	<!-- <img alt="The Rave" src={rave2} class="object-cover fixed top-0 left-0 w-full h-full" /> -->
-    <h1 id='depth' class='z-10 font-bold'>GROUPS</h1>
-    {#each groups as group}
-        <h2>{group.group_name}</h2>
-    {/each}
+    <h1 id='depth' class='z-10 font-bold'>ACCOUNT</h1>
+    <p class='text-lg'>Add friends to a group, or remove yourself from one</p>
 </div>
 
 <style>

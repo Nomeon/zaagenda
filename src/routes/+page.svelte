@@ -13,7 +13,7 @@
 	<img alt="The Rave" src={rave} class="object-cover fixed top-0 left-0 w-full h-full" />
 	<h1 id='depth' class='z-10 font-bold'>ZAAGPLANNER</h1>
 	<h2 id='depth' class="text-xl md:text-3xl text-light1 z-10">Check the upcoming raves</h2>
-	<a href='/raves' id="btn" class="bg-[#000] border overflow-hidden py-1 px-6 relative text-sm md:text-xl z-10"><span class="mix-blend-difference">PLANNER</span></a>
+	<a href='/groups' id="btn" class="bg-[#000] border overflow-hidden py-1 px-6 relative text-sm md:text-xl z-10"><span class="mix-blend-difference">PLANNER</span></a>
 </div>
 
 <style>
