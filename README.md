@@ -36,3 +36,7 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+Database structure: <br>
+![image](https://github.com/Nomeon/zaagplannerv2/assets/41550388/a2b4855d-102f-43a2-9578-bd090839838e)
+
