@@ -36,7 +36,6 @@
                 })
             }
             localUser = user
-            console.log(localUser)
         }
     }
     
@@ -63,7 +62,7 @@
 	<!-- <img alt="The Rave" src={rave2} class="object-cover fixed top-0 left-0 w-full h-full" /> -->
     <h1 id='depth' class='z-10 font-bold'>GROUPS</h1>
     {#each groups as group}
-        <h2>{group.group_name}</h2>
+        <a href="/groups/{group._id}" class='z-10'>{group.group_name}</a>
     {/each}
 </div>
 
