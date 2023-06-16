@@ -11,6 +11,12 @@ type Group = {
     rave_ids?: Array<string>;
 }
 
+type Grouplist = {
+    name?: string;
+    id?: string;
+    users: string[];
+}[]
+
 type Rave = {
     _id?: string;
     event?: string;

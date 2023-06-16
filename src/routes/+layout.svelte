@@ -1,8 +1,7 @@
 <script>
     import { isMobile, height } from "./stores";
     import { useMediaQuery } from "svelte-breakpoints";
-    import { page } from "$app/stores";
-    import Navbar from "./Navbar.svelte";
+    import Navbar from "$lib/components/Navbar.svelte";
     import "../app.css";
     
     const mobile = useMediaQuery('(max-width: 768px)');

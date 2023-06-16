@@ -1,22 +1,24 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { page } from "$app/stores";
+    import { height, userStore } from "../stores";
+    import { fade } from 'svelte/transition'
+    import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
+    import Vignette from "$lib/components/Vignette.svelte";
     import rave2 from '$lib/images/rave2.webp'
 
-    let groups: Group[] = [];
-    let localUser: User;
+    let groupList: Grouplist = [];
 
     onMount(async() => {
         const name: string | null |undefined = $page.data.session?.user?.name
         const email: string | null |undefined = $page.data.session?.user?.email
         if (name !== undefined && email !== undefined && name !== null && email !== null) {
             await checkUser(name, email);
+            if ($userStore !== null) {
+                let groups = await getGroups($userStore._id)
+                await populateGroupList(groups)
+            }
         }
-        let groupsResponse = await getGroups(localUser._id)
-        groups = groupsResponse
-        // createGroup('zagers', ['strix06@gmail.com', 'spg.nijhuis@hotmail.com'])
-        // getGroup('zagers')
-        // await getGroups()
     })
 
     async function checkUser(name: string, email: string) {
@@ -35,7 +37,7 @@
                     })
                 })
             }
-            localUser = user
+            $userStore = user
         }
     }
     
@@ -53,21 +55,63 @@
         return groups
     }
 
-    
+    async function populateGroupList(groups: Group[]) {
+        for (const e of groups) {
+            let group: {name?: string, id?: string, users: string[]} = {name: e.group_name, id: e._id, users: []}
+            if (e.user_ids) {
+                await Promise.all(
+                    e.user_ids.map(async (id) => {
+                        const user = await getUser(id, '', '')
+                        group.users.push(user[0].name.split(' ')[0])
+                    })
+                )
+                groupList = [...groupList, group]
+            }
+        }
+    }
 
 </script>
 
-<div class="flex flex-col gap-4 md:gap-8 items-center justify-center text-4xl md:text-6xl h-full w-full font-medium bg-dark1">
-	<div id='vignette' class='fixed top-0 left-0 w-full h-full z-10 shadow-[inset_0_0_600px_rgba(0,0,0,1)]' />
-	<!-- <img alt="The Rave" src={rave2} class="object-cover fixed top-0 left-0 w-full h-full" /> -->
-    <h1 id='depth' class='z-10 font-bold'>GROUPS</h1>
-    {#each groups as group}
-        <a href="/groups/{group._id}" class='z-10'>{group.group_name}</a>
-    {/each}
+<svelte:head>
+	<title>Zaag | Groups</title>
+	<meta name="description" content="Groups" />
+</svelte:head>
+
+<Vignette image={rave2} />
+<div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-8'>
+    <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85%'>
+        <h1 class='text-3xl font-semibold'>GROUPS</h1>
+    </div>
+    {#if $userStore}
+        {#each groupList as group}
+            <a in:fade href={`/groups/${group.id}`} id='btn' class='relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-4/6'>
+                <div class='flex flex-col justify-evenly ml-4 mix-blend-difference'>
+                    <div class='absolute top-4 right-4 h-8 w-8 text-accent'>
+                        <MdCallMade />
+                    </div>
+                    <p class='text-3xl'>{group.name}</p>
+                    <div class='flex text-lg'>
+                        <p class='flex gap-2'>
+                            {#if group.users.length === 2}
+                                {group.users.join(" & ")}
+                            {:else if group.users.length < 4}
+                                {group.users.join(", ")}
+                            {:else}
+                                {group.users.slice(0, 2).join(", ")} <p class='text-accent'> +{group.users.length - 2}</p>
+                            {/if}
+                        </p>
+                    </div>
+                </div>
+            </a>
+        {/each}
+    {:else}
+        <h2 id='depth' class='text-2xl text-light1'>Please login first...</h2>
+    {/if}
 </div>
 
 <style>
-    #depth {
-        text-shadow: 1px 1px 5px black;
+    ::-webkit-scrollbar {
+        width: 0;
+        background: transparent;
     }
 </style>

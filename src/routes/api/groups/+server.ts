@@ -20,22 +20,74 @@ export async function GET(request: Request): Promise<Response> {
         }
     
         const groups = await collection.find(query).toArray();
-    
-        return new Response(JSON.stringify(groups));
+        if (groups.length === 0) {
+            return new Response("Not Found", { status: 404 });
+        }
+        return new Response(JSON.stringify(groups), { status: 200 });
     } catch (error) {
         console.error(error);
-        return new Response("Internal Server Error", {status: 500})
+        return new Response("Internal Server Error", { status: 500 })
     }
 }
 
 export async function POST({ request }: any): Promise<Response> {
-    const collection = db.collection("groups");
-    const body = await request.json();
-    const { name, emails } = body;
+    try {
+        const collection = db.collection("groups");
+        const body = await request.json();
+        const { name, user_ids, rave_ids } = body;
 
-    if (name && emails && emails.length > 0) {
-        collection.insertOne({ name, emails });
+        console.log(name)
+        console.log(user_ids)
+        console.log(body)
+    
+        if (!name || (user_ids.length === 0 && rave_ids.length === 0)) {
+            return new Response("Bad Request", { status: 400 });
+        }
+        const { insertedId } = await collection.insertOne({ group_name: name, user_ids: user_ids.map((id: string) => new ObjectId(id)), rave_ids: rave_ids.map((id: string) => new ObjectId(id)) });
+
+        return new Response(JSON.stringify({ insertedId, name, user_ids, rave_ids }), { status: 201 });
+    } catch (error) {
+        console.error(error);
+        return new Response("Internal Server Error", { status: 500 })
     }
+}
 
-    return new Response(JSON.stringify({ name }));
+export async function PUT({ request }: any): Promise<Response> {
+    try {
+        const collection = db.collection("groups");
+        const body = await request.json();
+        const { id, user_ids, rave_ids } = body;
+
+        if (id && user_ids.length > 0 && rave_ids.length > 0) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { user_ids: user_ids.map((id: string) => new ObjectId(id)), rave_ids: rave_ids.map((id: string) => new ObjectId(id)) }});
+        } else if (id && user_ids.length > 0) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { user_ids: user_ids.map((id: string) => new ObjectId(id)) }});
+        } else if (id && rave_ids.length > 0) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { rave_ids: rave_ids.map((id: string) => new ObjectId(id)) }});
+        }
+
+        return new Response(JSON.stringify(body), { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return new Response("Internal Server Error", { status: 500 })
+    }
+}
+
+export async function DELETE({ request }: any): Promise<Response> {
+    try {
+        const collection = db.collection("groups");
+        const body = await request.json();
+        const { id, user_ids, rave_ids } = body;
+
+        if (id && user_ids.length === 0 && rave_ids.length === 0) {
+            collection.deleteOne({ _id: new ObjectId(id) });
+        } else if (id && (user_ids.length > 0 || rave_ids.length > 0)) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $pullAll: { user_ids: user_ids.map((id: string) => new ObjectId(id)), rave_ids: rave_ids.map((id: string) => new ObjectId(id)) }});
+        }
+
+        return new Response(JSON.stringify(body), { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return new Response("Internal Server Error", { status: 500 })
+    }
 }

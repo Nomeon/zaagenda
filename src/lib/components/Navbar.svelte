@@ -5,7 +5,7 @@
     import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte'
     import FaSignOutAlt from 'svelte-icons/fa/FaSignOutAlt.svelte'
     import { signIn, signOut } from "@auth/sveltekit/client"
-    import { toggled } from './stores';
+    import { toggled } from '../../routes/stores';
     import { page } from '$app/stores';
 
     let width: number;
@@ -24,7 +24,7 @@
     <div class='w-1/4 flex items-center justify-center z-20 gap-4 max-md:w-1/2 max-md:px-12 max-md:justify-start' id='logo'>
     {#if $page.data.session?.user?.image ?? false}
         <!-- svelte-ignore a11y-img-redundant-alt -->
-        <a href='/account'>
+        <a href='/groups'>
             <img src={$page.data.session?.user?.image} alt='profile picture' class='w-8 h-8 rounded-full max-md:w-12 max-md:h-12' />
         </a> 
     {:else}

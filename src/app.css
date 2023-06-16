@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#btn:before {
+    content: '';
+    inset: 0;
+    position: absolute;
+    transform: translateX(var(--btnprog, -100%));
+    transition: transform 0.2s ease-out;
+}
+
+#btn:hover:before {
+    --btnprog: 0;
+}
+
+#depth {
+    text-shadow: 1px 1px 5px #000;
+}
