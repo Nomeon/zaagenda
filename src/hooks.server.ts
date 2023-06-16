@@ -10,7 +10,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 async function authorization({ event, resolve }: any) {
   if (event.url.pathname.includes("groups") || event.url.pathname.includes("raves")) {
     const session = await event.locals.getSession();
-    if (!session) {
+    if (!session?.user) {
       throw redirect(303, "/")
     }
   }

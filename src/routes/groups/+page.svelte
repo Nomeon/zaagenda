@@ -82,31 +82,27 @@
     <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85%'>
         <h1 class='text-3xl font-semibold'>GROUPS</h1>
     </div>
-    {#if $userStore}
-        {#each groupList as group}
-            <a in:fade href={`/groups/${group.id}`} id='btn' class='relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-4/6'>
-                <div class='flex flex-col justify-evenly ml-4 mix-blend-difference'>
-                    <div class='absolute top-4 right-4 h-8 w-8 text-accent'>
-                        <MdCallMade />
-                    </div>
-                    <p class='text-3xl'>{group.name}</p>
-                    <div class='flex text-lg'>
-                        <p class='flex gap-2'>
-                            {#if group.users.length === 2}
-                                {group.users.join(" & ")}
-                            {:else if group.users.length < 4}
-                                {group.users.join(", ")}
-                            {:else}
-                                {group.users.slice(0, 2).join(", ")} <p class='text-accent'> +{group.users.length - 2}</p>
-                            {/if}
-                        </p>
-                    </div>
+    {#each groupList as group}
+        <a in:fade href={`/groups/${group.id}`} id='btn' class='relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-4/6'>
+            <div class='flex flex-col justify-evenly ml-4 mix-blend-difference'>
+                <div class='absolute top-4 right-4 h-8 w-8 text-accent'>
+                    <MdCallMade />
                 </div>
-            </a>
-        {/each}
-    {:else}
-        <h2 id='depth' class='text-2xl text-light1'>Please login first...</h2>
-    {/if}
+                <p class='text-3xl'>{group.name}</p>
+                <div class='flex text-lg'>
+                    <p class='flex gap-2'>
+                        {#if group.users.length === 2}
+                            {group.users.join(" & ")}
+                        {:else if group.users.length < 4}
+                            {group.users.join(", ")}
+                        {:else}
+                            {group.users.slice(0, 2).join(", ")} <p class='text-accent'> +{group.users.length - 2}</p>
+                        {/if}
+                    </p>
+                </div>
+            </div>
+        </a>
+    {/each}
 </div>
 
 <style>
