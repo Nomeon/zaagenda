@@ -1,6 +1,6 @@
 <script>
 	import Vignette from '$lib/components/Vignette.svelte';
-	import rave from '$lib/images/rave.webp';
+	import rave from '$lib/images/raveHome.webp';
 
 </script>
 

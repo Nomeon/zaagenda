@@ -5,7 +5,7 @@
     import { fade } from 'svelte/transition'
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
     import Vignette from "$lib/components/Vignette.svelte";
-    import rave2 from '$lib/images/rave2.webp'
+    import rave from '$lib/images/raveGroups.webp'
 
     let groupList: Grouplist = [];
 
@@ -48,6 +48,14 @@
         return user
 	}
 
+    async function getUsers(ids: string[]): Promise<User[]> {
+        const JSONids = encodeURIComponent(JSON.stringify(ids))
+        const url = `/api/users?ids=${JSONids}`
+		const response = await fetch(url);
+		const users = await response.json();
+        return users
+	}
+
     async function getGroups(user_id: string) {
         const url = `/api/groups?user_id=${user_id}`
         const response = await fetch(url);
@@ -59,12 +67,10 @@
         for (const e of groups) {
             let group: {name?: string, id?: string, users: string[]} = {name: e.group_name, id: e._id, users: []}
             if (e.user_ids) {
-                await Promise.all(
-                    e.user_ids.map(async (id) => {
-                        const user = await getUser(id, '', '')
-                        group.users.push(user[0].name.split(' ')[0])
-                    })
-                )
+                const users = await getUsers(e.user_ids)
+                users.forEach(user => {
+                    group.users.push(user.name.split(' ')[0])
+                })
                 groupList = [...groupList, group]
             }
         }
@@ -77,7 +83,7 @@
 	<meta name="description" content="Groups" />
 </svelte:head>
 
-<Vignette image={rave2} />
+<Vignette image={rave} />
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-8'>
     <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85%'>
         <h1 class='text-3xl font-semibold'>GROUPS</h1>

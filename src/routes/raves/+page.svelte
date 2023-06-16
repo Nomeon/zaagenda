@@ -1,6 +1,11 @@
-<script>
+<script lang='ts'>
 	import Vignette from '$lib/components/Vignette.svelte';
-	import rave2 from '$lib/images/rave2.webp';
+	import rave from '$lib/images/raveRaves.webp';
+	import { fade } from 'svelte/transition';
+	import { height } from '../stores';
+
+	let raveList: Rave[] = [];
+
 </script>
 
 <svelte:head>
@@ -8,7 +13,12 @@
 	<meta name="description" content="Check out your raves here" />
 </svelte:head>
 
-<div class="flex flex-col gap-4 md:gap-8 items-center justify-center text-4xl md:text-6xl h-full w-full font-medium">
-	<Vignette image={rave2} />
-	<h1 id='depth' class='font-bold'>RAVES</h1>
+<Vignette image={rave} />
+<div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-8'>
+    <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85%'>
+        <h1 class='text-3xl font-semibold'>RAVES</h1>
+    </div>
+    {#each raveList as rave}
+        <h1>{rave.event}</h1>
+    {/each}
 </div>

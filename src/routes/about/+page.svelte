@@ -1,6 +1,6 @@
 <script lang='ts'>
     import Vignette from '$lib/components/Vignette.svelte';
-    import rave from '$lib/images/rave.webp';
+    import rave from '$lib/images/raveAbout.webp';
 </script>
 
 <div class="flex flex-col gap-8 items-center justify-center text-4xl h-full w-full font-medium">

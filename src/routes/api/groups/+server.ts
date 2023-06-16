@@ -58,12 +58,14 @@ export async function PUT({ request }: any): Promise<Response> {
         const body = await request.json();
         const { id, user_ids, rave_ids } = body;
 
-        if (id && user_ids.length > 0 && rave_ids.length > 0) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { user_ids: user_ids.map((id: string) => new ObjectId(id)), rave_ids: rave_ids.map((id: string) => new ObjectId(id)) }});
-        } else if (id && user_ids.length > 0) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { user_ids: user_ids.map((id: string) => new ObjectId(id)) }});
-        } else if (id && rave_ids.length > 0) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { rave_ids: rave_ids.map((id: string) => new ObjectId(id)) }});
+        if (id && user_ids && rave_ids) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { user_ids: { $each: user_ids.map((id: string) => new ObjectId(id)) }, rave_ids: { $each: rave_ids.map((id: string) => new ObjectId(id)) }}});
+        } else if (id && user_ids) {
+            // Add to set as string
+
+            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { user_ids: { $each: user_ids.map((id: string) => new ObjectId(id)) }}});
+        } else if (id && rave_ids) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { rave_ids: { $each: rave_ids.map((id: string) => new ObjectId(id)) }}});
         }
 
         return new Response(JSON.stringify(body), { status: 200 });
@@ -77,12 +79,16 @@ export async function DELETE({ request }: any): Promise<Response> {
     try {
         const collection = db.collection("groups");
         const body = await request.json();
-        const { id, user_ids, rave_ids } = body;
+        const { id, users, raves } = body;
 
-        if (id && user_ids.length === 0 && rave_ids.length === 0) {
+        console.log(users)
+
+        if (id && !users && !raves) {
             collection.deleteOne({ _id: new ObjectId(id) });
-        } else if (id && (user_ids.length > 0 || rave_ids.length > 0)) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $pullAll: { user_ids: user_ids.map((id: string) => new ObjectId(id)), rave_ids: rave_ids.map((id: string) => new ObjectId(id)) }});
+        } else if (id && (users.length > 0)) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $pullAll: { user_ids: users.map((id: string) => new ObjectId(id)) }});
+        } else if (id && (raves.length > 0)) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $pullAll: { rave_ids: raves.map((id: string) => new ObjectId(id)) }});
         }
 
         return new Response(JSON.stringify(body), { status: 200 });
