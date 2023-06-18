@@ -4,6 +4,7 @@
 	import rave from '$lib/images/raveRaves.webp';
 	import { height, userStore } from '../stores';
     import { page } from '$app/stores';
+    import RaveCard from '$lib/components/RaveCard.svelte';
 
 	let raveList: RaveList = [];
 	let activeRaveList: RaveList = []
@@ -88,5 +89,5 @@
 
 
 	{/each}
-
+	<RaveCard raveName={"Rotterdam Rave"} raveDescription={"Rave in Rotterdam"} raveDate={new Date()} group={["Stijn", "Thomas", "Wytse"]}/>
 </div>
