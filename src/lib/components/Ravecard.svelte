@@ -17,7 +17,7 @@
 
 
 <Card style="padding: 0px; border-radius: 7px; margin: 20px;">
-    <div style="display: flex; flex-flow: row nowrap; max-height: 160px;">
+    <div style="display: flex; flex-flow: row nowrap;">
         <Image src='src\lib\images\RR.PNG' height={160} alt='Rotterdam Rave'/>
         <div style="display: flex; flex-flow: column; background-color: black;">
             <Text style="font-weight: bold; text-align: center; margin: 20px; color: white;">{raveName}</Text>
@@ -26,13 +26,17 @@
     </div>
     <div class="test" style="display: flex; flex-flow: row; justify-content: space-between; height: 40px; background-color: grey;">
         <Text style="font-weight: bold; text-align: center; margin: auto; margin-left: 10px; color: white;">{raveDate}</Text>
-        <Button on:click={expand} style="align-self: right; margin-top: auto;">{expanded ? "this" : "that"}</Button>
+        <Button on:click={expand} style="align-self: right; margin-top: 0px; height: inherit; background-color: darkred; border-radius: 0px;">{expanded ? "Attendees -" : "Attendees +"}</Button>
     </div>
     {#if expanded}
-        <div style="height: 40px; background-color: green; display: flex; flex-flow: row nowrap;">
+        <div style="background-color: black; display: flex; flex-flow: column nowrap; align-content: center; justify-content: center;">
             {#each group as name}
-                
-                <p>{name}</p>
+                <div style="display: flex; flex-flow: row nowrap; justify-content: center;">
+                    <div style="background-color: grey; color: white; border-radius: 7px; text-align: center; margin: 5px; width: 25%">{name}</div>
+                    <p style="color: white;">X</p>
+                    <p style="color: white;">X</p>
+                    <p style="color: white;">X</p>
+                </div>
             {/each}
         </div>
     {/if}
