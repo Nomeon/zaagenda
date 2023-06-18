@@ -56,14 +56,16 @@
     </div>
 	<ul class='items center w-full border-b border-t border-accent divide-x-2 divide-accent flex sticky'>
 		{#each raveList as group}
-			<li class='w-full p-2'><input type=checkbox bind:group={activeRaveList} value={group} on:change={() => console.log(activeRaveList)}>{group.name}</li>
+			<li class='w-full p-2'><input type=checkbox bind:group={activeRaveList} value={group} on:change={() => console.log(activeRaveList)}>
+				{group.name}
+			</li>
 		{/each}
 	</ul>
 	{#each activeRaveList as groupie}
 		<h1>{groupie.name}</h1>
 		{#each groupie.raves as rave}
-			<h2>{rave.event}</h2>
-			<h3>{typeof rave.date}</h3>
+		<RaveCard raveName={rave.event ? rave.event : "undefined"} raveDate={new Date()} raveDescription={rave.event ? rave.event : "undefined"} group={["Wytse", "Thomas","Stijn"]}></RaveCard>
+			<!-- <h3>{typeof rave.date}</h3> -->
 		{/each}
 		<!-- <a in:fade href={`/groups/${rave._id}`} id='btn' class='relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-4/6'>
             <div class='flex flex-col justify-evenly ml-4 mix-blend-difference'>
@@ -89,5 +91,4 @@
 
 
 	{/each}
-	<RaveCard raveName={"Rotterdam Rave"} raveDescription={"Rave in Rotterdam"} raveDate={new Date()} group={["Stijn", "Thomas", "Wytse"]}/>
 </div>

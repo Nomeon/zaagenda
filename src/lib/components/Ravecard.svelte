@@ -24,9 +24,11 @@
             <Text style="width: 400px; text-align: center; margin: 10px; margin-top: 0px; color: white;">{raveDescription}</Text>
         </div>
     </div>
-    <div class="test" style="display: flex; flex-flow: row; justify-content: space-between; height: 40px; background-color: grey;">
+    <div class="test" style="display: flex; flex-flow: row; justify-content: space-between; background-color: grey;">
         <Text style="font-weight: bold; text-align: center; margin: auto; margin-left: 10px; color: white;">{raveDate}</Text>
-        <Button on:click={expand} style="align-self: right; margin-top: 0px; height: inherit; background-color: darkred; border-radius: 0px;">{expanded ? "Attendees -" : "Attendees +"}</Button>
+        <button on:click={expand} id="btn" style="border: 2px solid white; align-self: right; margin-top: 0px; background-color: darkred; border-radius: 0px;" class="bg-[#000] border overflow-hidden py-1 px-6 relative text-sm md:text-xl before:bg-light1">
+            <label for="btn" class="mix-blend-difference">{expanded ? "Attendees -" : "Attendees +"}</label>
+        </button>
     </div>
     {#if expanded}
         <div style="background-color: black; display: flex; flex-flow: column nowrap; align-content: center; justify-content: center;">
