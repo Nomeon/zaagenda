@@ -54,11 +54,13 @@
     <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-[#000]'>
         <h1 class='text-3xl font-semibold'>RAVES</h1>
     </div>
-	<ul class='items center w-full border-b border-t border-accent divide-x-2 divide-accent flex sticky'>
+	<ul class='flex sticky filterbar w-full'>
 		{#each raveList as group}
-		<div class="bg-light1">
-			<li class='w-full p-2'><input type=checkbox bind:group={activeRaveList} value={group} on:change={() => console.log(activeRaveList)}>
-				{group.name}
+			<li id="test" class='w-full p-2'>
+				<input id="ravegroupbadgeid" style="display: none" type=checkbox bind:group={activeRaveList} value={group} on:change={() => console.log(activeRaveList)}>
+				<label for="ravegroupbadgeid" class="{activeRaveList.includes(group) ? 'ravegroupbadge groupactive' : 'ravegroupbadge groupinactive'}">
+					{group.name}
+				</label>
 			</li>
 		</div>
 		{/each}
