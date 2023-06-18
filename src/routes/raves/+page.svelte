@@ -64,7 +64,7 @@
 	{#each activeRaveList as groupie}
 		<h1>{groupie.name}</h1>
 		{#each groupie.raves as rave}
-		<RaveCard raveName={rave.event ? rave.event : "undefined"} raveDate={new Date()} raveDescription={rave.event ? rave.event : "undefined"} group={["Wytse", "Thomas","Stijn"]}></RaveCard>
+		<RaveCard raveName={rave.event ? rave.event : "undefined"}></RaveCard>
 			<!-- <h3>{typeof rave.date}</h3> -->
 		{/each}
 		<!-- <a in:fade href={`/groups/${rave._id}`} id='btn' class='relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-4/6'>

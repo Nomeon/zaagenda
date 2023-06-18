@@ -1,72 +1,45 @@
 <script lang="ts">
-	import { Badge, Button, Card, Group, Image, Text } from '@svelteuidev/core';
+    import MdDeleteForever from 'svelte-icons/md/MdDeleteForever.svelte'
+    import MdEdit from 'svelte-icons/md/MdEdit.svelte'
+    import MdCheck from 'svelte-icons/md/MdCheck.svelte'
 
     export let raveName: String;
-    export let raveDescription: String;
-    export let raveDate: Date;
-    export let group: String[]; 
+    // export let raveDescription: String;
+    // export let raveDate: Date;
+    // export let group: String[]; 
 
     let expanded: Boolean = false;
-
-    function expand() {
-        expanded = !expanded;
-    }
 </script>
 
-
-
-
-<Card style="padding: 0px; border-radius: 7px; margin: 20px;">
-    <div style="display: flex; flex-flow: row nowrap;">
-        <Image src='src\lib\images\RR.PNG' height={160} alt='Rotterdam Rave'/>
-        <div style="display: flex; flex-flow: column; background-color: black;">
-            <Text style="font-weight: bold; text-align: center; margin: 20px; color: white;">{raveName}</Text>
-            <Text style="width: 400px; text-align: center; margin: 10px; margin-top: 0px; color: white;">{raveDescription}</Text>
-        </div>
+<div class="text-white flex flex-col rounded-md bg-dark1 w-11/12 border-2 border-darkred p-0 my-2">
+    <!-- Title and date -->
+    <div class="flex flex-row  border-b-2 m-0">
+        <div class="flex w-3/4 whitespace-nowrap text-ellipsis overflow-hidden text-center ml-2 items-center">{raveName}</div>
+        <div class="flex flex-row gap-3">
+            <div class="h-8"> <MdEdit/> </div>
+            <div class="h-8"> <MdDeleteForever/> </div>
+        </div>  
     </div>
-    <div class="test" style="display: flex; flex-flow: row; justify-content: space-between; background-color: grey;">
-        <Text style="font-weight: bold; text-align: center; margin: auto; margin-left: 10px; color: white;">{raveDate}</Text>
-        <button on:click={expand} id="btn" style="border: 2px solid white; align-self: right; margin-top: 0px; background-color: darkred; border-radius: 0px;" class="bg-[#000] border overflow-hidden py-1 px-6 relative text-sm md:text-xl before:bg-light1">
-            <label for="btn" class="mix-blend-difference">{expanded ? "Attendees -" : "Attendees +"}</label>
-        </button>
-    </div>
-    {#if expanded}
-        <div style="background-color: black; display: flex; flex-flow: column nowrap; align-content: center; justify-content: center;">
-            {#each group as name}
-                <div style="display: flex; flex-flow: row nowrap; justify-content: center;">
-                    <div style="background-color: grey; color: white; border-radius: 7px; text-align: center; margin: 5px; width: 25%">{name}</div>
-                    <p style="color: white;">X</p>
-                    <p style="color: white;">X</p>
-                    <p style="color: white;">X</p>
-                </div>
-            {/each}
+    <div class="flex flex-row flex-nowrap">
+        <div class="w-1/3 flex flex-col text-center justify-center">
+            <div class="whitespace-nowrap text-ellipsis overflow-hidden text-center">{"14/08/2023"}</div>
+            <div class="whitespace-nowrap text-ellipsis overflow-hidden text-center">{"23:00-06:00"}</div>
         </div>
-    {/if}
-</Card>
+        <div class="w-1/3 flex flex-col text-center justify-center">
+            <div class="whitespace-nowrap text-ellipsis overflow-hidden text-center">{"OG Ravers"}</div>
+            <div class="whitespace-nowrap text-ellipsis overflow-hidden text-center">{"2/3 attending"}</div>
+        </div>
+        <div class="w-1/3 flex flex-col justify-between items-center">
+            <div class="whitespace-nowrap text-ellipsis overflow-hidden text-center">{"Ticket: "}</div>
+            <div class="h-6"> <MdCheck/> </div>
+        </div>
 
+    </div>
 
-<!-- <Card shadow='sm' padding='lg' style="text-align: center">
-	<Card.Section padding='lg'>
-		<Image
-			src='src\lib\images\RR.PNG'
-			height={160}
-			alt='Portugal'
-		/>
-	</Card.Section>
+    <!-- Group -->
+    <div class="w-1/3"></div>
 
-	<Group position='apart'>
-		<Text weight={500}>Portugal Porto Adventures</Text>
-		<Badge color='pink' variant='light'>
-			On Sale
-		</Badge>
-	</Group>
+    <!-- Buttons -->
+    <div class="w-1/3"></div>
 
-	<Text size='sm'>
-		With Portugal Porto Adventures you can explore more of the beautiful portuguese cities,
-		by walking on food, meeting the locals and eat excellent food and wine
-	</Text>
-
-	<Button variant='light' color='blue' fullSize>
-		Book classic tour now
-	</Button>
-</Card> -->
+</div>
