@@ -3,24 +3,33 @@ import db from "$lib/db";
 
 export async function GET(request: Request): Promise<Response> {
     try {
-        const collection = db.collection("raves");
+        const groupCol = db.collection("groups");
+        const raveCol = db.collection("raves");
         const url = new URL(request.url);
-        const JSONids = url.searchParams.get("ids") || "";
-        const ids = JSON.parse(decodeURIComponent(JSONids))
+        const id = url.searchParams.get("id") || "";
 
-        let o_ids: ObjectId[] = [];
-
-        if (ids) {
-            ids.forEach((element: string) => {
-                o_ids.push(new ObjectId(element))        
-            });
+        if (id) {
+            const groups = await groupCol.find({ user_ids: new ObjectId(id) }).toArray();
+            let raveList: { name?: string | undefined; raves?: Object[] | undefined; }[] = [];
+          
+            await Promise.all(groups.map(async (element) => {
+              let rave_ids = element.rave_ids;
+              let raves = await raveCol.find({ _id: { $in: rave_ids } }).toArray();
+              if (raves) {
+                let ravesObj: { name?: string, raves?: Object[] } = {};
+                ravesObj.name = element.group_name;
+                ravesObj.raves = raves;
+                raveList = [...raveList, ravesObj];
+              }
+            }));
+            return new Response(JSON.stringify(raveList), { status: 200 });
         } 
-        const raves = await collection.find({ _id: {$in: o_ids }}).toArray();
+
+        return new Response("Groups Not Found", { status: 404 })
     
-        return new Response(JSON.stringify(raves));
     } catch (error) {
         console.error(error);
-        return new Response("Internal Server Error", {status: 500})
+        return new Response("Internal Server Error", { status: 500 })
     }
 }
 

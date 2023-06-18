@@ -14,7 +14,7 @@ export async function GET(request: Request): Promise<Response> {
         const JSONids = url.searchParams.get("ids") || "";
         let ids: string[] = [];
 
-        // Encrpytion?
+        // Encrpytion? 
         // if (email) {
         //     const algorithm = 'aes-256-cbc';
         //     const key = CRYPTO_KEY;

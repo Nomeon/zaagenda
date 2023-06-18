@@ -18,9 +18,14 @@ type Grouplist = {
 }[]
 
 type Rave = {
-    _id?: string;
+    _id: string;
     event?: string;
     date?: Date;
     attendees?: Array<User>
     tickets?: Array<User>
 }
+
+type RaveList = {
+    name: string;
+    raves: Rave[];
+}[]
