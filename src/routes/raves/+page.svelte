@@ -56,9 +56,11 @@
     </div>
 	<ul class='items center w-full border-b border-t border-accent divide-x-2 divide-accent flex sticky'>
 		{#each raveList as group}
+		<div class="bg-light1">
 			<li class='w-full p-2'><input type=checkbox bind:group={activeRaveList} value={group} on:change={() => console.log(activeRaveList)}>
 				{group.name}
 			</li>
+		</div>
 		{/each}
 	</ul>
 	{#each activeRaveList as groupie}
@@ -91,4 +93,38 @@
 
 
 	{/each}
+	<img src="src\lib\images\Capture.PNG" alt="fuck you ">
 </div>
+
+<style>
+	.ravegroupbadge{
+		user-select: none;
+		border-radius: 10px;
+		padding: 0 10px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		margin-left: 5px;
+		margin-right: 5px;
+
+		color: white;
+		border: 2px solid white;
+	
+	}
+	.ravegroupbadge:hover{
+		background-color: white;
+		color: red;
+	}
+	.groupactive{
+		background-color: white;
+		color: red;
+	}
+	.groupinactive{
+		background-color: red;
+	}
+	.filterbar{
+		padding: 5px;
+		background-color: blue;
+		justify-content: center;
+	}
+</style>
