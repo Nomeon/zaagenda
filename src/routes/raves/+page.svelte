@@ -95,7 +95,7 @@
 
 
 	{/each}
-	<img src="src\lib\images\Capture.PNG" alt="fuck you ">
+	<!-- <img src="src\lib\images\Capture.PNG" alt="fuck you "> -->
 </div>
 
 <style>
