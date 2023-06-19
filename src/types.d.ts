@@ -19,8 +19,8 @@ type Grouplist = {
 
 type Rave = {
     _id: string;
-    event?: string;
-    date?: Date;
+    event: string;
+    date: string;
     attendees?: Array<User>
     tickets?: Array<User>
 }
@@ -28,4 +28,5 @@ type Rave = {
 type RaveList = {
     name: string;
     raves: Rave[];
+    group_members: string[];
 }[]

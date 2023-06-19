@@ -10,15 +10,16 @@ export async function GET(request: Request): Promise<Response> {
 
         if (id) {
             const groups = await groupCol.find({ user_ids: new ObjectId(id) }).toArray();
-            let raveList: { name?: string | undefined; raves?: Object[] | undefined; }[] = [];
+            let raveList: { name?: string | undefined; raves?: Object[] | undefined; amount?: number | undefined }[] = [];
           
             await Promise.all(groups.map(async (element) => {
               let rave_ids = element.rave_ids;
               let raves = await raveCol.find({ _id: { $in: rave_ids } }).toArray();
               if (raves) {
-                let ravesObj: { name?: string, raves?: Object[] } = {};
+                let ravesObj: { name?: string, raves?: Object[], group_members?: string[] } = {};
                 ravesObj.name = element.group_name;
                 ravesObj.raves = raves;
+                ravesObj.group_members = element.user_ids;
                 raveList = [...raveList, ravesObj];
               }
             }));
