@@ -1,6 +1,4 @@
 import { SvelteKitAuth } from '@auth/sveltekit'
-import GitHub from '@auth/core/providers/github'
-import Discord from '@auth/core/providers/discord'
 import Google from '@auth/core/providers/google'
 import { GITHUB_ID, GITHUB_SECRET, DISCORD_ID, DISCORD_SECRET, GOOGLE_ID, GOOGLE_SECRET } from '$env/static/private'
 import { redirect } from '@sveltejs/kit'
@@ -20,10 +18,6 @@ async function authorization({ event, resolve }: any) {
 export const handle = sequence(
   SvelteKitAuth({
     providers: [
-      // @ts-ignore
-      GitHub({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET }),
-      // @ts-ignore
-      Discord({ clientId: DISCORD_ID, clientSecret: DISCORD_SECRET }),
       // @ts-ignore
       Google({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET })],
     theme: {

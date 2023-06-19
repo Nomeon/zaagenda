@@ -1,9 +1,13 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import { onMount } from "svelte";
+    import { fade } from "svelte/transition";
+    import { height } from "../../stores";
     import Vignette from "$lib/components/Vignette.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import rave from "$lib/images/raveGroup.webp";
+    import MdDelete from "svelte-icons/md/MdDelete.svelte";
+    import MdAccountCircle from 'svelte-icons/md/MdAccountCircle.svelte'
     
 
     export let data: PageData;
@@ -103,34 +107,45 @@
 	<meta name="description" content="Zaagplanner | Create groups and plan your next raves" />
 </svelte:head>
 
-<div class="flex flex-col gap-8 md:gap-8 items-center justify-center text-4xl md:text-6xl h-full w-full font-medium">
-	<Vignette image={rave} />
-    <div id='header' class='absolute top-24 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85%'>
+<Vignette image={rave} />
+<div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-36'>
+    <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85% z-20'>
         <h1 class='text-3xl font-semibold'>{group.group_name?.toUpperCase()}</h1>
     </div>
-    <div class="flex flex-col gap-8 items-center justify-center text-4xl md:text-6xl h-full w-full font-medium">
         {#each users as user}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <button on:click={() => deleteUserFromGroup(user._id)}>{user.name}</button>
-        {/each}
-    </div>
-    <button on:click={() => dialog.showModal()}>ADD</button>
-        
-        <Dialog bind:dialog >
-            <div class='text-lg p-8'>
-                <form method="dialog" on:submit={() => addUserToGroup(formName, formEmail)} class='text-lg'>
-                    <div class='flex flex-col'>
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" bind:value={formName} required class='text-dark1 mb-4'/>
-
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" bind:value={formEmail} required class='text-dark1 mb-4'/>
-                    </div>
-                    <div class='flex gap-8 justify-center'>
-                        <button id='btn' type="button" on:click={() => dialog.close()}>CLOSE</button>
-                        <button id='btn' type="submit">CONFIRM</button>
-                    </div>
-                  </form>
+            <div in:fade id='btn' class='rounded-lg relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-11/12'>
+                <div class='absolute top-8 h-8 w-8 left-4 mix-blend-difference'>
+                    <MdAccountCircle />
+                </div>
+                <div class='absolute left-12 flex flex-col justify-center h-full ml-4 mix-blend-difference'>
+                    <p class='text-xl'>{user.name.split(' ')[0]}</p>
+                    <p class='text-xl'>{user.name.split(' ')[1]}</p>
+                </div>
+                <button on:click={() => deleteUserFromGroup(user._id)} class='absolute top-8 right-4 h-8 w-8 text-accent mix-blend-difference'>
+                    <MdDelete />
+                </button>
             </div>
-        </Dialog>
+        {/each}
+    <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
+        <button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">ADD</span></button>
+    </div>
+
+    <Dialog bind:dialog >
+        <div class='text-lg p-8'>
+            <form method="dialog" on:submit={() => addUserToGroup(formName, formEmail)} class='text-lg'>
+                <div class='flex flex-col'>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" bind:value={formName} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" bind:value={formEmail} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
+                </div>
+                <div class='flex gap-8 justify-center'>
+                    <button class="bg-[#000] border overflow-hidden py-2 px-8 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
+                    <button type="submit" class="bg-[#000] border overflow-hidden py-2 px-8 text-sm rounded-lg md:text-xl before:bg-light1" id='btn'><span class="mix-blend-difference">CONFIRM</span></button>
+                </div>
+                </form>
+        </div>
+    </Dialog>
 </div>

@@ -89,12 +89,12 @@
         <h1 class='text-3xl font-semibold'>GROUPS</h1>
     </div>
     {#each groupList as group}
-        <a in:fade href={`/groups/${group.id}`} id='btn' class='relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-4/6'>
-            <div class='flex flex-col justify-evenly ml-4 mix-blend-difference'>
-                <div class='absolute top-4 right-4 h-8 w-8 text-accent'>
+        <a in:fade href={`/groups/${group.id}`} id='btn' class='rounded-lg relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-11/12'>
+            <div class='flex flex-col justify-center ml-4 mix-blend-difference'>
+                <div class='absolute top-8 right-4 h-8 w-8 text-accent'>
                     <MdCallMade />
                 </div>
-                <p class='text-3xl'>{group.name}</p>
+                <p class='text-2xl'>{group.name}</p>
                 <div class='flex text-lg'>
                     <p class='flex gap-2'>
                         {#if group.users.length === 2}
@@ -102,7 +102,7 @@
                         {:else if group.users.length < 4}
                             {group.users.join(", ")}
                         {:else}
-                            {group.users.slice(0, 2).join(", ")} <p class='text-accent'> +{group.users.length - 2}</p>
+                            {group.users.slice(0, 3).join(", ")} <p class='text-accent'> +{group.users.length - 3}</p>
                         {/if}
                     </p>
                 </div>
