@@ -4,6 +4,7 @@
 	import rave from '$lib/images/raveRaves.webp';
 	import { height, userStore } from '../stores';
     import { page } from '$app/stores';
+    import RaveCard from '$lib/components/RaveCard.svelte';
 
 	let raveList: RaveList = [];
 	let activeRaveList: RaveList = []
@@ -53,16 +54,22 @@
     <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-[#000]'>
         <h1 class='text-3xl font-semibold'>RAVES</h1>
     </div>
-	<ul class='items center w-full border-b border-t border-accent divide-x-2 divide-accent flex sticky'>
+	<ul class='flex sticky filterbar w-full'>
 		{#each raveList as group}
-			<li class='w-full p-2'><input type=checkbox bind:group={activeRaveList} value={group} on:change={() => console.log(activeRaveList)}>{group.name}</li>
+			<li id="test" class='w-full p-2'>
+				<input id="ravegroupbadgeid" style="display: none" type=checkbox bind:group={activeRaveList} value={group} on:change={() => console.log(activeRaveList)}>
+				<label for="ravegroupbadgeid" class="{activeRaveList.includes(group) ? 'ravegroupbadge groupactive' : 'ravegroupbadge groupinactive'}">
+					{group.name}
+				</label>
+			</li>
+		</div>
 		{/each}
 	</ul>
 	{#each activeRaveList as groupie}
 		<h1>{groupie.name}</h1>
 		{#each groupie.raves as rave}
-			<h2>{rave.event}</h2>
-			<h3>{typeof rave.date}</h3>
+		<RaveCard raveName={rave.event ? rave.event : "undefined"}></RaveCard>
+			<!-- <h3>{typeof rave.date}</h3> -->
 		{/each}
 		<!-- <a in:fade href={`/groups/${rave._id}`} id='btn' class='relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-4/6'>
             <div class='flex flex-col justify-evenly ml-4 mix-blend-difference'>
@@ -88,5 +95,38 @@
 
 
 	{/each}
-
+	<!-- <img src="src\lib\images\Capture.PNG" alt="fuck you "> -->
 </div>
+
+<style>
+	.ravegroupbadge{
+		user-select: none;
+		border-radius: 10px;
+		padding: 0 10px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		margin-left: 5px;
+		margin-right: 5px;
+
+		color: white;
+		border: 2px solid white;
+	
+	}
+	.ravegroupbadge:hover{
+		background-color: white;
+		color: red;
+	}
+	.groupactive{
+		background-color: white;
+		color: red;
+	}
+	.groupinactive{
+		background-color: red;
+	}
+	.filterbar{
+		padding: 5px;
+		background-color: blue;
+		justify-content: center;
+	}
+</style>
