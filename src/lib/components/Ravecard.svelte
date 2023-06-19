@@ -5,12 +5,7 @@
 
     export let rave: Rave;
     export let raveGroup: { name: string; raves: Rave[]; group_members: string[] };
-
-    function editRave(theRave: Rave) {
-		console.log('edit wat fzo, klote api calls implementeren')
-        console.log('tehReef: ', theRave)
-        // Call /api/raves?id=${theRave._id} with PUT method, create dropdown with raveGroup.group_members as options for attendees and ticket
-	}
+    export let link: string;
 
 	function deleteRave(theRave: Rave) {
 		console.log('delete wat fzo, deze is ook gewoon niet leuk, maar regel ik wel keertj')
@@ -23,8 +18,7 @@
     <div class="flex flex-row  border-b-2 m-0">
         <div class="flex w-3/4 whitespace-nowrap text-ellipsis overflow-hidden text-center ml-2 items-center">{rave.event}</div>
         <div class="flex flex-row gap-3">
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div on:click={() => editRave(rave)} class="h-8"><MdEdit/></div>
+            <a href={link} class="h-8"><MdEdit/></a>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div on:click={() => deleteRave(rave)} class="h-8"><MdDeleteForever/></div>
         </div>  
