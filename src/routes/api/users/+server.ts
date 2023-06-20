@@ -1,7 +1,5 @@
 import { ObjectId } from "mongodb";
 import db from "$lib/db";
-import crypto from 'crypto';
-import { CRYPTO_KEY } from "$env/static/private";
 
 export async function GET(request: Request): Promise<Response> {
     try {
@@ -13,23 +11,6 @@ export async function GET(request: Request): Promise<Response> {
         const email = url.searchParams.get("email") || "";
         const JSONids = url.searchParams.get("ids") || "";
         let ids: string[] = [];
-
-        // Encrpytion? 
-        // if (email) {
-        //     const algorithm = 'aes-256-cbc';
-        //     const key = CRYPTO_KEY;
-        //     const iv = crypto.randomBytes(16);
-    
-        //     const cipher = crypto.createCipheriv(algorithm, key, iv);
-        //     let encrypted = cipher.update(email, 'utf8', 'hex');
-        //     encrypted += cipher.final('hex');
-        //     console.log(encrypted);
-            
-        //     const decipher = crypto.createDecipheriv(algorithm, key, iv);
-        //     let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-        //     decrypted += decipher.final('utf8');
-        //     console.log(decrypted);
-        // }
         
         if (JSONids !== "") {
             ids = JSON.parse(decodeURIComponent(JSONids))
@@ -66,10 +47,10 @@ export async function GET(request: Request): Promise<Response> {
 export async function POST({ request }: any): Promise<Response> {
     const collection = db.collection("users");
     const body = await request.json();
-    const { name, email } = body;
+    const { name, email, image } = body;
 
     if (name && email) {
-        collection.insertOne({ name, email });
+        collection.insertOne({ name, email, image });
     }
-    return new Response(JSON.stringify({ name, email }));
+    return new Response(JSON.stringify({ name, email, image }));
 }

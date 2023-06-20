@@ -24,7 +24,9 @@
 			return await getRaves()
 		}
 		raveList = await getUserRaves()
-		activeRaveList = [...raveList]
+		if (raveList) {
+			activeRaveList = [...raveList]
+		}
 	})
 
 	async function getUser(id: string, name: string, email: string) {
@@ -69,14 +71,16 @@
         <h1 class='text-3xl font-semibold'>RAVES</h1>
     </div>
 
-	<ul class='flex w-11/12 items-center justify-center gap-4 my-2'>
-		{#each raveList as group}
-			<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
+	{#if raveList}
+		<ul class='flex w-11/12 items-center justify-center gap-4 my-2'>
+			{#each raveList as group}
+				<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
+			{/each}
+		</ul>
+		{#each activeRaveList as raveGroup}
+			{#each raveGroup.raves as rave}
+				<RaveCard rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
+			{/each}
 		{/each}
-	</ul>
-	{#each activeRaveList as raveGroup}
-		{#each raveGroup.raves as rave}
-			<RaveCard rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
-		{/each}
-	{/each}
+	{/if}
 </div>

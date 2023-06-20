@@ -21,7 +21,7 @@ export async function GET(request: Request): Promise<Response> {
     
         const groups = await collection.find(query).toArray();
         if (groups.length === 0) {
-            return new Response("Not Found", { status: 404 });
+            return new Response(JSON.stringify("Not Found"), { status: 404 });
         }
         return new Response(JSON.stringify(groups), { status: 200 });
     } catch (error) {

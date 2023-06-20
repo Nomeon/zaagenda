@@ -25,7 +25,7 @@
     {#if $page.data.session?.user?.image ?? false}
         <!-- svelte-ignore a11y-img-redundant-alt -->
         <a href='/groups'>
-            <img src={$page.data.session?.user?.image} alt='profile picture' class='w-8 h-8 rounded-full max-md:w-12 max-md:h-12' />
+            <img src={$page.data.session?.user?.image} alt='profile picture' class='w-8 h-8 rounded-full max-md:w-12 max-md:h-12' referrerpolicy="no-referrer" />
         </a> 
     {:else}
         <a href='/' class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>

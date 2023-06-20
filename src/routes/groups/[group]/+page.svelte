@@ -115,12 +115,17 @@
         {#each users as user}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div in:fade id='btn' class='rounded-lg relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-11/12'>
-                <div class='absolute top-8 h-8 w-8 left-4 mix-blend-difference'>
-                    <MdAccountCircle />
+                <div class='flex items-center justify-center h-24 w-24 p-4 {user.image ? '' : 'mix-blend-difference'}'>
+                    {#if user.image}
+                        <!-- svelte-ignore a11y-img-redundant-alt -->
+                        <img src={user.image} alt="user image" class='h-11/12 w-11/12 object-cover rounded-full' referrerpolicy="no-referrer"/>
+                    {:else}
+                        <MdAccountCircle />
+                    {/if}
                 </div>
-                <div class='absolute left-12 flex flex-col justify-center h-full ml-4 mix-blend-difference'>
-                    <p class='text-xl'>{user.name.split(' ')[0]}</p>
-                    <p class='text-xl'>{user.name.split(' ')[1]}</p>
+                <div class='absolute left-20 flex flex-col justify-center h-full ml-4 mix-blend-difference'>
+                    <p class='text-2xl'>{user.name.split(' ')[0]}</p>
+                    <p class='text-2xl'>{user.name.split(' ')[1]}</p>
                 </div>
                 <button on:click={() => deleteUserFromGroup(user._id)} class='absolute top-8 right-4 h-8 w-8 text-accent mix-blend-difference'>
                     <MdDelete />
