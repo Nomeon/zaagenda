@@ -8,6 +8,7 @@
     import rave from '$lib/images/raveGroups.webp'
 
     let groupList: Grouplist = [];
+    let loaded = false;
 
     onMount(async() => {
         const name: string | null |undefined = $page.data.session?.user?.name
@@ -23,6 +24,7 @@
                 await populateGroupList(groups)
             }
         }
+        loaded = true
     })
 
     async function checkUser(name: string, email: string, image: string) {
@@ -93,30 +95,32 @@
     <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85%'>
         <h1 class='text-3xl font-semibold'>GROUPS</h1>
     </div>
-    {#if groupList.length === 0}
-        <p class='text-2xl text-center'>You have no groups yet</p>
-    {:else}
-        {#each groupList as group}
-            <a in:fade href={`/groups/${group.id}`} id='btn' class='rounded-lg relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-11/12'>
-                <div class='flex flex-col justify-center ml-4 mix-blend-difference'>
-                    <div class='absolute top-8 right-4 h-8 w-8 text-accent'>
-                        <MdCallMade />
+    {#if loaded}
+        {#if groupList.length === 0}
+            <p class='text-2xl text-center'>You have no groups yet</p>
+        {:else}
+            {#each groupList as group}
+                <a in:fade href={`/groups/${group.id}`} id='btn' class='rounded-lg relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-11/12'>
+                    <div class='flex flex-col justify-center ml-4 mix-blend-difference'>
+                        <div class='absolute top-8 right-4 h-8 w-8 text-accent'>
+                            <MdCallMade />
+                        </div>
+                        <p class='text-2xl'>{group.name}</p>
+                        <div class='flex text-lg'>
+                            <p class='flex gap-2'>
+                                {#if group.users.length === 2}
+                                    {group.users.join(" & ")}
+                                {:else if group.users.length < 4}
+                                    {group.users.join(", ")}
+                                {:else}
+                                    {group.users.slice(0, 3).join(", ")} <p class='text-accent'> +{group.users.length - 3}</p>
+                                {/if}
+                            </p>
+                        </div>
                     </div>
-                    <p class='text-2xl'>{group.name}</p>
-                    <div class='flex text-lg'>
-                        <p class='flex gap-2'>
-                            {#if group.users.length === 2}
-                                {group.users.join(" & ")}
-                            {:else if group.users.length < 4}
-                                {group.users.join(", ")}
-                            {:else}
-                                {group.users.slice(0, 3).join(", ")} <p class='text-accent'> +{group.users.length - 3}</p>
-                            {/if}
-                        </p>
-                    </div>
-                </div>
-            </a>
-        {/each}
+                </a>
+            {/each}
+        {/if}
     {/if}
 </div>
 
