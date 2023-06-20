@@ -6,27 +6,32 @@
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
     import Vignette from "$lib/components/Vignette.svelte";
     import rave from '$lib/images/raveGroups.webp'
+    import { signIn } from "@auth/sveltekit/client";
 
     let groupList: Grouplist = [];
-    let loaded = false;
+    let loaded: boolean;
 
     onMount(async() => {
-        const name: string | null |undefined = $page.data.session?.user?.name
-        const email: string | null |undefined = $page.data.session?.user?.email
-        let image: string | null |undefined = $page.data.session?.user?.image
-        if (image === null || image === undefined) {
-            image = ''
-        }
-        if (name !== undefined && email !== undefined && name !== null && email !== null) {
-            await checkUser(name, email, image);
-            if ($userStore !== null) {
-                let groups = await getGroups($userStore._id)
-                await populateGroupList(groups)
+        loaded = false
+        const getUserGroups = async () => {
+            if (!$userStore) {
+                const { name, email } = $page.data.session?.user || {};
+                if (name && email) {
+                    const userArr = await getUser('', name, email);
+                    const user = userArr[0]
+                    $userStore = user
+                }
             }
+            return await getGroups()
+        }
+        let groups = await getUserGroups()
+        if (groups) {
+            await populateGroupList(groups)
         }
         loaded = true
     })
 
+    // Custom login page met deze jopper!!!
     async function checkUser(name: string, email: string, image: string) {
         const userArr = await getUser('', name, email);
         const gotten_user = userArr[0]
@@ -63,11 +68,14 @@
         return users
 	}
 
-    async function getGroups(user_id: string) {
-        const url = `/api/groups?user_id=${user_id}`
-        const response = await fetch(url);
-        const groups = await response.json();
-        return groups
+    async function getGroups() {
+        const id = $userStore?._id
+        if (id) {
+            const url = `/api/groups?user_id=${id}`
+            const response = await fetch(url);
+            const groups = await response.json();
+            return groups
+        }
     }
 
     async function populateGroupList(groups: Group[]) {
@@ -96,31 +104,31 @@
         <h1 class='text-3xl font-semibold'>GROUPS</h1>
     </div>
     {#if loaded}
-        {#if groupList.length === 0}
-            <p class='text-2xl text-center'>You have no groups yet</p>
-        {:else}
-            {#each groupList as group}
-                <a in:fade href={`/groups/${group.id}`} id='btn' class='rounded-lg relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-11/12'>
-                    <div class='flex flex-col justify-center ml-4 mix-blend-difference'>
-                        <div class='absolute top-8 right-4 h-8 w-8 text-accent'>
-                            <MdCallMade />
-                        </div>
-                        <p class='text-2xl'>{group.name}</p>
-                        <div class='flex text-lg'>
-                            <p class='flex gap-2'>
-                                {#if group.users.length === 2}
-                                    {group.users.join(" & ")}
-                                {:else if group.users.length < 4}
-                                    {group.users.join(", ")}
-                                {:else}
-                                    {group.users.slice(0, 3).join(", ")} <p class='text-accent'> +{group.users.length - 3}</p>
-                                {/if}
-                            </p>
-                        </div>
+        {#each groupList as group}
+            <a in:fade href={`/groups/${group.id}`} id='btn' class='rounded-lg relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-11/12'>
+                <div class='flex flex-col justify-center ml-4 mix-blend-difference'>
+                    <div class='absolute top-8 right-4 h-8 w-8 text-accent'>
+                        <MdCallMade />
                     </div>
-                </a>
-            {/each}
-        {/if}
+                    <p class='text-2xl'>{group.name}</p>
+                    <div class='flex text-lg'>
+                        <p class='flex gap-2'>
+                            {#if group.users.length === 2}
+                                {group.users.join(" & ")}
+                            {:else if group.users.length < 4}
+                                {group.users.join(", ")}
+                            {:else}
+                                {group.users.slice(0, 3).join(", ")} <p class='text-accent'> +{group.users.length - 3}</p>
+                            {/if}
+                        </p>
+                    </div>
+                </div>
+            </a>
+        {:else}
+            <div class='w-full h-full flex justify-center items-center'>
+                <p class='text-2xl'>No bitches</p>
+            </div>
+        {/each}
     {/if}
 </div>
 
