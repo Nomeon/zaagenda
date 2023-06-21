@@ -4,7 +4,7 @@
 	import rave from '$lib/images/raveRaves.webp';
 	import { height, userStore } from '../stores';
     import { page } from '$app/stores';
-    import RaveCard from '$lib/components/RaveCard.svelte';
+    import RaveCardv2 from '$lib/components/RaveCardv2.svelte';
     import Checkbox from '$lib/components/Checkbox.svelte';
 
 	let raveList: RaveList = [];
@@ -76,7 +76,7 @@
 	</ul>
 	{#each activeRaveList as raveGroup}
 		{#each raveGroup.raves as rave}
-			<RaveCard rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
+			<RaveCardv2 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`} />
 		{/each}
 	{/each}
 </div>
