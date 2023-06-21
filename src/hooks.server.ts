@@ -1,8 +1,9 @@
 import { SvelteKitAuth } from '@auth/sveltekit'
 import Google from '@auth/core/providers/google'
-import { GITHUB_ID, GITHUB_SECRET, DISCORD_ID, DISCORD_SECRET, GOOGLE_ID, GOOGLE_SECRET } from '$env/static/private'
+import { GOOGLE_ID, GOOGLE_SECRET } from '$env/static/private'
 import { redirect } from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks';
+import db from '$lib/db';
 
 
 async function authorization({ event, resolve }: any) {
@@ -23,6 +24,18 @@ export const handle = sequence(
     theme: {
       colorScheme: "dark",
       brandColor: "#ff4533"
+    },
+    callbacks: {
+      async signIn({ user, account, profile, email, credentials }: any) {
+        const collection = db.collection("users");
+        const checkExistingUser = await collection.findOne({ name: profile.name, email: profile.email })
+        if (checkExistingUser) {
+          return true;
+        } else {
+          collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture })
+          return true;
+        }
+      }
     }
   }),
   authorization
