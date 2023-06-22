@@ -3,13 +3,17 @@
     
     export let width: number;
     export let height: number;
+    let spawnSpeed = 3;
     let useRange = false;
     let useLightningEffect = false;
     let fadeDistance = 400;
     let drawRange = 500;
-    let lineThickness = 1;
-    var density = 30;
-    var mult = 0.001;
+    let lineThickness = 0.5;
+    let noiseDetail = 1;
+    let maxPoints = 200;
+    var density = 400;
+    var mult = 0.002;
+
     var points: {x: number, y: number}[] = []
   
     // @ts-ignore
@@ -25,7 +29,7 @@
         p5.createCanvas(width, height);
         p5.background(30);
         p5.angleMode(p5.DEGREES);
-        p5.noiseDetail(10);
+        p5.noiseDetail(noiseDetail);
         console.log(p5.angleMode());
 
     
@@ -33,7 +37,7 @@
 
         for (var x=0; x < width; x+= space){
             for (var y=0; y < height; y+= space){
-                var p = p5.createVector(x + p5.random(-10, 10), y + p5.random(-10, 10));
+                var p = p5.createVector(p5.random(-width, width), y + p5.random(-height, height));
                 points.push(p);
             }
         }
@@ -48,12 +52,14 @@
       };
         p5.draw = () => {
             p5.noStroke();
-
-            if (p5.frameCount <= points.length) {
-                var max = p5.frameCount;
+            var max
+            if (p5.frameCount * spawnSpeed <= points.length) {
+                max = p5.frameCount * spawnSpeed;
             } else {
-                var max = points.length;
+                max = points.length;
             }
+
+            
     
     
             for (var i = 0; i<max; i++) {
@@ -80,6 +86,11 @@
                 } else {
                     p5.ellipse(points[i].x, points[i].y, lineThickness);
                 }
+            }
+            var nextPoint = p5.createVector(p5.random(-width, width), p5.random(-height, height));
+            points.push(nextPoint);
+            if (points.length >= maxPoints) {
+                points.shift();
             }
         };
       }
