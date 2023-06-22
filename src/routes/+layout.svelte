@@ -19,7 +19,7 @@
 
 <style lang="postcss">
     :global(body) {
-		font-family: "Space Mono", monospace;
+		font-family: "Roboto", sans-serif;
 		overflow: hidden;
 	}
 

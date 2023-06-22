@@ -1,13 +1,11 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import { onMount } from "svelte";
-    import { fade } from "svelte/transition";
+    import { onMount, setContext } from "svelte";
     import { height } from "../../stores";
     import Vignette from "$lib/components/Vignette.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import rave from "$lib/images/raveGroup.webp";
-    import MdDelete from "svelte-icons/md/MdDelete.svelte";
-    import MdAccountCircle from 'svelte-icons/md/MdAccountCircle.svelte'
+    import UserCard from "$lib/components/UserCard.svelte";
     
 
     export let data: PageData;
@@ -17,13 +15,17 @@
     let formName: string;
     let formEmail: string;
 
+    setContext('deletion', {
+        deleteUserFromGroup
+    })
+
     onMount(async() => {
         if (group.user_ids) {
             users = await getUsers(group.user_ids)        
         }
     })
 
-    async function getUser(name: string, email: string) {
+    async function getUser(name: string, email: string): Promise<User[]> {
         const url = `/api/users?name=${name}&email=${email}`
 		const response = await fetch(url);
 		const user = await response.json();
@@ -38,22 +40,7 @@
         return users
 	}
 
-    async function deleteGroup() {
-        if (confirm('Are you sure you want to delete this group?')) {
-            await fetch(`/api/groups`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: group._id
-                })
-            })
-            window.location.href = '/groups'
-        }
-    }
-
-    async function deleteUserFromGroup(user: string) {
+    async function deleteUserFromGroup(user: string): Promise<void> {
         if (confirm('Are you sure you want to delete this user from the group?')) {
             let user_ids = [user]
             let response = await fetch(`/api/groups`, {
@@ -78,7 +65,22 @@
         }
     }
 
-    async function addUserToGroup(name: string, email: string) {
+    async function deleteGroup(): Promise<void> {
+        if (confirm('Are you sure you want to delete this group?')) {
+            await fetch(`/api/groups`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: group._id
+                })
+            })
+            window.location.href = '/groups'
+        }
+    }
+
+    async function addUserToGroup(name: string, email: string): Promise<void> {
         let user_id = await getUser(name, email)
         if (user_id.length > 0 && confirm(`Do you want to add ${user_id[0].name} to the group?`)) {
             let user_ids = [user_id[0]._id]
@@ -110,27 +112,10 @@
 <Vignette image={rave} />
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-36'>
     <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85% z-20'>
-        <h1 class='text-3xl font-semibold'>{group.group_name?.toUpperCase()}</h1>
+        <h1 class='text-3xl font-semibold font-mono'>{group.group_name?.toUpperCase()}</h1>
     </div>
         {#each users as user}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div in:fade id='btn' class='rounded-lg relative overflow-hidden flex border border-light1 before:bg-light1 bg-[#000] min-h-[6rem] w-11/12'>
-                <div class='flex items-center justify-center h-24 w-24 p-4 {user.image ? '' : 'mix-blend-difference'}'>
-                    {#if user.image}
-                        <!-- svelte-ignore a11y-img-redundant-alt -->
-                        <img src={user.image} alt="user image" class='h-11/12 w-11/12 object-cover rounded-full' referrerpolicy="no-referrer"/>
-                    {:else}
-                        <MdAccountCircle />
-                    {/if}
-                </div>
-                <div class='absolute left-20 flex flex-col justify-center h-full ml-4 mix-blend-difference'>
-                    <p class='text-2xl'>{user.name.split(' ')[0]}</p>
-                    <p class='text-2xl'>{user.name.split(' ')[1]}</p>
-                </div>
-                <button on:click={() => deleteUserFromGroup(user._id)} class='absolute top-8 right-4 h-8 w-8 text-accent mix-blend-difference'>
-                    <MdDelete />
-                </button>
-            </div>
+            <UserCard user={user} />
         {/each}
     <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
         <button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">ADD</span></button>

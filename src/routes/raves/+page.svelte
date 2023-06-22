@@ -4,7 +4,7 @@
 	import rave from '$lib/images/raveRaves.webp';
 	import { height, userStore } from '../stores';
     import { page } from '$app/stores';
-    import RaveCard from '$lib/components/RaveCard.svelte';
+    import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
     import Checkbox from '$lib/components/Checkbox.svelte';
 
 	let raveList: RaveList = [];
@@ -50,7 +50,6 @@
 	}
 
 	function sortRaveList() {
-		// Sorteren op datum van laatste rave per groep of in totaal?
 		activeRaveList.sort((a, b) => {
 			const aDate = new Date(a.raves[a.raves.length - 1].date)
 			const bDate = new Date(b.raves[b.raves.length - 1].date)
@@ -67,19 +66,19 @@
 
 <Vignette image={rave} />
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col items-center pb-8'>
-    <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85%'>
-        <h1 class='text-3xl font-semibold'>RAVES</h1>
+    <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85% mb-4'>
+        <h1 class='text-3xl font-semibold font-mono'>RAVES</h1>
     </div>
 
 	{#if raveList}
-		<ul class='flex w-11/12 items-center justify-center gap-4 my-2'>
+		<ul class='flex w-11/12 items-center justify-center gap-4 mb-4 font-bold'>
 			{#each raveList as group}
 				<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
 			{/each}
 		</ul>
 		{#each activeRaveList as raveGroup}
 			{#each raveGroup.raves as rave}
-				<RaveCard rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
+				<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
 			{/each}
 		{/each}
 	{/if}

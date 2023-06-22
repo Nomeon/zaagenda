@@ -39,10 +39,10 @@
     {/if}
     <div class={`w-3/4 flex justify-center max-md:h-screen max-md:bg-dark1 max-md:border-b-2 max-md:border-accent max-md:w-screen max-md:fixed max-md:flex-col max-md:transition-transform max-md:duration-500 max-md:ease-in-out ${$toggled === true ? 'max-md:translate-y-0' : 'max-md:-translate-y-[calc(100%-6rem)]'}`} id='mobile'>
         <div class='w-2/3 flex items-center gap-8 max-md:basis-3/5 max-md:gap-16 max-md:flex-col justify-center max-md:w-full' id='links'>
-            <a on:click={toggleNav} href='/' class='text-4xl md:text-2xl text-light1 hover:text-accent'>HOME</a>
-            <a on:click={toggleNav} href='/raves' class='text-4xl md:text-2xl text-light1 hover:text-accent'>RAVES</a>
-            <a on:click={toggleNav} href='/groups' class='text-4xl md:text-2xl text-light1 hover:text-accent'>GROUPS</a>
-            <a on:click={toggleNav} href='/about' class='text-4xl md:text-2xl text-light1 hover:text-accent'>ABOUT</a>
+            <a on:click={toggleNav} href='/' class='text-3xl md:text-2xl text-light1 hover:text-accent'>HOME</a>
+            <a on:click={toggleNav} href='/raves' class='text-3xl md:text-2xl text-light1 hover:text-accent'>RAVES</a>
+            <a on:click={toggleNav} href='/groups' class='text-3xl md:text-2xl text-light1 hover:text-accent'>GROUPS</a>
+            <a on:click={toggleNav} href='/about' class='text-3xl md:text-2xl text-light1 hover:text-accent'>ABOUT</a>
         </div>
         <div class='w-1/3 flex items-center gap-8 justify-center max-md:w-full max-md:gap-16' id='socials'>
             {#if $page.data.session}
