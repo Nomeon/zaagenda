@@ -17,7 +17,7 @@
 
     // Pattern
     var mult = 0.001; // Branching
-    let noiseDetail = 2; // spread
+    let noiseDetail = 2;
 
     var points: {x: number, y: number}[] = []
   
