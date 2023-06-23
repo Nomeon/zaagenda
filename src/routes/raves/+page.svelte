@@ -109,10 +109,10 @@
 					<input type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
                 </div>
                 <div class='flex gap-8 justify-center'>
-                    <button class="bg-[#000] border overflow-hidden py-2 px-8 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
-                    <button type="submit" class="bg-[#000] border overflow-hidden py-2 px-8 text-sm rounded-lg md:text-xl before:bg-light1" id='btn'><span class="mix-blend-difference">CONFIRM</span></button>
-                </div>
-                </form>
+					<button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
+					<button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' type='submit'><span class="mix-blend-difference">CONFIRM</span></button>
+				</div>
+			</form>
         </div>
     </Dialog>
 </div>

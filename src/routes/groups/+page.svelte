@@ -4,12 +4,15 @@
     import { height, userStore } from "../stores";
     import { fade } from 'svelte/transition'
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
-    import Vignette from "$lib/components/Vignette.svelte";
-    import rave from '$lib/images/raveGroups.webp'
+    import Dialog from "$lib/components/Dialog.svelte";
     import Header from "$lib/components/Header.svelte";
+    import { goto } from "$app/navigation";
 
     let groupList: Grouplist = [];
     let loaded: boolean;
+
+    let dialog: Dialog;
+    let formGroupName: string;
 
     onMount(async() => {
         loaded = false
@@ -69,6 +72,32 @@
         }
     }
 
+    async function createGroup(formName: string) {
+        const id = $userStore?._id
+        if (id && confirm(`Do you want to create group: ${formName}?`)) {
+            let user_ids = [id]
+            const response = await fetch(`/api/groups`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    group_name: formName,
+                    user_ids: user_ids,
+                })
+            })
+            const reply = await response.json()
+            if (reply) {
+                goto(`/groups/${reply}`, {replaceState: false})
+            }
+        } else {
+            alert('Group creation failed.')
+            return
+        }
+    }
+
+    
+
 </script>
 
 <svelte:head>
@@ -77,8 +106,11 @@
 </svelte:head>
 
 <!-- <Vignette image={rave} /> -->
-<div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-8'>
+<div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-32'>
     <Header title='Groups' />
+    <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
+        <button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">CREATE</span></button>
+    </div>
     {#if loaded}
         {#each groupList as group}
             <a in:fade href={`/groups/${group.id}`} class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent hover:border-light1 hover:shadow-light1 hover:shadow-md group'>
@@ -106,6 +138,20 @@
             </div>
         {/each}
     {/if}
+    <Dialog bind:dialog >
+        <div class='text-lg p-8'>
+            <form method="dialog" on:submit={() => createGroup(formGroupName)} class='text-lg'>
+                <div class='flex flex-col'>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" bind:value={formGroupName} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
+                </div>
+                <div class='flex gap-8 justify-center'>
+                    <button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' type="button" on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
+					<button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' type='submit'><span class="mix-blend-difference">CONFIRM</span></button>
+                </div>
+                </form>
+        </div>
+    </Dialog>
 </div>
 
 <style>

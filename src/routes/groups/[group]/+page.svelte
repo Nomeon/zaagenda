@@ -5,6 +5,8 @@
     import Dialog from "$lib/components/Dialog.svelte";
     import UserCard from "$lib/components/UserCard.svelte";
     import Header from "$lib/components/Header.svelte";
+    import { goto } from "$app/navigation";
+    import { page } from "$app/stores";
     
     export let data: PageData;
     let group = data.groupObject;
@@ -59,23 +61,23 @@
                 if (group.user_ids) {
                     group.user_ids = group.user_ids.filter((u) => u !== user)
                 }
+                if (users.filter(e => e.name === $page.data.session?.user?.name).length <= 0) {
+                    goto(`/groups`, {replaceState: true})
+                }
             }
         }
     }
 
     async function deleteGroup(): Promise<void> {
-        if (confirm('Are you sure you want to delete this group?')) {
-            await fetch(`/api/groups`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: group._id
-                })
+        await fetch(`/api/groups`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: group._id
             })
-            window.location.href = '/groups'
-        }
+        })
     }
 
     async function addUserToGroup(name: string, email: string): Promise<void> {
@@ -113,7 +115,7 @@
             <UserCard user={user} />
         {/each}
     <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-        <button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">ADD</span></button>
+        <button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">ADD</span></button>
     </div>
 
     <Dialog bind:dialog >
@@ -127,8 +129,8 @@
                     <input type="email" id="email" name="email" bind:value={formEmail} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
                 </div>
                 <div class='flex gap-8 justify-center'>
-                    <button class="bg-[#000] border overflow-hidden py-2 px-8 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
-                    <button type="submit" class="bg-[#000] border overflow-hidden py-2 px-8 text-sm rounded-lg md:text-xl before:bg-light1" id='btn'><span class="mix-blend-difference">CONFIRM</span></button>
+                    <button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
+					<button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' type='submit'><span class="mix-blend-difference">CONFIRM</span></button>
                 </div>
                 </form>
         </div>
