@@ -14,7 +14,6 @@
 		"@sveltejs/kit": "^1.5.0",
 		"@types/body-parser": "^1.19.2",
 		"@types/node": "^20.3.1",
-		"@types/noisejs": "^0.0.28",
 		"autoprefixer": "^10.4.14",
 		"p5": "^1.6.0",
 		"postcss": "^8.4.24",
@@ -31,12 +30,9 @@
 		"@auth/sveltekit": "^0.3.2",
 		"@fontsource/space-mono": "^5.0.3",
 		"@sveltejs/adapter-vercel": "^3.0.1",
-		"konva": "^9.2.0",
 		"mongodb": "^5.6.0",
-		"noisejs": "^2.1.0",
 		"p5-svelte": "^3.1.2",
 		"svelte-breakpoints": "^0.2.0",
-		"svelte-icons": "^2.1.0",
-		"svelte-konva": "^0.2.0"
+		"svelte-icons": "^2.1.0"
 	}
 }

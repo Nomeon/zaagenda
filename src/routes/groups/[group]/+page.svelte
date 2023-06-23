@@ -2,12 +2,10 @@
     import type { PageData } from "./$types";
     import { onMount, setContext } from "svelte";
     import { height } from "../../stores";
-    import Vignette from "$lib/components/Vignette.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
-    import rave from "$lib/images/raveGroup.webp";
     import UserCard from "$lib/components/UserCard.svelte";
+    import Header from "$lib/components/Header.svelte";
     
-
     export let data: PageData;
     let group = data.groupObject;
     let users: User[] = [];
@@ -109,11 +107,8 @@
 	<meta name="description" content="Zaagplanner | Create groups and plan your next raves" />
 </svelte:head>
 
-<Vignette image={rave} />
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-36'>
-    <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85% z-20'>
-        <h1 class='text-3xl font-semibold font-mono'>{group.group_name?.toUpperCase()}</h1>
-    </div>
+    <Header title={group.group_name || 'Group'} />
         {#each users as user}
             <UserCard user={user} />
         {/each}
