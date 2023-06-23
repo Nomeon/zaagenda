@@ -13,8 +13,7 @@
         // Call /api/raves?id=${theRave._id} with DELETE method
 	}
 </script>
-
-<div in:fade id='divider' class='mb-8 rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-opacity-60 border-2 border-accent bg-dark1 backdrop-blur shadow-md shadow-accent'>
+<div in:fade id='divider' class='mb-8 rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent'>
     <div id='left-card' class= 'w-[5.5rem] bg-dark1 h-full'>
         <div class='flex flex-col items-center justify-center h-24 w-24 p-4 font-bold'>
             <div>{new Date(rave.date).toLocaleDateString("nl-NL", { day: 'numeric', month: "numeric" }) }</div>

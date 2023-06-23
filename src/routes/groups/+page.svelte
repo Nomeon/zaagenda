@@ -81,7 +81,7 @@
     <Header title='Groups' />
     {#if loaded}
         {#each groupList as group}
-            <a in:fade href={`/groups/${group.id}`} class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-opacity-60 border border-accent shadow-accent hover:border-light1 hover:shadow-light1 group bg-dark1 backdrop-blur shadow-md '>
+            <a in:fade href={`/groups/${group.id}`} class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent hover:border-light1 hover:shadow-light1 hover:shadow-md group'>
                 <div class='flex flex-col justify-center ml-4'>
                     <div class='absolute top-8 right-4 h-8 w-8 text-accent group-hover:text-light1'>
                         <MdCallMade />

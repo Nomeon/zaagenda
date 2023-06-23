@@ -10,10 +10,8 @@ declare global {
 }
 
 declare module '$env/static/private' {
-	export const GITHUB_ID: string;
-	export const GITHUB_SECRET: string;
-	export const DISCORD_ID: string;
-	export const DISCORD_SECRET: string;
+	export const GOOGLE_ID: string;
+	export const GOOGLE_SECRET: string;
 }
 
 declare module '*';

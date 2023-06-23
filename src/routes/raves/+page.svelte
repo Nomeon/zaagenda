@@ -1,9 +1,9 @@
 <script lang='ts'>
 	import { onMount } from 'svelte';
 	import { height, userStore } from '../stores';
-  import { page } from '$app/stores';
-  import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
-  import Checkbox from '$lib/components/Checkbox.svelte';
+	import { page } from '$app/stores';
+	import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
+	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 
