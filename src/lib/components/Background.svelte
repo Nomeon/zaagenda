@@ -3,16 +3,21 @@
     
     export let width: number;
     export let height: number;
-    let spawnSpeed = 5;
     let useRange = false;
     let useLightningEffect = false;
     let fadeDistance = 40;
     let drawRange = 100;
-    let lineThickness = 5;
-    let noiseDetail = 2;
-    let maxPoints = 20;
-    var density = 100;
-    var mult = 0.001;
+    let lineThickness = 3;
+    let maxPoints = 200;
+    
+    // Speed
+    var density = 20;
+    let spawnSpeed = 30;
+
+
+    // Pattern
+    var mult = 0.001; // Branching
+    let noiseDetail = 2; // spread
 
     var points: {x: number, y: number}[] = []
   
@@ -32,12 +37,10 @@
         p5.background(0,0,0,0);
         p5.angleMode(p5.DEGREES);
         p5.noiseDetail(noiseDetail);
-        console.log(p5.angleMode());
 
     
         var space = width/density;
-
-        for (var x=0; x < width; x+= space){
+        for (var x=0; x < width; x+= space)
             for (var y=0; y < height; y+= space){
                 // Left spawn
                 var p = p5.createVector(-10, y + p5.random(-height, height));
@@ -46,17 +49,16 @@
                 p = p5.createVector(width + 10, y + p5.random(-height, height));
                 points.push(p);
                 // // Top spawn
-                // p = p5.createVector(p5.random(-width, width), -10);
+                // var p = p5.createVector(p5.random(0, width), -10);
                 // points.push(p);
                 // // Bottom spawn
-                // p = p5.createVector(p5.random(-width, width), +10);
+                // var p = p5.createVector(p5.random(0, width), height);
                 // points.push(p);
 
                 // Random spawn
                 var p = p5.createVector(p5.random(-width, width),p5.random(-height, height))
                 points.push(p);
             }
-        }
         r1 = p5.random(100, 255);
         r2 = p5.random(100, 255);
         g1 = p5.random(50);
@@ -79,22 +81,23 @@
     
     
             for (var i = 0; i<max; i++) {
+                // CAUSES TILING, DONT KNOW WHY
                 // var r = p5.map(points[i].x, 0, width, 0, 165);
                 // var g = p5.map(points[i].y, 0, width, 0, 25);
                 // var b = p5.map(points[i].x, 0, height, 0, 25);
 
-                var r = p5.map(points[i].x, 0, width, r1, r2);
-                var g = p5.map(points[i].y, 0, width, g1, g2);
-                var b = p5.map(points[i].x, 0, height, b1, b2);
+                // var r = p5.map(points[i].x, 0, width, r1, r2);
+                // var g = p5.map(points[i].y, 0, width, g1, g2);
+                // var b = p5.map(points[i].x, 0, height, b1, b2);
                 
                 if (useRange) {
                     var alpha = p5.map(p5.dist(width/2, height/2, points[i].x, points[i].y), 0, fadeDistance, 255, 0);
                 }
     
     
-                p5.fill(r, g, b, 10);
+                p5.fill(150, 12, 5, 10);
                 if (useLightningEffect) {
-                    mult = p5.random(0.003, 0.004)
+                    mult = p5.random(0.001, 0.004)
                 }
                 var angle = p5.map(p5.noise(points[i].x * mult, points[i].y * mult), 0, 1, 0, 720);
                 points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)))
@@ -104,14 +107,16 @@
                         p5.ellipse(points[i].x, points[i].y, 1);
                     }
                 } else {
-                    p5.ellipse(points[i].x, points[i].y, lineThickness);
+                    if (points[i].x > 0 && points[i].x < width && points[i].y > 0 && points[i].y < height) {
+                        p5.ellipse(points[i].x, points[i].y, lineThickness);
+                    }
                 }
             }
             var nextPoint = p5.createVector(p5.random(-width, width), p5.random(-height, height));
             points.push(nextPoint);
-            // if (points.length >= maxPoints) {
-            //     points.shift();
-            // }
+            if (points.length >= maxPoints) {
+                points.shift();
+            }
         };
       }
   </script>
