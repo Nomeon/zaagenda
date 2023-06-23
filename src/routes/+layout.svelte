@@ -1,7 +1,8 @@
-<script>
+<script lang='ts'>
     import { isMobile, height } from "./stores";
     import { useMediaQuery } from "svelte-breakpoints";
     import Navbar from "$lib/components/Navbar.svelte";
+    import Background from "$lib/components/Background.svelte";
     import "../app.css";
     
     const mobile = useMediaQuery('(max-width: 768px)');
@@ -14,6 +15,7 @@
     <main class='flex flex-col justify-center w-full m-0 bg-black text-light1'>
         <slot />
     </main>
+    <Background />
 </div>
 <svelte:window bind:innerHeight={$height} />
 
@@ -21,13 +23,5 @@
     :global(body) {
 		font-family: "Roboto", sans-serif;
 		overflow: hidden;
-	}
-
-	:root {
-		--date-input-width: 12rem;
-		--date-picker-highlight-border: theme('colors.accent');
-		--date-picker-background: #000;
-		--date-picker-foreground: #fff;
-		--date-picker-highlight-shadow: rgba(255, 255, 255, 0);
 	}
 </style>
