@@ -23,9 +23,8 @@
 <nav class='h-24 flex justify-between bg-dark1 border-b-accent border-b-2 relative z-30 backdrop-blur font-semibold box-border'>
     <div class='w-1/4 flex items-center justify-center z-20 gap-4 max-md:w-1/2 max-md:px-12 max-md:justify-start' id='logo'>
     {#if $page.data.session?.user?.image ?? false}
-        <!-- svelte-ignore a11y-img-redundant-alt -->
         <a href='/groups'>
-            <img src={$page.data.session?.user?.image} alt='profile picture' class='w-8 h-8 rounded-full max-md:w-12 max-md:h-12' referrerpolicy="no-referrer" />
+            <img src={$page.data.session?.user?.image} alt='user profile' class='w-8 h-8 rounded-full max-md:w-12 max-md:h-12' referrerpolicy="no-referrer" />
         </a> 
     {:else}
         <a href='/' class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>

@@ -3,7 +3,7 @@
 	 export let dialog
 </script>
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<dialog bind:this={dialog} on:click|self={() => dialog.close()} class='p-0 rounded-lg border border-accent bg-dark1 text-light1'>
+<dialog bind:this={dialog} on:click|self={() => dialog.close()} class='p-0 rounded-lg border-2 border-accent bg-dark1 text-light1'>
 	<slot/>
 </dialog>
 

@@ -6,10 +6,19 @@
     import { page } from '$app/stores';
     import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
     import Checkbox from '$lib/components/Checkbox.svelte';
+	import Dialog from '$lib/components/Dialog.svelte';
 
 	let raveList: RaveList = [];
 	let activeRaveList: RaveList = [];
 	$: activeRaveList, sortRaveList();
+
+	let dialog: Dialog;
+	let formGroup: string;
+	let formEvent: string;
+	let formDateStart: string;
+	let formDateEnd: string;
+	let formAttendees:	string[];
+	let formTickets: string[];
 
 	onMount(async () => {
 		const getUserRaves = async () => {
@@ -57,6 +66,10 @@
 		})
 	}
 
+	function addRaveToGroup(id: string, event: string, dateStart: string, dateEnd: string, attendees: string[], tickets: string[]) {
+
+	}
+
 </script>
 
 <svelte:head>
@@ -82,4 +95,32 @@
 			{/each}
 		{/each}
 	{/if}
+	<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
+        <button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">ADD</span></button>
+    </div>
+	
+    <Dialog bind:dialog >
+        <div class='text-md p-8'>
+            <form method="dialog" on:submit={() => addRaveToGroup(formGroup, formEvent, formDateStart, formDateEnd, formAttendees, formTickets)} class='text-lg'>
+                <div class='flex flex-col'>
+                    <label for="name">Event</label>
+                    <input type="text" id="name" name="name" bind:value={formEvent} required class='mb-8 py-1 px-2 rounded-sm'/>
+
+					<label for="dateStart">Date Start</label>
+					<input type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
+
+					<label for="dateEnd">Date End</label>
+					<input type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
+                </div>
+                <div class='flex gap-8 justify-center'>
+                    <button class="bg-[#000] border overflow-hidden py-2 px-8 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
+                    <button type="submit" class="bg-[#000] border overflow-hidden py-2 px-8 text-sm rounded-lg md:text-xl before:bg-light1" id='btn'><span class="mix-blend-difference">CONFIRM</span></button>
+                </div>
+                </form>
+        </div>
+    </Dialog>
 </div>
+
+<style>
+
+</style>
