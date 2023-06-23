@@ -1,12 +1,12 @@
 <script lang='ts'>
 	import { onMount } from 'svelte';
-	import Vignette from '$lib/components/Vignette.svelte';
-	import rave from '$lib/images/raveRaves.webp';
 	import { height, userStore } from '../stores';
-    import { page } from '$app/stores';
-    import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
-    import Checkbox from '$lib/components/Checkbox.svelte';
+  import { page } from '$app/stores';
+  import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
+  import Checkbox from '$lib/components/Checkbox.svelte';
+	import Header from '$lib/components/Header.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
+
 
 	let raveList: RaveList = [];
 	let activeRaveList: RaveList = [];
@@ -77,12 +77,8 @@
 	<meta name="description" content="Check out your raves here" />
 </svelte:head>
 
-<Vignette image={rave} />
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col items-center pb-8'>
-    <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85% mb-4'>
-        <h1 class='text-3xl font-semibold font-mono'>RAVES</h1>
-    </div>
-
+	<Header title='Raves' />
 	{#if raveList}
 		<ul class='flex w-11/12 items-center justify-center gap-4 mb-4 font-bold'>
 			{#each raveList as group}
@@ -120,7 +116,3 @@
         </div>
     </Dialog>
 </div>
-
-<style>
-
-</style>

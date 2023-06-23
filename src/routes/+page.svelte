@@ -1,16 +1,9 @@
-<script>
-	import Vignette from '$lib/components/Vignette.svelte';
-	import rave from '$lib/images/raveHome.webp';
-
-</script>
-
 <svelte:head>
 	<title>Zaag | Home</title>
 	<meta name="description" content="Zaagplanner | Create groups and plan your next raves" />
 </svelte:head>
 
 <div class="flex flex-col gap-8 md:gap-8 items-center justify-center text-4xl md:text-6xl h-full w-full font-medium">
-	<Vignette image={rave} />
 	<h1 id='depth' class='font-bold'>ZAAGPLANNER</h1>
 	<h2 id='depth' class="text-lg text-light1 text-center mx-16">Check your upcoming raves or edit your groups:</h2>
 	<div class='flex gap-8'>

@@ -20,7 +20,7 @@
 
 </script>
 
-<nav class='h-24 flex justify-between bg-dark1 border-b-accent border-b-2 relative z-30 backdrop-blur font-semibold box-border'>
+<nav class='h-24 flex justify-between bg-dark1 border-b-accent border-b-2 relative z-30 backdrop-blur font-semibold box-border '>
     <div class='w-1/4 flex items-center justify-center z-20 gap-4 max-md:w-1/2 max-md:px-12 max-md:justify-start' id='logo'>
     {#if $page.data.session?.user?.image ?? false}
         <a href='/groups'>

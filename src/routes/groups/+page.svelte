@@ -6,6 +6,7 @@
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
     import Vignette from "$lib/components/Vignette.svelte";
     import rave from '$lib/images/raveGroups.webp'
+    import Header from "$lib/components/Header.svelte";
 
     let groupList: Grouplist = [];
     let loaded: boolean;
@@ -75,11 +76,9 @@
 	<meta name="description" content="Groups" />
 </svelte:head>
 
-<Vignette image={rave} />
+<!-- <Vignette image={rave} /> -->
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-8'>
-    <div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000] from-85%'>
-        <h1 class='text-3xl font-semibold font-mono'>GROUPS</h1>
-    </div>
+    <Header title='Groups' />
     {#if loaded}
         {#each groupList as group}
             <a in:fade href={`/groups/${group.id}`} class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-opacity-60 border border-accent shadow-accent hover:border-light1 hover:shadow-light1 group bg-dark1 backdrop-blur shadow-md '>
