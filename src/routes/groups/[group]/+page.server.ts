@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import db from '$lib/db';
 
 /** @type {import('@sveltejs/kit').PageServerLoad}*/
-export async function load({ params }) {
+export async function load({ params }: { params: { group: string } }) {
     if (params) {
         const id = params.group;
         const collection = db.collection("groups");

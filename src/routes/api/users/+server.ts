@@ -5,9 +5,7 @@ export async function GET(request: Request): Promise<Response> {
     try {
         const collection = db.collection("users");
         const url = new URL(request.url);
-    
         const id = url.searchParams.get("id") || "";
-        const name = url.searchParams.get("name") || "";
         const email = url.searchParams.get("email") || "";
         const JSONids = url.searchParams.get("ids") || "";
         let ids: string[] = [];
@@ -21,15 +19,9 @@ export async function GET(request: Request): Promise<Response> {
         if (id) {
             const o_id = new ObjectId(id);
             user = await collection.find({ _id: o_id }).toArray();
-        } else if (name || email) {
-            if (name && email) {
-                query.name = name;
-                query.email = email;
-                user = await collection.find(query).toArray();
-            } else if (email && name === "") {
-                query.email = email;
-                user = await collection.find(query).toArray();
-            }
+        } else if (email) {
+            query.email = email;
+            user = await collection.find(query).toArray();
         } else if (ids) {
             let o_ids: ObjectId[] = [];
             ids.forEach((element: string) => {

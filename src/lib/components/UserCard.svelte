@@ -21,8 +21,7 @@
         </div>
     </div>
     <div id='right-card' class='flex flex-col absolute left-32 justify-center h-full'>
-        <p class='text-xl'>{user.name.split(' ')[0]}</p>
-        <p class='text-xl'>{user.name.split(' ')[1]}</p>
+        <p class='text-xl'>{user.name}</p>
     </div>
     <button on:click={() => deleteUserFromGroup(user._id)} class='absolute top-8 right-4 h-8 w-8 text-accent hover:text-light1'>
         <MdDeleteForever />

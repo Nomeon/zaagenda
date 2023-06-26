@@ -6,12 +6,15 @@
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
+	import Loading from '$lib/components/Loading.svelte';
+    import Button from '$lib/components/Button.svelte';
 
 
 	let raveList: RaveList = [];
 	let activeRaveList: RaveList = [];
 	$: activeRaveList, sortRaveList();
 
+	let loaded: boolean;
 	let dialog: Dialog;
 	let formGroup: string;
 	let formEvent: string;
@@ -21,11 +24,12 @@
 	let formTickets: string[];
 
 	onMount(async () => {
+		loaded = false
 		const getUserRaves = async () => {
 			if (!$userStore) {
 				const { name, email } = $page.data.session?.user || {};
 				if (name && email) {
-					const userArr = await getUser('', name, email);
+					const userArr = await getUser('', email);
 					const user = userArr[0]
 					$userStore = user
 				}
@@ -36,10 +40,11 @@
 		if (raveList) {
 			activeRaveList = [...raveList]
 		}
+		loaded = true
 	})
 
-	async function getUser(id: string, name: string, email: string) {
-        const url = `/api/users?name=${name}&email=${email}&id=${id}`
+	async function getUser(id: string, email: string) {
+        const url = `/api/users?email=${email}&id=${id}`
 		const response = await fetch(url);
 		const user = await response.json();
         return user
@@ -79,40 +84,44 @@
 
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col items-center pb-8'>
 	<Header title='Raves' />
-	{#if raveList}
-		<ul class='flex w-11/12 items-center justify-center gap-4 mb-4 font-bold'>
-			{#each raveList as group}
-				<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
+	{#if loaded}
+		{#if raveList}
+			<ul class='flex w-11/12 items-center justify-center gap-4 mb-4 font-bold'>
+				{#each raveList as group}
+					<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
+				{/each}
+			</ul>
+			{#each activeRaveList as raveGroup}
+				{#each raveGroup.raves as rave}
+					<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
+				{/each}
 			{/each}
-		</ul>
-		{#each activeRaveList as raveGroup}
-			{#each raveGroup.raves as rave}
-				<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
-			{/each}
-		{/each}
+		{/if}
+		<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
+			<Button type='button' on:click={() => dialog.showModal()} text='ADD' />
+		</div>
+		
+		<Dialog bind:dialog >
+			<div class='text-md p-8'>
+				<form method="dialog" on:submit={() => addRaveToGroup(formGroup, formEvent, formDateStart, formDateEnd, formAttendees, formTickets)} class='text-lg'>
+					<div class='flex flex-col'>
+						<label for="name">Event</label>
+						<input type="text" id="name" name="name" bind:value={formEvent} required class='mb-8 py-1 px-2 rounded-sm'/>
+
+						<label for="dateStart">Date Start</label>
+						<input type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
+
+						<label for="dateEnd">Date End</label>
+						<input type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
+					</div>
+					<div class='flex gap-8 justify-center'>
+						<Button type='button' on:click={() => dialog.close()} text='CLOSE' />
+						<Button type='submit' text='CONFIRM' />
+					</div>
+				</form>
+			</div>
+		</Dialog>
+	{:else}
+		<Loading />
 	{/if}
-	<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-        <button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">ADD</span></button>
-    </div>
-	
-    <Dialog bind:dialog >
-        <div class='text-md p-8'>
-            <form method="dialog" on:submit={() => addRaveToGroup(formGroup, formEvent, formDateStart, formDateEnd, formAttendees, formTickets)} class='text-lg'>
-                <div class='flex flex-col'>
-                    <label for="name">Event</label>
-                    <input type="text" id="name" name="name" bind:value={formEvent} required class='mb-8 py-1 px-2 rounded-sm'/>
-
-					<label for="dateStart">Date Start</label>
-					<input type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
-
-					<label for="dateEnd">Date End</label>
-					<input type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
-                </div>
-                <div class='flex gap-8 justify-center'>
-					<button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
-					<button class="relative bg-[#000] border overflow-hidden py-2 px-12 text-sm rounded-lg md:text-xl before:bg-light1" id='btn' type='submit'><span class="mix-blend-difference">CONFIRM</span></button>
-				</div>
-			</form>
-        </div>
-    </Dialog>
 </div>

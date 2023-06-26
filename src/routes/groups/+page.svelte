@@ -6,7 +6,9 @@
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
     import Dialog from "$lib/components/Dialog.svelte";
     import Header from "$lib/components/Header.svelte";
+    import Loading from "$lib/components/Loading.svelte";
     import { goto } from "$app/navigation";
+    import Button from "$lib/components/Button.svelte";
 
     let groupList: Grouplist = [];
     let loaded: boolean;
@@ -18,9 +20,9 @@
         loaded = false
         const getUserGroups = async () => {
             if (!$userStore) {
-                const { name, email } = $page.data.session?.user || {};
-                if (name && email) {
-                    const userArr = await getUser('', name, email);
+                const { email } = $page.data.session?.user || {};
+                if (email) {
+                    const userArr = await getUser('', email);
                     const user = userArr[0]
                     $userStore = user
                 }
@@ -34,8 +36,8 @@
         loaded = true
     })
     
-    async function getUser(id: string, name: string, email: string) {
-        const url = `/api/users?name=${name}&email=${email}&id=${id}`
+    async function getUser(id: string, email: string) {
+        const url = `/api/users?email=${email}&id=${id}`
 		const response = await fetch(url);
 		const user = await response.json();
         return user
@@ -108,9 +110,7 @@
 <!-- <Vignette image={rave} /> -->
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-32'>
     <Header title='Groups' />
-    <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-        <button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">CREATE</span></button>
-    </div>
+
     {#if loaded}
         {#each groupList as group}
             <a in:fade href={`/groups/${group.id}`} class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent hover:border-light1 hover:shadow-light1 hover:shadow-md group'>
@@ -137,6 +137,11 @@
                 <p class='text-2xl'>No bitches</p>
             </div>
         {/each}
+        <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
+            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' />
+        </div>
+    {:else}
+        <Loading />
     {/if}
     <Dialog bind:dialog >
         <div class='text-lg p-8'>
@@ -146,8 +151,8 @@
                     <input type="text" id="name" name="name" bind:value={formGroupName} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
                 </div>
                 <div class='flex gap-8 justify-center'>
-                    <button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' type="button" on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
-					<button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' type='submit'><span class="mix-blend-difference">CONFIRM</span></button>
+                    <Button type='button' on:click={() => dialog.close()} text='CLOSE' />
+                    <Button type='submit' text='CONFIRM' />
                 </div>
                 </form>
         </div>
