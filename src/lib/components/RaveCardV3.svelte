@@ -26,10 +26,10 @@
         }
     }
 </script>
-<div in:fade id='divider' class='mb-8 rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent'>
+<div in:fade id='divider' class='mb-4 rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent'>
     <div id='left-card' class= 'w-[5.5rem] bg-dark1 h-full'>
         <div class='flex flex-col items-center justify-center h-24 w-24 p-4 font-bold'>
-            <div>{new Date(rave.startDate).toLocaleDateString("nl-NL", { day: 'numeric', month: "numeric" }) }</div>
+            <div>{new Date(rave.startDate).toLocaleDateString("nl-NL", { day: 'numeric', month: "short" }) }</div>
             <div>{new Date(rave.startDate).toLocaleDateString("nl-NL", { year: "numeric" }) }</div>    
         </div>
     </div>
@@ -42,7 +42,7 @@
         <a id='editbtn' href={link} class='h-6 text-accent hover:text-light1'>
             <MdCallMade />
         </a>
-        <button on:click={() => deleteRave(rave)} class='h-6 text-accent hover:text-light1'>
+        <button on:click|preventDefault={() => deleteRave(rave)} class='h-6 text-accent hover:text-light1'>
             <MdDeleteForever />
         </button>
     </div>
