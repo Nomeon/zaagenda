@@ -176,19 +176,22 @@
 	<meta name="description" content="Check out your raves here" />
 </svelte:head>
 
-<div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pt-8 pb-36'>
+<div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pb-36'>
 	{#if raveList}
-		<ul class='flex w-11/12 items-center justify-center gap-4 mb-4 font-bold'>
-			{#each raveList as group}
-				<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
+		<div class='sticky top-0 z-20 h-24 min-h-[6rem] flex items-center justify-center w-full py-8 bg-gradient-to-b from-[#000] from-85%'>
+			<ul class='flex w-11/12 items-center justify-center gap-4 font-bold '>
+				{#each raveList as group}
+					<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
+				{/each}
+			</ul>
+		</div>
+			{#each activeRaveList as raveGroup}
+				{#each raveGroup.raves as rave}
+					<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
+				{/each}
 			{/each}
-		</ul>
-		{#each activeRaveList as raveGroup}
-			{#each raveGroup.raves as rave}
-				<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
-			{/each}
-		{/each}
 	{/if}
+
 	<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
 		<Button type='button' on:click={() => dialog.showModal()} text='Add Rave' />
 	</div>

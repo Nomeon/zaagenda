@@ -1,6 +1,6 @@
 <script lang='ts'>
 	export let group: RaveList;
-	export let value: { name: string; raves: Rave[]; group_members: string[]; };
+	export let value: { group_id: string, name: string; raves: Rave[]; group_members: string[]; };
 	export let checked: boolean;
 	
 	$: updateCheckbox(group)
