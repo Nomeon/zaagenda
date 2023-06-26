@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import db from '$lib/db';
 
 /** @type {import('@sveltejs/kit').PageServerLoad}*/
-export async function load({ params }) {
+export async function load({ params }: { params: { rave: string } }) {
     if (params) {
         const id = params.rave;
         const collection = db.collection("raves");

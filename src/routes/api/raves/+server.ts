@@ -16,7 +16,8 @@ export async function GET(request: Request): Promise<Response> {
               let rave_ids = element.rave_ids;
               let raves = await raveCol.find({ _id: { $in: rave_ids } }).toArray();
               if (raves) {
-                let ravesObj: { name?: string, raves?: Object[], group_members?: string[] } = {};
+                let ravesObj: { group_id?: string, name?: string, raves?: Object[], group_members?: string[] } = {};
+                ravesObj.group_id = element._id.toString();
                 ravesObj.name = element.group_name;
                 ravesObj.raves = raves;
                 ravesObj.group_members = element.user_ids;
@@ -35,12 +36,48 @@ export async function GET(request: Request): Promise<Response> {
 }
 
 export async function POST({ request }: any): Promise<Response> {
-    const collection = db.collection("users");
-    const body = await request.json();
-    const { name, email } = body;
+    try {
+        const collection = db.collection("raves");
+        const body = await request.json();
+        const { event, startDate, endDate, attendees, tickets } = body;
+        const startDateJSON = new Date(startDate);
+        const endDateJSON = new Date(endDate);
 
-    if (name && email) {
-        collection.insertOne({ name, email });
+        if (!event || !startDateJSON || !endDateJSON) {
+            return new Response("Bad Request", { status: 400 });
+        }
+        let response;
+        if (attendees && tickets) {
+            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, attendees: attendees.map((id: string) => new ObjectId(id)), tickets: tickets.map((id: string) => new ObjectId(id))});
+        } else if (attendees) {
+            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, attendees: attendees.map((id: string) => new ObjectId(id))});
+        } else if (tickets) {
+            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, tickets: tickets.map((id: string) => new ObjectId(id))});
+        } else {
+            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON});
+        }
+        const { insertedId } = response;
+        return new Response(JSON.stringify(insertedId), { status: 201 });
+    } catch (error) {
+        console.error(error);
+        return new Response("Internal Server Error", { status: 500 })
     }
-    return new Response(JSON.stringify({ name, email }));
+}
+
+export async function DELETE({ request }: any): Promise<Response> {
+    try {
+        const collection = db.collection("raves");
+        const body = await request.json();
+        const { id } = body;
+
+        if (id) {
+            collection.deleteOne({ _id: new ObjectId(id) });
+        } else {
+            return new Response("Bad Request", { status: 400 });
+        }
+        return new Response(JSON.stringify(body), { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return new Response("Internal Server Error", { status: 500 })
+    }
 }

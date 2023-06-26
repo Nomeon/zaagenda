@@ -12,7 +12,7 @@
 
 	$: title.set('Raves')
 
-
+	let today = new Date();
 	let userList: User[] = [];
 	let raveList: RaveList = [];
 	let users: any[];
@@ -27,8 +27,8 @@
 	let formEvent: string;
 	let formDateStart: string;
 	let formDateEnd: string;
-	let formAttendees:	string[];
-	let formTickets: string[];
+	let formAttendees: [{label: string, value: string}] | [];
+	let formTickets: [{label: string, value: string}] | [];
 
 	onMount(async () => {
 		const getUserRaves = async () => {
@@ -74,23 +74,88 @@
 			const response = await fetch(url);
 			let raves = await response.json();
 			raves.forEach((group: { name: string; raves: Rave[]; group_members: string[] }) => {
-				group.raves.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+				group.raves.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
 			});
 			return raves
 		}
 	}
 
 	function sortRaveList() {
-		activeRaveList.sort((a, b) => {
-			const aDate = new Date(a.raves[a.raves.length - 1].date)
-			const bDate = new Date(b.raves[b.raves.length - 1].date)
-			return bDate.getTime() - aDate.getTime()
-		})
+		try {
+			activeRaveList.forEach((group) => {
+				group.raves.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+			})
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
-	function addRaveToGroup(id: string, event: string, dateStart: string, dateEnd: string, attendees: string[], tickets: string[]) {
-		console.log(id, event, dateStart, dateEnd, attendees, tickets)
+	async function addRaveToGroup() {
+		let aanwezigen: string[] = [];
+		let ticketonis: string[] = [];
+		formAttendees.forEach((attendee) => {
+			aanwezigen.push(attendee.value)
+		})
+		formTickets.forEach((ticket) => {
+			ticketonis.push(ticket.value)
+		})
+		let valid = true
+
+		if (valid) {
+			const response = await fetch(`/api/raves`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						event: formEvent,
+						startDate: formDateStart,
+						endDate: formDateEnd,
+						attendees: aanwezigen,
+						tickets: ticketonis
+					})
+			})
+			if (response.status === 201) {
+				const reply = await response.json();
+				putToGroup(reply)
+			}
+        } else {
+            alert('Rave creation failed.')
+            return
+        }
 		dialog.close()
+		resetDialog()
+	}
+
+	async function putToGroup(reply: string) {
+		let groupid = raveList.filter((group) => group.name === formGroup)[0].group_id
+		const response = await fetch(`/api/groups`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: groupid,
+				rave_ids: [reply]
+			})
+		})
+		if (response.status === 200) {
+			const reply = await response.json();
+			// goto(`/raves/${reply}`) willen we dit?
+			window.location.reload()
+		} else {
+			alert('Rave was not added to group.')
+			return
+		}
+	}
+
+	const resetDialog = () => {
+		formGroup = ''
+		formEvent = ''
+		formDateStart = ''
+		formDateEnd = ''
+		formAttendees = []
+		formTickets = []
 	}
 
 	const setAttendeesTickets = () => {
@@ -129,7 +194,7 @@
 	</div>
     <Dialog bind:dialog >
         <div class='text-sm p-4'>
-            <form method="dialog" on:submit|preventDefault={() => addRaveToGroup(formGroup, formEvent, formDateStart, formDateEnd, formAttendees, formTickets)} class='text-lg'>
+            <form method="dialog" on:submit|preventDefault={() => addRaveToGroup()} class='text-lg'>
                 <div class='flex flex-col'>
 					<label for="select" class='text-base'>Group:</label>
 					<select bind:value={formGroup} on:change={setAttendeesTickets} class='text-dark1 mb-4'>
@@ -144,17 +209,17 @@
 					<div class='flex flex-row w-full justify-between'>
 						<div class='flex flex-col w-[calc(50%-.5rem)]'>
 							<label for="dateStart" class='text-base'>Starts:</label>
-							<input type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='mb-8 py-1 px-2 text-sm text-dark1 rounded-sm'/>
+							<input on:change={() => formDateEnd = formDateStart} min={today.toISOString().slice(0, 16)} type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='mb-8 py-1 px-2 text-sm text-dark1 rounded-sm'/>
 						</div>
 						<div class='flex flex-col w-[calc(50%-.5rem)]'>
 							<label for="dateEnd" class='text-base'>Ends:</label>
-							<input type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='mb-8 py-1 px-2 text-sm text-dark1 rounded-sm'/>
+							<input min={formDateStart} type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='mb-8 py-1 px-2 text-sm text-dark1 rounded-sm'/>
 						</div>
 					</div>
 					<label for="attendees" class='text-base'>Who's attending?</label>
-					<MultiSelect id='attendees' name='attendees' bind:selected={formAttendees} options={attendees} required liOptionClass='!text-dark1' liSelectedClass='!bg-accent !text-light1' ulOptionsClass='text-accent' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1'/>
+					<MultiSelect id='attendees' name='attendees' bind:selected={formAttendees} options={attendees} liOptionClass='!text-dark1' liSelectedClass='!bg-accent !text-light1' ulOptionsClass='text-accent' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1'/>
 					<label for="tickets" class='text-base'>Who's got tickets?</label>
-					<MultiSelect id='tickets' name='tickets' bind:selected={formTickets} options={tickets} required liOptionClass='!text-dark1' liSelectedClass='!bg-accent !text-light1' ulOptionsClass='text-accent' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1'/>
+					<MultiSelect id='tickets' name='tickets' bind:selected={formTickets} options={tickets} liOptionClass='!text-dark1' liSelectedClass='!bg-accent !text-light1' ulOptionsClass='text-accent' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1'/>
                 </div>
                 <div class='flex gap-8 justify-center'>
 					<Button type='button' on:click={() => dialog.close()} text='CLOSE' />
