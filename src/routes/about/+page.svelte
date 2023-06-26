@@ -1,3 +1,9 @@
+<script lang='ts'>
+	import { title } from "../stores";
+
+	$: title.set('About')
+</script>
+
 <svelte:head>
 	<title>Zaag | About</title>
 	<meta name="description" content="Zaagplanner | About us" />

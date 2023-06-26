@@ -5,10 +5,12 @@
     import { fade } from 'svelte/transition'
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
     import Dialog from "$lib/components/Dialog.svelte";
-    import Header from "$lib/components/Header.svelte";
     import Loading from "$lib/components/Loading.svelte";
     import { goto } from "$app/navigation";
     import Button from "$lib/components/Button.svelte";
+    import { title } from "../stores";
+
+    $: title.set('Groups')
 
     let groupList: Grouplist = [];
     let loaded: boolean;
@@ -104,13 +106,10 @@
 	<meta name="description" content="Groups" />
 </svelte:head>
 
-<!-- <Vignette image={rave} /> -->
-<div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-32'>
-    <Header title='Groups' />
-
+<div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pt-8 pb-36'>
     {#if loaded}
         {#each groupList as group}
-            <a in:fade href={`/groups/${group.id}`} class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent hover:border-light1 hover:shadow-light1 hover:shadow-md group'>
+            <a in:fade href={`/groups/${group.id}`} class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent hover:border-light1 hover:shadow-light1 hover:shadow-md group mb-8'>
                 <div class='flex flex-col justify-center ml-4'>
                     <div class='absolute top-8 right-4 h-8 w-8 text-accent group-hover:text-light1'>
                         <MdCallMade />

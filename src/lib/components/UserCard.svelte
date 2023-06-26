@@ -10,7 +10,7 @@
     export let user: User;
 </script>
 
-<div in:fade id='divider' class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent'>
+<div in:fade id='divider' class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent mb-8'>
     <div id='left-card' class= 'w-[5.5rem] bg-dark1 h-full'>
         <div class='flex items-center justify-center h-24 w-24 p-4'>
             {#if user.image}

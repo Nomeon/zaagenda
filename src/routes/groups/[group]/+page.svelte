@@ -6,9 +6,9 @@
     import { page } from "$app/stores";
     import Dialog from "$lib/components/Dialog.svelte";
     import UserCard from "$lib/components/UserCard.svelte";
-    import Header from "$lib/components/Header.svelte";
     import Loading from "$lib/components/Loading.svelte";
     import Button from "$lib/components/Button.svelte";
+    import { title } from "../../stores";
     
     export let data: PageData;
     let loaded: boolean;
@@ -26,6 +26,7 @@
         if (group.user_ids) {
             users = await getUsers(group.user_ids)        
         }
+        title.set(group.group_name || '')
         loaded = true
     })
 
@@ -115,9 +116,7 @@
 	<meta name="description" content="Zaagplanner | Create groups and plan your next raves" />
 </svelte:head>
 
-<div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-36'>
-    <Header title={group.group_name || 'Group'} />
-
+<div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pt-8 pb-36'>
     {#if loaded}
         {#each users as user}
             <UserCard user={user} />

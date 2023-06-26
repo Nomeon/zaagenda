@@ -1,6 +1,9 @@
 <script>
     import { goto } from "$app/navigation";
 	import Button from "$lib/components/Button.svelte";
+	import { title } from "./stores";
+
+	$: title.set('')
 </script>
 
 <svelte:head>
