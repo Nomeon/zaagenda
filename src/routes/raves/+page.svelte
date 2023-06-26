@@ -199,7 +199,7 @@
         <div class='text-sm p-4'>
             <form method="dialog" on:submit|preventDefault={() => addRaveToGroup()} class='text-lg'>
                 <div class='flex flex-col'>
-					<label for="select" class='text-base'>Group:</label>
+					<label for="select" class='text-sm'>Group:</label>
 					<select bind:value={formGroup} on:change={setAttendeesTickets} class='text-dark1 mb-4'>
 						{#each raveList as group}
 							<option value={group.name} class='text-dark1'>
@@ -212,7 +212,7 @@
 					<div class='flex flex-row w-full justify-between'>
 						<div class='flex flex-col w-[calc(50%-.5rem)]'>
 							<label for="dateStart" class='text-base'>Starts:</label>
-							<input on:change={() => formDateEnd = formDateStart} min={today.toISOString().slice(0, 16)} type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='mb-8 py-1 px-2 text-sm text-dark1 rounded-sm'/>
+							<input on:change={() => formDateEnd = formDateStart} min={today.toISOString().slice(0, 16)} type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='mb-8 py-1 px-2 text-sm text-dark1 rounded-sm max-w-fit'/>
 						</div>
 						<div class='flex flex-col w-[calc(50%-.5rem)]'>
 							<label for="dateEnd" class='text-base'>Ends:</label>
@@ -220,9 +220,9 @@
 						</div>
 					</div>
 					<label for="attendees" class='text-base'>Who's attending?</label>
-					<MultiSelect id='attendees' name='attendees' bind:selected={formAttendees} options={attendees} liOptionClass='!text-dark1' liSelectedClass='!bg-accent !text-light1' ulOptionsClass='text-accent' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1'/>
+					<MultiSelect id='attendees' name='attendees' bind:selected={formAttendees} options={attendees} liOptionClass='!text-dark1 !text-sm' liSelectedClass='!bg-accent !text-sm !text-light1' ulOptionsClass='text-accent !text-sm' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1 !text-sm'/>
 					<label for="tickets" class='text-base'>Who's got tickets?</label>
-					<MultiSelect id='tickets' name='tickets' bind:selected={formTickets} options={tickets} liOptionClass='!text-dark1' liSelectedClass='!bg-accent !text-light1' ulOptionsClass='text-accent' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1'/>
+					<MultiSelect id='tickets' name='tickets' bind:selected={formTickets} options={tickets} liOptionClass='!text-dark1 !text-sm' liSelectedClass='!bg-accent !text-sm !text-light1' ulOptionsClass='text-accent !text-sm' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1 !text-sm'/>
                 </div>
                 <div class='flex gap-8 justify-center'>
 					<Button type='button' on:click={() => dialog.close()} text='CLOSE' />
