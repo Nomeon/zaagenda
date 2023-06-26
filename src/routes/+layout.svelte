@@ -4,6 +4,7 @@
     import Navbar from "$lib/components/Navbar.svelte";
     import Background from "$lib/components/Background.svelte";
     import "../app.css";
+    import Background2 from "$lib/components/Background2.svelte";
     
     const mobile = useMediaQuery('(max-width: 768px)');
     $: $mobile, $isMobile = $mobile;
@@ -15,7 +16,8 @@
     <main class='flex flex-col justify-center w-full m-0 bg-black text-light1'>
         <slot />
     </main>
-    <Background />
+    <Background2 />
+    <!-- <Background></Background> -->
 </div>
 <svelte:window bind:innerHeight={$height} />
 
