@@ -2,17 +2,19 @@
     import type { PageData } from "./$types";
     import { onMount, setContext } from "svelte";
     import { height } from "../../stores";
+    import { goto } from "$app/navigation";
+    import { page } from "$app/stores";
     import Dialog from "$lib/components/Dialog.svelte";
     import UserCard from "$lib/components/UserCard.svelte";
     import Header from "$lib/components/Header.svelte";
-    import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
+    import Loading from "$lib/components/Loading.svelte";
+    import Button from "$lib/components/Button.svelte";
     
     export let data: PageData;
+    let loaded: boolean;
     let group = data.groupObject;
     let users: User[] = [];
     let dialog: Dialog;
-    let formName: string;
     let formEmail: string;
 
     setContext('deletion', {
@@ -20,13 +22,15 @@
     })
 
     onMount(async() => {
+        loaded = false
         if (group.user_ids) {
             users = await getUsers(group.user_ids)        
         }
+        loaded = true
     })
 
-    async function getUser(name: string, email: string): Promise<User[]> {
-        const url = `/api/users?name=${name}&email=${email}`
+    async function getUser(email: string): Promise<User[]> {
+        const url = `/api/users?email=${email}`
 		const response = await fetch(url);
 		const user = await response.json();
         return user
@@ -80,8 +84,8 @@
         })
     }
 
-    async function addUserToGroup(name: string, email: string): Promise<void> {
-        let user_id = await getUser(name, email)
+    async function addUserToGroup(email: string): Promise<void> {
+        let user_id = await getUser(email)
         if (user_id.length > 0 && confirm(`Do you want to add ${user_id[0].name} to the group?`)) {
             let user_ids = [user_id[0]._id]
             await fetch(`/api/groups`, {
@@ -94,8 +98,10 @@
                     user_ids: user_ids
                 })
             })
-        } else {
+        } else if (user_id.length <= 0) {
             alert('User not found')
+            return
+        } else {
             return
         }
         window.location.reload()
@@ -111,28 +117,30 @@
 
 <div id='scrollable' style="height: calc({$height}px - 6rem);" class='overflow-y-scroll w-screen flex flex-col gap-8 items-center pb-36'>
     <Header title={group.group_name || 'Group'} />
+
+    {#if loaded}
         {#each users as user}
             <UserCard user={user} />
         {/each}
     <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-        <button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.showModal()}><span class="mix-blend-difference">ADD</span></button>
+        <Button type='button' on:click={() => dialog.showModal()} text='ADD' />
     </div>
 
     <Dialog bind:dialog >
         <div class='text-lg p-8'>
-            <form method="dialog" on:submit={() => addUserToGroup(formName, formEmail)} class='text-lg'>
+            <form method="dialog" on:submit={() => addUserToGroup(formEmail)} class='text-lg'>
                 <div class='flex flex-col'>
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" bind:value={formName} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
-
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" bind:value={formEmail} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
                 </div>
                 <div class='flex gap-8 justify-center'>
-                    <button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' on:click={() => dialog.close()}><span class="mix-blend-difference">CLOSE</span></button>
-					<button class="relative bg-[#000] border border-opacity-70 overflow-hidden py-2 px-12 text-sm font-bold rounded-lg md:text-xl before:bg-light1" id='btn' type='submit'><span class="mix-blend-difference">CONFIRM</span></button>
+                    <Button type='button' on:click={() => dialog.close()} text='CLOSE' />
+                    <Button type='submit' text='CONFIRM' />
                 </div>
                 </form>
         </div>
     </Dialog>
+    {:else}
+        <Loading />
+    {/if}
 </div>

@@ -28,7 +28,7 @@ export const handle = sequence(
     callbacks: {
       async signIn({ user, account, profile, email, credentials }: any) {
         const collection = db.collection("users");
-        const checkExistingUser = await collection.findOne({ name: profile.name, email: profile.email })
+        const checkExistingUser = await collection.findOne({ email: profile.email })
         if (checkExistingUser) {
           return true;
         } else {
