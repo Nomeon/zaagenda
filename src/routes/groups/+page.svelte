@@ -97,9 +97,6 @@
             return
         }
     }
-
-    
-
 </script>
 
 <svelte:head>

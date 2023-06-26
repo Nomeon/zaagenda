@@ -8,11 +8,16 @@
 	import Dialog from '$lib/components/Dialog.svelte';
 	import Loading from '$lib/components/Loading.svelte';
     import Button from '$lib/components/Button.svelte';
+	//  @ts-ignore
+	import MultiSelect from 'svelte-multiselect';
 
 
 	let raveList: RaveList = [];
 	let activeRaveList: RaveList = [];
 	$: activeRaveList, sortRaveList();
+	let groupOptions: string[] = [];
+	let attendeesOptions: string[] = [];
+	let ticketsOptions: string[] = [];
 
 	let loaded: boolean;
 	let dialog: Dialog;
@@ -22,6 +27,8 @@
 	let formDateEnd: string;
 	let formAttendees:	string[];
 	let formTickets: string[];
+
+	$: formGroup, resetMultiSelect();
 
 	onMount(async () => {
 		loaded = false
@@ -39,6 +46,7 @@
 		raveList = await getUserRaves()
 		if (raveList) {
 			activeRaveList = [...raveList]
+			groupOptions = raveList.map(group => group.name)
 		}
 		loaded = true
 	})
@@ -48,6 +56,14 @@
 		const response = await fetch(url);
 		const user = await response.json();
         return user
+	}
+
+    async function getUsers(ids: string[]): Promise<User[]> {
+        const JSONids = encodeURIComponent(JSON.stringify(ids))
+        const url = `/api/users?ids=${JSONids}`
+		const response = await fetch(url);
+		const users = await response.json();
+        return users
 	}
 
 	async function getRaves() {
@@ -71,9 +87,14 @@
 		})
 	}
 
-	function addRaveToGroup(id: string, event: string, dateStart: string, dateEnd: string, attendees: string[], tickets: string[]) {
-
+	function resetMultiSelect() {
+		formAttendees = []
+		const raveGroup = raveList.find(group => group.name === formGroup)
+		attendeesOptions = [...raveGroup?.group_members || []]
+		ticketsOptions = [...raveGroup?.group_members || []]
+		console.log(attendeesOptions, ticketsOptions)
 	}
+
 
 </script>
 
@@ -103,16 +124,12 @@
 		
 		<Dialog bind:dialog >
 			<div class='text-md p-8'>
-				<form method="dialog" on:submit={() => addRaveToGroup(formGroup, formEvent, formDateStart, formDateEnd, formAttendees, formTickets)} class='text-lg'>
+				<form method="dialog" on:submit|preventDefault={() => console.log(formGroup, formEvent, formDateStart, formDateEnd, formAttendees, formTickets)} class='text-lg'>
 					<div class='flex flex-col'>
-						<label for="name">Event</label>
-						<input type="text" id="name" name="name" bind:value={formEvent} required class='mb-8 py-1 px-2 rounded-sm'/>
+						<label for="group">Group:</label>
+						<MultiSelect maxSelect={1} minSelect={1} id="group" name="group" bind:value={formGroup} options={groupOptions} required liOptionClass='!text-dark1' liSelectedClass='!bg-accent !text-light1' ulOptionsClass='text-accent' outerDivClass='!mb-8 !py-1 !px-2 !rounded-sm !text-dark1 !bg-light1'/>
 
-						<label for="dateStart">Date Start</label>
-						<input type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
-
-						<label for="dateEnd">Date End</label>
-						<input type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='text-light1 mb-8 py-1 px-2 rounded-sm'/>
+						<MultiSelect id='attendees' name='attendees' bind:value={formAttendees} options={attendeesOptions} required liOptionClass='!text-dark1' liSelectedClass='!bg-accent !text-light1' ulOptionsClass='text-accent' outerDivClass='!mb-8 !py-1 !px-2 !rounded-sm !text-dark1 !bg-light1'/>
 					</div>
 					<div class='flex gap-8 justify-center'>
 						<Button type='button' on:click={() => dialog.close()} text='CLOSE' />
