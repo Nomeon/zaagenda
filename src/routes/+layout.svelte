@@ -16,8 +16,8 @@
     <main class='flex flex-col justify-center w-full m-0 bg-black text-light1'>
         <slot />
     </main>
-    <Background2 />
-    <!-- <Background></Background> -->
+    <!-- <Background2 /> -->
+    <Background></Background>
 </div>
 <svelte:window bind:innerHeight={$height} />
 

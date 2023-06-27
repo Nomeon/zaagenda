@@ -21,16 +21,17 @@
 
     // Pattern
     let mult: number = 0.001; // field strength
-    const noiseDetail: number = 2; // field alignment
+    const noiseDetail: number = 1; // field alignment
     const falloff: number = 1; // Spread based on octaves, 0.5 means half the amplitude of the previous octave
+    let totalSpawnPoints = 500;
     let totalPoints = 1;
     let lineThickness = 3;
     const spawnSpeed: number = 1;
     const maxPoints: number = 1000;
 
     let r1 = 100
-    let g1 = 100
-    let b1 = 100
+    let g1 = 20
+    let b1 = 20
     let a1 = 10
 
     const sketch: Sketch = (p5) => {
@@ -40,19 +41,7 @@
             p5.angleMode(p5.DEGREES);
             p5.noiseDetail(noiseDetail, falloff);
             
-
-
-        };
-        p5.draw = () => {
-            p5.noStroke();
-            let max: number;
-            if (p5.frameCount * spawnSpeed <= oldPoints.length) {
-                max = p5.frameCount * spawnSpeed;
-            } else {
-                max = oldPoints.length;
-            }
-            // if (oldPoints[i].x > 0 && oldPoints[i].x < width && oldPoints[i].y > 0 && oldPoints[i].y < height) {
-                for(let a=0; a<totalPoints; a++) {
+            for(let a=0; a<totalSpawnPoints; a++) {
                     let spawnside = p5.random([0,1,2,3])/1
                     let spawnheight
                     let spawnwidth
@@ -79,14 +68,27 @@
                     }
                     oldPoints.push(p5.createVector(spawnwidth, spawnheight))
                 }
+
+        };
+        p5.draw = () => {
+            p5.noStroke();
+            let max: number;
+            if (p5.frameCount * spawnSpeed <= oldPoints.length) {
+                max = p5.frameCount * spawnSpeed;
+            } else {
+                max = oldPoints.length;
+            }
+            // if (oldPoints[i].x > 0 && oldPoints[i].x < width && oldPoints[i].y > 0 && oldPoints[i].y < height) {
+                
                 // }
                 
-                r1 += (p5.random(-4, 4)) % 255;
-                g1 += (p5.random(-4, 4)) % 255;
-                b1 += (p5.random(-4, 4)) % 255;
+                r1 = (r1 + (p5.random(-10, 10))) % 150;
+                console.log(r1)
+                g1 += (p5.random(-1, 1)) % 20;
+                b1 += (p5.random(-1, -1)) % 20;
                 a1 += p5.random(-.1, .1);
             for (let i = 0; i<max; i++) {
-                p5.fill(r1,g1, b1, 100);
+                p5.fill(r1,g1, b1, 80);
                 
                 // Determine new point
                 let angle = p5.map(p5.noise(oldPoints[i].x * mult, oldPoints[i].y * mult), 0, 1, 0, 720);
