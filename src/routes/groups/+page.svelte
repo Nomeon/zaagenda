@@ -122,7 +122,7 @@
                             {:else if group.users.length <= 4}
                                 {group.users.join(", ")}
                             {:else}
-                                {group.users.slice(0, 4).join(", ")} <p class='text-accent'> +{group.users.length - 5}</p>
+                                {group.users.slice(0, 4).join(", ")} <p class='text-accent'> +{group.users.length - 4}</p>
                             {/if}
                         </p>
                     </div>
@@ -130,7 +130,7 @@
             </a>
         {:else}
             <div class='w-full h-full flex justify-center items-center'>
-                <p class='text-2xl'>No bitches</p>
+                <p id='no-spin' class='text-4xl font-bold'>NO BITCHES</p>
             </div>
         {/each}
         <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
@@ -160,4 +160,18 @@
         width: 0;
         background: transparent;
     }
+
+    @keyframes pulse-custom {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: .2;
+        }
+    }
+
+    #no-spin {
+        animation: pulse-custom 100ms linear infinite;
+    }
+
 </style>

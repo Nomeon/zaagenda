@@ -10,7 +10,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import { title } from "../stores";
     import Loading from '$lib/components/Loading.svelte';
-	import FaFilter from 'svelte-icons/fa/FaFilter.svelte';
+	import FaAngleUp from 'svelte-icons/fa/FaAngleUp.svelte'
     import { fly } from 'svelte/transition';
 
 	$: title.set('Raves')
@@ -182,7 +182,7 @@
 			{/each}		  
 		{/if}
 		{#if filters}
-		<div transition:fly={{ y: 200, duration: 500 }} class='absolute bottom-16 z-10 flex items-center justify-center w-full py-8 bg-gradient-to-t from-[#000] from-85%'>
+		<div transition:fly={{ y: 100, duration: 500 }} class='absolute bottom-16 z-10 flex items-center justify-center w-full py-8 bg-gradient-to-t from-[#000] from-85%'>
 			<ul class='flex w-11/12 items-center justify-center gap-4 font-bold '>
 				{#each raveList as group}
 					<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
@@ -193,8 +193,8 @@
 
 		<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
 			<Button type='button' on:click={() => dialog.showModal()} text='Add Rave' />
-			<button type='button' on:click={() => filters = !filters} class='absolute right-8 h-6 w-6 {filters ? 'text-accent' : 'text-light1'}'>
-				<FaFilter />
+			<button type='button' on:click={() => filters = !filters} class='absolute duration-500 right-8 h-8 w-8 {filters ? 'text-accent -rotate-180' : 'text-light1'}'>
+				<FaAngleUp />
 			</button>
 		</div>
 		<Dialog bind:dialog >

@@ -10,7 +10,8 @@ export default {
     colors: {
       dark1: '#0f172a',
       light1: '#ffffff',
-      accent: '#ff4533'
+      accent: '#ff4533',
+      accent2: '#075ea6'
     }
   },
   plugins: [],
