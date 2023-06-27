@@ -10,9 +10,12 @@
 	import Button from '$lib/components/Button.svelte';
 	import { title } from "../stores";
     import Loading from '$lib/components/Loading.svelte';
+	import FaFilter from 'svelte-icons/fa/FaFilter.svelte';
+    import { fly } from 'svelte/transition';
 
 	$: title.set('Raves')
 
+	let filters: boolean = false;
 	let loaded: boolean;
 	let today = new Date();
 	let userList: User[] = [];
@@ -180,26 +183,31 @@
 	<meta name="description" content="Check out your raves here" />
 </svelte:head>
 
-<div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pb-36'>
-	{#if raveList}
-		<div class='sticky top-0 z-20 h-24 min-h-[6rem] flex items-center justify-center w-full py-8 bg-gradient-to-b from-[#000] from-85%'>
+<div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pt-8 {filters ? 'pb-52' : 'pb-36'}'>
+	{#if loaded}
+		{#if raveList}
+			{#each activeRaveList as raveGroup}
+				{#each raveGroup.raves as rave}
+					<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
+				{/each}
+			{/each}
+		{/if}
+		{#if filters}
+		<div transition:fly={{ y: 200, duration: 500 }} class='absolute bottom-16 z-10 flex items-center justify-center w-full py-8 bg-gradient-to-t from-[#000] from-85%'>
 			<ul class='flex w-11/12 items-center justify-center gap-4 font-bold '>
 				{#each raveList as group}
 					<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
 				{/each}
 			</ul>
 		</div>
-			{#each activeRaveList as raveGroup}
-				{#each raveGroup.raves as rave}
-					<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
-				{/each}
-			{/each}
-	{/if}
+		{/if}
 
-	<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-		<Button type='button' on:click={() => dialog.showModal()} text='Add Rave' />
-	</div>
-	{#if loaded}
+		<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
+			<Button type='button' on:click={() => dialog.showModal()} text='Add Rave' />
+			<button type='button' on:click={() => filters = !filters} class='absolute right-8 h-6 w-6 {filters ? 'text-accent' : 'text-light1'}'>
+				<FaFilter />
+			</button>
+		</div>
 		<Dialog bind:dialog >
 			<div class='text-sm p-4'>
 				<form method="dialog" on:submit|preventDefault={() => addRaveToGroup()} class='text-lg'>

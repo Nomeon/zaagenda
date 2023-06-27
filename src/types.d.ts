@@ -33,3 +33,8 @@ type RaveList = {
     raves: Rave[];
     group_members: string[];
 }[]
+
+type RaveData = {
+    session: any;
+    raveObject: Rave;
+}
