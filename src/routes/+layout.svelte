@@ -26,4 +26,9 @@
 		font-family: "Roboto", sans-serif;
 		overflow: hidden;
 	}
+
+    :global(::-webkit-scrollbar) {
+        width: 0;
+        background: transparent;
+    }
 </style>

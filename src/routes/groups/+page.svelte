@@ -130,7 +130,7 @@
             </a>
         {:else}
             <div class='w-full h-full flex justify-center items-center'>
-                <p id='no-spin' class='text-4xl font-bold'>NO BITCHES</p>
+                <p class='text-4xl font-bold animate-pulse-custom'>NO BITCHES</p>
             </div>
         {/each}
         <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
@@ -154,24 +154,3 @@
         </div>
     </Dialog>
 </div>
-
-<style>
-    ::-webkit-scrollbar {
-        width: 0;
-        background: transparent;
-    }
-
-    @keyframes pulse-custom {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: .2;
-        }
-    }
-
-    #no-spin {
-        animation: pulse-custom 100ms linear infinite;
-    }
-
-</style>

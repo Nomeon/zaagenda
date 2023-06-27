@@ -3,8 +3,14 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
-      boxShadow: {
-        'vignette': 'inset 0 0 600px rgba(0,0,0,1)'
+      keyframes: {
+        'pulse-custom': {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.2 },
+        },
+      },
+      animation: {
+        'pulse-custom': 'pulse-custom 200ms linear infinite',
       },
     },
     colors: {
@@ -16,4 +22,3 @@ export default {
   },
   plugins: [],
 }
-

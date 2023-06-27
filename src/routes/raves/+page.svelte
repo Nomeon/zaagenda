@@ -180,17 +180,15 @@
 					<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
 				{/each}
 			{/each}		  
-		{/if}
-		{#if filters}
-		<div transition:fly={{ y: 100, duration: 500 }} class='absolute bottom-16 z-10 flex items-center justify-center w-full py-8 bg-gradient-to-t from-[#000] from-85%'>
-			<ul class='flex w-11/12 items-center justify-center gap-4 font-bold '>
-				{#each raveList as group}
-					<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
-				{/each}
-			</ul>
-		</div>
-		{/if}
-
+			{#if filters}
+			<div transition:fly={{ y: 100, duration: 500 }} class='absolute bottom-16 z-10 flex items-center justify-center w-full py-8 bg-gradient-to-t from-[#000] from-85%'>
+				<ul class='flex w-11/12 items-center justify-center gap-4 font-bold '>
+					{#each raveList as group}
+						<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
+					{/each}
+				</ul>
+			</div>
+			{/if}
 		<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
 			<Button type='button' on:click={() => dialog.showModal()} text='Add Rave' />
 			<button type='button' on:click={() => filters = !filters} class='absolute duration-500 right-8 h-8 w-8 {filters ? 'text-accent -rotate-180' : 'text-light1'}'>
@@ -233,6 +231,11 @@
 				</form>
 			</div>
 		</Dialog>
+		{:else}
+		<div class='w-full h-full flex justify-center items-center'>
+			<p class='text-4xl font-bold animate-pulse-custom'>NO FUN</p>
+		</div>
+		{/if}
 	{:else}
 		<Loading />
 	{/if}
