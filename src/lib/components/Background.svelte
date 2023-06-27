@@ -14,7 +14,7 @@
 
     // Line properties
     const lineThickness: number = 2;
-    let totalColors = 200;
+    let totalColors = 255;
     let pointsPerColor = 8;
     
 
@@ -29,7 +29,7 @@
             for(let p=0; p<totalColors; p++) {
                 let points = createPoints(p5, pointsPerColor)
                 POINTSARRAY.push(points)
-                SPEEDARRAY.push(p5.random(1,1.5))
+                SPEEDARRAY.push(p5.random(1,1.3))
             }
         };
         p5.draw = () => {
