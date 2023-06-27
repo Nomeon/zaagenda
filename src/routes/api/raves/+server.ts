@@ -1,5 +1,7 @@
 import { ObjectId } from "mongodb";
-import db from "$lib/db";
+import { getDB } from "$lib/db";
+
+const db = getDB();
 
 export async function GET(request: Request): Promise<Response> {
     try {
@@ -12,12 +14,12 @@ export async function GET(request: Request): Promise<Response> {
             const groups = await groupCol.find({ user_ids: new ObjectId(id) }).toArray();
             let raveList: { name?: string | undefined; raves?: Object[] | undefined; amount?: number | undefined }[] = [];
           
-            await Promise.all(groups.map(async (element) => {
+            await Promise.all(groups.map(async (element: Group) => {
               let rave_ids = element.rave_ids;
               let raves = await raveCol.find({ _id: { $in: rave_ids } }).toArray();
               if (raves) {
                 let ravesObj: { group_id?: string, name?: string, raves?: Object[], group_members?: string[] } = {};
-                ravesObj.group_id = element._id.toString();
+                ravesObj.group_id = element._id?.toString();
                 ravesObj.name = element.group_name;
                 ravesObj.raves = raves;
                 ravesObj.group_members = element.user_ids;
@@ -26,7 +28,6 @@ export async function GET(request: Request): Promise<Response> {
             }));
             return new Response(JSON.stringify(raveList), { status: 200 });
         } 
-
         return new Response("Groups Not Found", { status: 404 })
     
     } catch (error) {
@@ -72,6 +73,8 @@ export async function DELETE({ request }: any): Promise<Response> {
 
         if (id) {
             collection.deleteOne({ _id: new ObjectId(id) });
+            const groupcollection = db.collection("groups");
+            groupcollection.updateMany({}, { $pull: { rave_ids: new ObjectId(id) } });
         } else {
             return new Response("Bad Request", { status: 400 });
         }

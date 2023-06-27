@@ -1,6 +1,8 @@
 import { error } from '@sveltejs/kit';
 import { ObjectId } from 'mongodb';
-import db from '$lib/db';
+import { getDB } from '$lib/db';
+
+const db = getDB();
 
 /** @type {import('@sveltejs/kit').PageServerLoad}*/
 export async function load({ params }: { params: { group: string } }) {
