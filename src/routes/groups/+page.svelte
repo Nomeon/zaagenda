@@ -119,10 +119,10 @@
                         <p class='flex gap-2'>
                             {#if group.users.length === 2}
                                 {group.users.join(" & ")}
-                            {:else if group.users.length < 6}
+                            {:else if group.users.length <= 4}
                                 {group.users.join(", ")}
                             {:else}
-                                {group.users.slice(0, 5).join(", ")} <p class='text-accent'> +{group.users.length - 5}</p>
+                                {group.users.slice(0, 4).join(", ")} <p class='text-accent'> +{group.users.length - 5}</p>
                             {/if}
                         </p>
                     </div>
