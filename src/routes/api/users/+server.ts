@@ -36,6 +36,23 @@ export async function GET(request: Request): Promise<Response> {
     }
 }
 
+export async function PUT({ request }: any): Promise<Response> {
+    try {
+        const collection = db.collection("users");
+        const body = await request.json();
+        const { id, name } = body;
+
+        if (name) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $set: { name } });
+        }
+        return new Response(JSON.stringify({ id, name }));
+    } catch (error) {
+        console.error(error);
+        return new Response("Internal Server Error", {status: 500})
+    }
+}
+
+
 export async function POST({ request }: any): Promise<Response> {
     const collection = db.collection("users");
     const body = await request.json();

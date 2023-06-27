@@ -37,7 +37,7 @@
 <nav class='h-24 flex justify-between border-b-accent border-b-2 relative z-30  font-semibold box-border '>
     <div class='w-1/4 flex items-center justify-center z-20' id='logo'>
     {#if $page.data.session?.user?.image ?? false}
-        <a href='/groups'>
+        <a href='/account'>
             <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md shadow-sm shadow-accent' referrerpolicy="no-referrer" />
         </a> 
     {:else}
