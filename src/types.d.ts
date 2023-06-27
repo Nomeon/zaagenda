@@ -21,13 +21,20 @@ type Grouplist = {
 type Rave = {
     _id: string;
     event: string;
-    date: string;
+    startDate: string;
+    endDate: string;
     attendees?: Array<User>
     tickets?: Array<User>
 }
 
 type RaveList = {
+    group_id: string;
     name: string;
     raves: Rave[];
     group_members: string[];
 }[]
+
+type RaveData = {
+    session: any;
+    raveObject: Rave;
+}

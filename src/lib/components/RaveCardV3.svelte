@@ -7,29 +7,42 @@
     export let raveGroup: { name: string; raves: Rave[]; group_members: string[] };
     export let link: string;
 
-	function deleteRave(theRave: Rave) {
-		console.log('delete wat fzo, deze is ook gewoon niet leuk, maar regel ik wel keertj')
-        console.log('wow: ', theRave)
-        // Call /api/raves?id=${theRave._id} with DELETE method
-	}
+    async function deleteRave(rave: Rave): Promise<void> {
+        if (confirm(`Are you sure you want to delete ${rave.event}?`)) {
+            const response = await fetch(`/api/raves`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: rave._id
+                })
+            })
+            if (response.status === 200) {
+                window.location.reload()
+            }
+        } else {
+            return
+        }
+    }
 </script>
-<div in:fade id='divider' class='mb-8 rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent'>
+<div in:fade id='divider' class='mb-4 rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent'>
     <div id='left-card' class= 'w-[5.5rem] bg-dark1 h-full'>
         <div class='flex flex-col items-center justify-center h-24 w-24 p-4 font-bold'>
-            <div>{new Date(rave.date).toLocaleDateString("nl-NL", { day: 'numeric', month: "numeric" }) }</div>
-            <div>{new Date(rave.date).toLocaleDateString("nl-NL", { year: "numeric" }) }</div>    
+            <div>{new Date(rave.startDate).toLocaleDateString("nl-NL", { day: 'numeric', month: "short" }) }</div>
+            <div>{new Date(rave.startDate).toLocaleDateString("nl-NL", { year: "numeric" }) }</div>    
         </div>
     </div>
     <div id='right-card' class='flex flex-col absolute left-32 pr-44 w-full justify-center h-full'>
         <p class='text-md text-ellipsis whitespace-nowrap overflow-hidden'>{rave.event}</p>
-        <p class='text-md'>{new Date(rave.date).toLocaleString().split(' ')[1].split(':').splice(0, 2).join(':')} - {new Date(rave.date).toLocaleString().split(' ')[1].split(':').splice(0, 2).join(':')}</p>
+        <p class='text-md'>{new Date(rave.startDate).toLocaleString().split(' ')[1].split(':').splice(0, 2).join(':')} - {new Date(rave.endDate).toLocaleString().split(' ')[1].split(':').splice(0, 2).join(':')}</p>
         <p class='text-md italic font-bold'>{raveGroup.name}</p>
     </div>
     <div class='flex flex-col absolute right-4 h-full w-8 justify-around py-2'>
         <a id='editbtn' href={link} class='h-6 text-accent hover:text-light1'>
             <MdCallMade />
         </a>
-        <button on:click={() => deleteRave(rave)} class='h-6 text-accent hover:text-light1'>
+        <button on:click|preventDefault={() => deleteRave(rave)} class='h-6 text-accent hover:text-light1'>
             <MdDeleteForever />
         </button>
     </div>

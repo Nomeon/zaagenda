@@ -1,6 +1,7 @@
 <script lang='ts'>
-    import { onMount } from "svelte";
     import '@fontsource/space-mono';
+    import { onMount } from "svelte";
+    import { fade } from "svelte/transition";
     
     export let title: string;
     $: title, repeatHackText();
@@ -49,6 +50,6 @@
     }
 </script>
 
-<div id='header' class='sticky top-0 w-full h-24 min-h-[6rem] flex items-center justify-center bg-gradient-to-b from-[#000]/70 from-85% mb-4 z-20'>
-    <h1 id='header-title' bind:this={headerTitle} class='text-3xl font-bold font-["Space_Mono"]'>{title.toUpperCase()}</h1>
+<div in:fade={{ delay: 500 }} id='header' class='sticky top-0 w-1/2 h-24 px-8 min-h-[6rem] flex items-center justify-center z-20'>
+    <h1 id='header-title' bind:this={headerTitle} class='text-3xl font-medium text-light1 font-["Space_Mono"]'>{title.toUpperCase()}</h1>
 </div>

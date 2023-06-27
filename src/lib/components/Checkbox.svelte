@@ -1,6 +1,6 @@
 <script lang='ts'>
 	export let group: RaveList;
-	export let value: { name: string; raves: Rave[]; group_members: string[]; };
+	export let value: { group_id: string, name: string; raves: Rave[]; group_members: string[]; };
 	export let checked: boolean;
 	
 	$: updateCheckbox(group)
@@ -26,7 +26,7 @@
 	}
 </script>
 
-<label class='{checked ? 'border-light1' : 'border-dark1'} flex border-2 bg-dark1 cursor-pointer w-full items-center justify-center py-2 rounded-md'>
+<label class='{checked ? 'bg-accent' : 'bg-[#000]'} flex border cursor-pointer w-full items-center justify-center rounded-sm'>
     <input class='absolute opacity-0 cursor-pointer h-0 w-0' type="checkbox" bind:checked={checked} value={value} />
     <span>{value.name}</span>
 </label>

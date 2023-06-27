@@ -11,7 +11,6 @@ export async function load({ params }: { params: { group: string } }) {
         const group = await collection.find({ _id: group_id }).next();
         let groupObject: { _id?: string; group_name?: string; user_ids?: Array<string>; rave_ids?: Array<string>} = {};
     
-        // Convert ObjectIds to string as return needs to be serializable.
         if (group) {
             groupObject._id = id
             groupObject.group_name = group.group_name

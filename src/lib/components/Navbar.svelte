@@ -5,10 +5,11 @@
     import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte'
     import FaSignOutAlt from 'svelte-icons/fa/FaSignOutAlt.svelte'
     import { signIn, signOut } from "@auth/sveltekit/client"
-    import { toggled, isMobile } from '../../routes/stores';
+    import { toggled, isMobile, title } from '../../routes/stores';
     import { page } from '$app/stores';
     import { tweened } from 'svelte/motion';
     import { cubicOut } from 'svelte/easing';
+    import Header from './Header.svelte';
 
     let width: number;
 
@@ -34,18 +35,17 @@
 </script>
 
 <nav class='h-24 flex justify-between border-b-accent border-b-2 relative z-30  font-semibold box-border '>
-    <div class='w-1/4 flex items-center justify-center z-20 gap-4 max-md:w-1/2 max-md:px-12 max-md:justify-start' id='logo'>
+    <div class='w-1/4 flex items-center justify-center z-20' id='logo'>
     {#if $page.data.session?.user?.image ?? false}
-        <a href='/groups'>
-            <img src={$page.data.session?.user?.image} alt='user profile' class='w-8 h-8 rounded-full max-md:w-12 max-md:h-12' referrerpolicy="no-referrer" />
+        <a href='/account'>
+            <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md shadow-sm shadow-accent' referrerpolicy="no-referrer" />
         </a> 
     {:else}
         <a href='/' class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
             <FaCapsules />
         </a>
     {/if}
-    </div>
-    <!-- Banner for dropdown effect CHECK FOR DESKTOP -->    
+    </div> 
     {#if $toggled === true && width <= 768}
         <div id='navunderlay' class='h-24  w-full z-10 absolute top-0'/>
     {/if}
@@ -56,7 +56,7 @@
             <a on:click={toggleNav} href='/groups' class='text-3xl md:text-2xl text-light1 hover:text-accent'>GROUPS</a>
             <a on:click={toggleNav} href='/about' class='text-3xl md:text-2xl text-light1 hover:text-accent'>ABOUT</a>
         </div>
-        <div class='w-1/3 flex items-center gap-8 justify-center max-md:w-full max-md:gap-16' id='socials'>
+        <div class='w-1/2 flex items-center gap-8 justify-center max-md:w-full max-md:gap-16' id='socials'>
             {#if $page.data.session}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div on:click|preventDefault={() => signOut()} data-sveltekit-preload-data="off" class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
@@ -73,7 +73,10 @@
             </a>
         </div>
     </div>
-    <button class="bg-transparent flex md:hidden z-20 items-center relative justify-center px-12" type="button" on:click={toggleNav}>
+    {#if !$toggled && $isMobile && $title}
+        <Header title={$title}/>
+    {/if}
+    <button class="bg-transparent flex md:hidden z-20 items-center relative justify-center w-1/4" type="button" on:click={toggleNav}>
 		<div id="menu-toggle" class={$toggled ? 'toggled' : ''}>
 			<div id="icon" class="relative h-[0.2rem] w-[1.8rem] transition-all duration-200 {$toggled ? 'bg-transparent before:bg-accent after:bg-accent after:rotate-45 before:-rotate-45' : 'bg-light1 before:bg-light1 after:bg-light1'}"/>
 		</div>
