@@ -15,7 +15,7 @@
     // Line properties
     const lineThickness: number = 2;
     let totalColors = 255;
-    let pointsPerColor = 16;
+    let pointsPerColor = 3;
     
 
 
