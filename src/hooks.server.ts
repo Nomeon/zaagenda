@@ -3,8 +3,17 @@ import Google from '@auth/core/providers/google'
 import { GOOGLE_ID, GOOGLE_SECRET } from '$env/static/private'
 import { redirect } from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks';
-import db from '$lib/db';
+import { connect, getDB } from '$lib/db'
 
+let db: { collection: (arg0: string) => any; };
+
+connect().then(():void => {
+  db = getDB();
+  console.log("MongoDB started");
+}).catch((e) => {
+  console.log("MongoDB failed to start");
+  console.log(e);
+});
 
 async function authorization({ event, resolve }: any) {
   if (event.url.pathname.includes("groups") || event.url.pathname.includes("raves")) {

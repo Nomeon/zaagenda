@@ -1,5 +1,7 @@
 import { ObjectId } from "mongodb";
-import db from "$lib/db";
+import { getDB } from "$lib/db";
+
+const db = getDB();
 
 export async function GET(request: Request): Promise<Response> {
     try {
@@ -8,6 +10,7 @@ export async function GET(request: Request): Promise<Response> {
         const name = url.searchParams.get("name") || "";
         const id = url.searchParams.get("id") || "";
         const user = url.searchParams.get("user_id") || "";
+        const rave = url.searchParams.get("rave_id") || "";
         
         const query: { [key: string]: any } = {};
     
@@ -17,6 +20,8 @@ export async function GET(request: Request): Promise<Response> {
             query.user_ids = new ObjectId(user);
         } else if (name) {
             query.group_name = name;
+        } else if (rave) {
+            query.rave_ids = new ObjectId(rave);
         }
     
         const groups = await collection.find(query).toArray();

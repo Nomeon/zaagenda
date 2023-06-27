@@ -1,25 +1,32 @@
 <script lang='ts'>
     import { onMount } from "svelte";
-
-
     import { height } from "../../stores";
+    import Button from "$lib/components/Button.svelte";
+    import CheckboxRave from "$lib/components/CheckboxRave.svelte";
 
     export let data: { session: any, raveObject: Rave };
     let rave = data.raveObject;
     let userList: User[] = [];
+    let formAttendees: string[] = [];
+    let formTickets: string[] = []; 
 
     onMount( async() => {
         if (rave) {
-            let attendees = rave.attendees ? rave.attendees.map((attendee) => attendee.toString()) : rave.attendees = []
-            let tickets = rave.tickets ? rave.tickets.map((ticket) => ticket.toString()) : rave.tickets = []
             if (rave.attendees || rave.tickets) {
-                let combinedArray = [...attendees, ...tickets];
-                let uniqueUsersSet = new Set(combinedArray);
-                let users = Array.from(uniqueUsersSet);
-                userList = await getUsers(users)
+                await getGroup(rave._id)
+                // userList = await getUsers(users)
+                formAttendees = rave.attendees?.toString().split(',') || []
+                formTickets = rave.tickets?.toString().split(',') || []
             }
         }
     })
+
+    async function getGroup(raveId: string): Promise<void> {
+        const url = `/api/groups?rave_id=${raveId}`
+        const response = await fetch(url);
+        const group = await response.json();
+        userList = await getUsers(group[0].user_ids)
+    }
 
     async function getUsers(ids: string[]): Promise<User[]> {
         const JSONids = encodeURIComponent(JSON.stringify(ids))
@@ -41,16 +48,25 @@
         <div class='text-lg font-bold italic'>{new Date(rave.startDate).toLocaleDateString("nl-NL", { day: 'numeric', month: "long", year: "numeric"}) }</div>
         <div class=''>{new Date(rave.startDate).toLocaleTimeString().split(':').slice(0, 2).join(':')} - {new Date(rave.endDate).toLocaleTimeString().split(':').slice(0, 2).join(':')}</div>
     </div>
-    <div class='flex flex-row w-11/12 mt-2'>
-        <div class='flex flex-col w-1/2 overflow-hidden px-2'>
-            {#each rave.attendees || '' as attendee}
-                <p class='w-full flex justify-end'>{userList.find(user => user._id === attendee)?.name}</p>
-            {/each}
+    <form on:submit={() => console.log(formAttendees)} class='w-11/12'>
+        <div id='header-row' class='flex font-bold flex-row w-full mt-4 mb-2'>
+            <div class='w-1/2 flex justify-center'>Attendees</div>
+            <div class='w-1/2 flex justify-center'>Tickets</div>
         </div>
-        <div class='flex flex-col w-1/2 overflow-hidden px-2 justify-start'>
-            {#each rave.tickets || '' as ticket}
-                <p class='w-full flex justify-start'>{userList.find(user => user._id === ticket)?.name}</p>
+        <div class='flex flex-col gap-2'>
+            {#each userList as user}
+                <div id='user-row' class='flex flex-row w-full mt-2 justify-around'>
+                    <div class='w-1/2 mx-4 flex justify-center'>
+                        <CheckboxRave bind:group={formAttendees} value={user} checked={formAttendees.includes(user._id)} />
+                    </div>
+                    <div class='w-1/2 mx-4 flex justify-center'>
+                        <CheckboxRave bind:group={formTickets} value={user} checked={formTickets.includes(user._id)} />
+                    </div>
+                </div>
             {/each}
+            <div class='flex flex-row mt-4 justify-center'>
+                <Button type='submit' text='SAVE' />
+            </div>
         </div>
-    </div>
+    </form>
 </div>

@@ -22,7 +22,6 @@
 	let raveList: RaveList = [];
 	let users: any[];
 	let activeRaveList: RaveList = [];
-	$: activeRaveList, sortRaveList();
 
 	let attendees: string[] = [];
 	let tickets: string[] = [];
@@ -87,16 +86,6 @@
 		}
 	}
 
-	function sortRaveList() {
-		try {
-			activeRaveList.forEach((group) => {
-				group.raves.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
-			})
-		} catch (e) {
-			console.log(e)
-		}
-	}
-
 	async function addRaveToGroup() {
 		let aanwezigen: string[] = [];
 		let ticketonis: string[] = [];
@@ -147,8 +136,6 @@
 			})
 		})
 		if (response.status === 200) {
-			const reply = await response.json();
-			// goto(`/raves/${reply}`) willen we dit?
 			window.location.reload()
 		} else {
 			alert('Rave was not added to group.')
@@ -186,11 +173,13 @@
 <div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pt-8 {filters ? 'pb-52' : 'pb-36'}'>
 	{#if loaded}
 		{#if raveList}
-			{#each activeRaveList as raveGroup}
-				{#each raveGroup.raves as rave}
+			{#each activeRaveList
+				.flatMap(raveGroup => raveGroup.raves)
+				.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()) as rave}
+				{#each activeRaveList.filter(raveGroup => raveGroup.raves.includes(rave)) as raveGroup}
 					<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
 				{/each}
-			{/each}
+			{/each}		  
 		{/if}
 		{#if filters}
 		<div transition:fly={{ y: 200, duration: 500 }} class='absolute bottom-16 z-10 flex items-center justify-center w-full py-8 bg-gradient-to-t from-[#000] from-85%'>
