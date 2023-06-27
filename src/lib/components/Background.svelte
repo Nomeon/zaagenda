@@ -16,14 +16,16 @@
     const noiseDetail: number = 2; // spread
     const falloff: number = 0.5; // Spread based on octaves, 0.5 means half the amplitude of the previous octave
 
-    interface Point {
-        add(point: Vector): void;
-        x: number;
-        y: number;
-    }
-
-    let points: Point[] = [];
+    // interface Point {
+    //     add(point: Vector): void;
+    //     x: number;
+    //     y: number;
+    // }
   
+    let POINTS: Vector[] = [];
+    let POINTS1: Vector[] = [];
+    let POINTS2: Vector[] = [];
+
     const sketch: Sketch = (p5) => {
         p5.setup = () => {
             p5.createCanvas(width, height);
@@ -32,49 +34,78 @@
             p5.noiseDetail(noiseDetail, falloff);
 
             let space = width/density;
-            for (let x=0; x < width; x+= space)
-                for (let y=0; y < height; y+= space){
-                    // Left spawn
-                    let pLeft = p5.createVector(-10, y + p5.random(-height, height));
-                    points.push(pLeft);
-                    //Right spawn
-                    let pRight = p5.createVector(width + 10, y + p5.random(-height, height));
-                    points.push(pRight);
-                    // Random spawn
-                    let pRandom = p5.createVector(p5.random(-width, width),p5.random(-height, height)) 
-                    points.push(pRandom);
-                }
-
-            p5.shuffle(points, true);
+            POINTS = createPoints(p5, width, height, space);
+            POINTS1 = createPoints(p5, width, height, space);
+            POINTS2 = createPoints(p5, width, height, space);
         };
         p5.draw = () => {
             p5.noStroke();
             let max: number;
-            if (p5.frameCount * spawnSpeed <= points.length) {
+            if (p5.frameCount * spawnSpeed <= POINTS.length + POINTS1.length + POINTS2.length) {
                 max = p5.frameCount * spawnSpeed;
             } else {
-                max = points.length;
+                max = POINTS.length + POINTS1.length + POINTS2.length;
             }
-    
-            for (let i = 0; i<max; i++) {                    
-                p5.fill(150, 12, 5, 10);
-                let angle = p5.map(p5.noise(points[i].x * mult, points[i].y * mult), 0, 1, 0, 720);
-                points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)))
-    
-                if (points[i].x > 0 && points[i].x < width && points[i].y > 0 && points[i].y < height) {
-                    p5.ellipse(points[i].x, points[i].y, lineThickness);
-                }
-                
-            }
-            let nextPoint = p5.createVector(p5.random(-width, width), p5.random(-height, height));
-            points.push(nextPoint);
-            if (points.length >= maxPoints) {
-                points.shift();
-            }
+            filler(p5, max, [150, 12, 5, 255], POINTS);
+            filler(p5, max, [150, 12, 5, 150], POINTS1);
+            filler(p5, max, [150, 12, 5, 50], POINTS2);
         };
-      }
+    }
+
+    function filler(p5: import("p5"), max: number, rgba: number[], points: Vector[]) {
+        p5.fill(rgba[0], rgba[1], rgba[2], rgba[3]);
+        for (let i = 0; i<max/3; i++) {          
+            let angle = p5.map(p5.noise(points[i].x * mult, points[i].y * mult), 0, 1, 0, 720);
+            points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)))
+    
+            if (points[i].x >= -10 && points[i].x <= width + 10 && points[i].y >= -10 && points[i].y <= height + 10) {
+                p5.ellipse(points[i].x, points[i].y, lineThickness);
+            } else {
+                    points[i].x *= -1
+                    points[i].y *= -1
+            }
+        }
+        // let nextPoint = p5.createVector(p5.random(-width, width), p5.random(-height, height));
+        // points.push(nextPoint);
+        if (points.length >= maxPoints) {
+            points.shift();
+        }
+    }
+
+    function createPoints(p5: import("p5"), width: number, height: number, totalSpawnPoints: number): Vector[] {
+        let points: Vector[] = []
+        for (let a=0; a<totalSpawnPoints; a++) {
+            let spawnside = p5.random([0,1,2,3])/1
+            let spawnheight;
+            let spawnwidth;
+            switch (spawnside) {
+                // Left
+                case 0:
+                    spawnwidth = -10
+                    spawnheight = p5.random(0, height)
+                    break;
+                // Right
+                case 1:
+                    spawnwidth = width + 10
+                    spawnheight = p5.random(0, height)
+                    break;
+                // Top
+                case 2:
+                    spawnwidth = p5.random(0, width)
+                    spawnheight = -10
+                    break;
+                // Bottom
+                case 3:
+                    spawnwidth = p5.random(0, width)
+                    spawnheight = height + 10
+            }
+            points.push(p5.createVector(spawnwidth, spawnheight))
+        }
+        return points
+    }
+
 </script>
-<div class="absolute w-full h-full bg-[#000000] -z-10 ">  <!-- bg-gradient-to-l bg-opacity-80 from-[#2e0000] to-[#7a0016] -->
+<div class="absolute w-full h-full bg-[#000] -z-10 ">
     <P5 {sketch} />  
 </div>
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
