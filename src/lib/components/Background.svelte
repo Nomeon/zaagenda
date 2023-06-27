@@ -9,12 +9,12 @@
 
     // Pattern properties
     let mult: number = 0.001; // Branching
-    const noiseDetail: number =20; // spread
+    const noiseDetail: number = 20; // spread
     const falloff: number = 0.1; // Spread based on octaves, 0.5 means half the amplitude of the previous octave
 
     // Line properties
     const lineThickness: number = 2;
-    let totalColors = 255;
+    let totalColors = 100;
     let pointsPerColor = 3;
     
 
@@ -50,7 +50,7 @@
 
     function filler(p5: import("p5"), max: number, rgba: number[], points: Vector[]) {
         p5.fill(rgba[0], rgba[1], rgba[2], rgba[3]);
-        p5.noiseSeed(56) //als je wil opslaan, pak seed
+        // p5.noiseSeed(56) //als je wil opslaan, pak seed
         for (let i = 0; i<max; i++) {          
             let angle = p5.map(p5.noise(points[i].x * mult, points[i].y * mult), 0, 1, 0, 720);
             points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)).mult(SPEEDARRAY[i]))
