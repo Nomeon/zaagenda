@@ -41,9 +41,10 @@
             <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md shadow-sm shadow-accent' referrerpolicy="no-referrer" />
         </a> 
     {:else}
-        <a href='/' class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div on:click={() => signIn()} class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
             <FaCapsules />
-        </a>
+        </div>
     {/if}
     </div> 
     {#if $toggled === true && width <= 768}

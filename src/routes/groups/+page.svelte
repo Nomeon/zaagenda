@@ -128,29 +128,29 @@
                     </div>
                 </div>
             </a>
+            <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
+                <Button type='button' on:click={() => dialog.showModal()} text='CREATE' />
+            </div>
+            <Dialog bind:dialog >
+                <div class='text-lg p-8'>
+                    <form method="dialog" on:submit={() => createGroup(formGroupName)} class='text-lg'>
+                        <div class='flex flex-col'>
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" bind:value={formGroupName} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
+                        </div>
+                        <div class='flex gap-8 justify-center'>
+                            <Button type='button' on:click={() => dialog.close()} text='CLOSE' />
+                            <Button type='submit' text='CONFIRM' />
+                        </div>
+                        </form>
+                </div>
+            </Dialog>
         {:else}
             <div class='w-full h-full flex justify-center items-center'>
                 <p class='text-4xl font-bold animate-pulse-custom'>NO BITCHES</p>
             </div>
         {/each}
-        <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' />
-        </div>
     {:else}
         <Loading />
     {/if}
-    <Dialog bind:dialog >
-        <div class='text-lg p-8'>
-            <form method="dialog" on:submit={() => createGroup(formGroupName)} class='text-lg'>
-                <div class='flex flex-col'>
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" bind:value={formGroupName} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
-                </div>
-                <div class='flex gap-8 justify-center'>
-                    <Button type='button' on:click={() => dialog.close()} text='CLOSE' />
-                    <Button type='submit' text='CONFIRM' />
-                </div>
-                </form>
-        </div>
-    </Dialog>
 </div>
