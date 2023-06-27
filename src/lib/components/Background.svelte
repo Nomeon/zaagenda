@@ -15,7 +15,7 @@
     // Line properties
     const lineThickness: number = 2;
     let totalColors = 255;
-    let pointsPerColor = 8;
+    let pointsPerColor = 16;
     
 
 
@@ -29,7 +29,7 @@
             for(let p=0; p<totalColors; p++) {
                 let points = createPoints(p5, pointsPerColor)
                 POINTSARRAY.push(points)
-                SPEEDARRAY.push(p5.random(1,1.3))
+                SPEEDARRAY.push(p5.random(0.7,1))
             }
         };
         p5.draw = () => {
@@ -50,6 +50,7 @@
 
     function filler(p5: import("p5"), max: number, rgba: number[], points: Vector[]) {
         p5.fill(rgba[0], rgba[1], rgba[2], rgba[3]);
+        p5.noiseSeed(56) //als je wil opslaan, pak seed
         for (let i = 0; i<max; i++) {          
             let angle = p5.map(p5.noise(points[i].x * mult, points[i].y * mult), 0, 1, 0, 720);
             points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)).mult(SPEEDARRAY[i]))

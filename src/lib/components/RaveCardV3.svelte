@@ -29,13 +29,13 @@
 <div in:fade id='divider' class='mb-4 rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent'>
     <div id='left-card' class= 'w-[5.5rem] bg-dark1 h-full'>
         <div class='flex flex-col items-center justify-center h-24 w-24 p-4 font-bold'>
-            <div>{new Date(rave.startDate).toLocaleDateString("nl-NL", { day: 'numeric', month: "short" }) }</div>
+            <div>{new Date(rave.startDate).toLocaleDateString("en-EN", { day: 'numeric', month: "short" }) }</div>
             <div>{new Date(rave.startDate).toLocaleDateString("nl-NL", { year: "numeric" }) }</div>    
         </div>
     </div>
     <div id='right-card' class='flex flex-col absolute left-32 pr-44 w-full justify-center h-full'>
         <p class='text-md text-ellipsis whitespace-nowrap overflow-hidden'>{rave.event}</p>
-        <p class='text-md'>{new Date(rave.startDate).toLocaleString().split(' ')[1].split(':').splice(0, 2).join(':')} - {new Date(rave.endDate).toLocaleString().split(' ')[1].split(':').splice(0, 2).join(':')}</p>
+        <p class='text-md'>{new Date(rave.startDate).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false})} - {new Date(rave.endDate).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false})}</p>
         <p class='text-md italic font-bold'>{raveGroup.name}</p>
     </div>
     <div class='flex flex-col absolute right-4 h-full w-8 justify-around py-2'>
