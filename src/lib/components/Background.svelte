@@ -4,27 +4,20 @@
 
     $: width = 0
     $: height = 0
-    const lineThickness: number = 3;
-    const maxPoints: number = 200;
-    
-    // Speed
-    const density: number = 20;
-    const spawnSpeed: number = 30;
+    let POINTSARRAY: Vector[][] = [];
+    let SPEEDARRAY: number[] = [];
 
-    // Pattern
+    // Pattern properties
     let mult: number = 0.001; // Branching
-    const noiseDetail: number = 2; // spread
-    const falloff: number = 0.5; // Spread based on octaves, 0.5 means half the amplitude of the previous octave
+    const noiseDetail: number =20; // spread
+    const falloff: number = 0.1; // Spread based on octaves, 0.5 means half the amplitude of the previous octave
 
-    // interface Point {
-    //     add(point: Vector): void;
-    //     x: number;
-    //     y: number;
-    // }
-  
-    let POINTS: Vector[] = [];
-    let POINTS1: Vector[] = [];
-    let POINTS2: Vector[] = [];
+    // Line properties
+    const lineThickness: number = 2;
+    let totalColors = 200;
+    let pointsPerColor = 8;
+    
+
 
     const sketch: Sketch = (p5) => {
         p5.setup = () => {
@@ -32,76 +25,84 @@
             p5.background(0,0,0,0);
             p5.angleMode(p5.DEGREES);
             p5.noiseDetail(noiseDetail, falloff);
-
-            let space = width/density;
-            POINTS = createPoints(p5, width, height, space);
-            POINTS1 = createPoints(p5, width, height, space);
-            POINTS2 = createPoints(p5, width, height, space);
+            p5.frameRate(120)
+            for(let p=0; p<totalColors; p++) {
+                let points = createPoints(p5, pointsPerColor)
+                POINTSARRAY.push(points)
+                SPEEDARRAY.push(p5.random(1,1.5))
+            }
         };
         p5.draw = () => {
+            p5.fill(5, 10);
+            p5.rect(0, 0, width, height);
             p5.noStroke();
-            let max: number;
-            if (p5.frameCount * spawnSpeed <= POINTS.length + POINTS1.length + POINTS2.length) {
-                max = p5.frameCount * spawnSpeed;
-            } else {
-                max = POINTS.length + POINTS1.length + POINTS2.length;
+            let s=0;
+            POINTSARRAY.forEach(function(e){s += e.length; });
+
+            for (let f=0; f<POINTSARRAY.length; f++) {
+                let points = POINTSARRAY[f]
+                let rgba = [40, 100/POINTSARRAY.length * f, 255, 255]
+                filler(p5, s/POINTSARRAY.length, rgba, points)
+
             }
-            filler(p5, max, [150, 12, 5, 255], POINTS);
-            filler(p5, max, [150, 12, 5, 150], POINTS1);
-            filler(p5, max, [150, 12, 5, 50], POINTS2);
         };
     }
 
     function filler(p5: import("p5"), max: number, rgba: number[], points: Vector[]) {
         p5.fill(rgba[0], rgba[1], rgba[2], rgba[3]);
-        for (let i = 0; i<max/3; i++) {          
+        for (let i = 0; i<max; i++) {          
             let angle = p5.map(p5.noise(points[i].x * mult, points[i].y * mult), 0, 1, 0, 720);
-            points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)))
+            points[i].add(p5.createVector(p5.cos(angle), p5.sin(angle)).mult(SPEEDARRAY[i]))
     
             if (points[i].x >= -10 && points[i].x <= width + 10 && points[i].y >= -10 && points[i].y <= height + 10) {
                 p5.ellipse(points[i].x, points[i].y, lineThickness);
             } else {
-                    points[i].x *= -1
-                    points[i].y *= -1
+                let spawn1 = determineSpawn(p5)
+                points[i] = p5.createVector(spawn1[0], spawn1[1])
             }
-        }
-        // let nextPoint = p5.createVector(p5.random(-width, width), p5.random(-height, height));
-        // points.push(nextPoint);
-        if (points.length >= maxPoints) {
-            points.shift();
         }
     }
 
-    function createPoints(p5: import("p5"), width: number, height: number, totalSpawnPoints: number): Vector[] {
+    function createPoints(p5: import("p5"), totalSpawnPoints: number): Vector[] {
         let points: Vector[] = []
         for (let a=0; a<totalSpawnPoints; a++) {
-            let spawnside = p5.random([0,1,2,3])/1
-            let spawnheight;
-            let spawnwidth;
-            switch (spawnside) {
-                // Left
-                case 0:
-                    spawnwidth = -10
-                    spawnheight = p5.random(0, height)
-                    break;
-                // Right
-                case 1:
-                    spawnwidth = width + 10
-                    spawnheight = p5.random(0, height)
-                    break;
-                // Top
-                case 2:
-                    spawnwidth = p5.random(0, width)
-                    spawnheight = -10
-                    break;
-                // Bottom
-                case 3:
-                    spawnwidth = p5.random(0, width)
-                    spawnheight = height + 10
-            }
-            points.push(p5.createVector(spawnwidth, spawnheight))
+            let spawn = determineSpawn(p5)
+            points.push(p5.createVector(spawn[0], spawn[1]))
         }
         return points
+    }
+    
+    function determineSpawn(p5: import("p5")): number[] {
+        let spawnside = 4
+        // p5.frameCount < 10 ? p5.random([0,1])/1 : p5.random([0,1,2,3])/1
+        let spawnheight = 0;
+        let spawnwidth = 0;
+        switch (spawnside) {
+            // Left
+            case 0:
+                spawnwidth = p5.random(-10, -lineThickness)
+                spawnheight = p5.random(0, height)
+                break;
+            // Right
+            case 1:
+                spawnwidth = p5.random(width + 10, width + lineThickness)
+                spawnheight = p5.random(0, height)
+                break;
+            // Top
+            case 2:
+                spawnwidth = p5.random(0, width)
+                spawnheight = p5.random(-10, -lineThickness)
+                break;
+            // Bottom
+            case 3:
+                spawnwidth = p5.random(0, width)
+                spawnheight = p5.random(height + 10, height + lineThickness)
+                break;
+            case 4:
+                spawnwidth = p5.random(0, width)
+                spawnheight = p5.random(0,height)
+            } 
+        return [spawnwidth, spawnheight]
     }
 
 </script>
