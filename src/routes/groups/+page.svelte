@@ -9,6 +9,7 @@
     import { goto } from "$app/navigation";
     import Button from "$lib/components/Button.svelte";
     import { title } from "../stores";
+    import MdAdd from "svelte-icons/md/MdAdd.svelte";
 
     $: title.set('Groups')
 
@@ -128,9 +129,12 @@
                     </div>
                 </div>
             </a>
-            <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
+            <!-- <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
                 <Button type='button' on:click={() => dialog.showModal()} text='CREATE' />
-            </div>
+            </div> -->
+            <button on:click={() => dialog.showModal()} class='active:text-accent active:shadow-accent active:rotate-45 absolute rounded-md h-12 w-12 p-2 bottom-8 right-8 bg-dark1 backdrop-blur-sm shadow-sm shadow-light1 flex justify-center items-center'>
+                <MdAdd />
+            </button>
             <Dialog bind:dialog >
                 <div class='text-lg p-8'>
                     <form method="dialog" on:submit={() => createGroup(formGroupName)} class='text-lg'>
