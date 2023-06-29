@@ -1,22 +1,17 @@
 {
-    "short_name": "zaagplanner",
-    "name": "zaagplanner",
-    "start_url": "/",
-    "icons": [
-      {
-        "src": "favicon.webp",
-        "type": "image/webp",
-        "sizes": "500x500"
-      },
-      {
-        "src": "faviconSmall.webp",
-        "type": "image/webp",
-        "sizes": "144x144"
-      }
-    ],
-    "background_color": "#0f172a",
-    "display": "standalone",
-    "scope": "/",
-    "theme_color": "#ff4533",
-    "description": "Zaagplanner | Create groups and plan your next raves"
+  "name": "zaagplanner",
+  "short_name": "zaag",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0F172A",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#FF4533",
+  "description": "Zaagplanner | Create groups and plan your next raves"
 }
