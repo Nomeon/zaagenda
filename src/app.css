@@ -1,12 +1,6 @@
-body {
-    font-family: "Roboto", sans-serif;
-    overflow: hidden;
-}
-
-::-webkit-scrollbar {
-    width: 0;
-    background: transparent;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 #btn:before {
     content: '';
