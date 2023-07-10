@@ -34,7 +34,7 @@
 
 </script>
 
-<nav class='h-24 flex justify-between border-b-accent border-b-2 relative z-30  font-semibold box-border '>
+<nav class='h-24 flex justify-between border-b-accent border-b-2 relative z-30 font-semibold box-border'>
     <div class='w-1/4 flex items-center justify-center z-20' id='logo'>
     {#if $page.data.session?.user?.image ?? false}
         <a href='/account'>
@@ -42,7 +42,7 @@
         </a> 
     {:else}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div on:click={() => signIn()} class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
+        <div on:click={() => signIn()} class='w-6 flex items-center cursor-pointer max-md:w-8 hover:text-accent'>
             <FaCapsules />
         </div>
     {/if}
@@ -50,7 +50,8 @@
     {#if $toggled === true && width <= 768}
         <div id='navunderlay' class='h-24  w-full z-10 absolute top-0'/>
     {/if}
-    <div style='background-color: rgb(15 23 42 / {$opacity});' class={`w-3/4 flex justify-center backdrop-blur-md max-md:h-screen max-md:border-b-2 max-md:border-accent max-md:w-screen max-md:fixed max-md:flex-col max-md:transition-transform max-md:duration-500 max-md:ease-in-out ${$toggled === true ? 'max-md:translate-y-0' : 'max-md:-translate-y-[calc(100%-6rem)]'}`} id='mobile'>
+    <div style='background-color: rgb(15 23 42 / {$opacity});' class={`backdrop-blur-sm w-3/4 flex justify-center max-md:h-screen max-md:border-b-2 max-md:w-screen max-md:fixed max-md:flex-col max-md:transition-transform max-md:duration-500 max-md:ease-in-out ${$toggled === true ? 'max-md:translate-y-0' : 'max-md:-translate-y-[calc(100%-6rem)]'}`} id='mobile'>
+    <!-- <div style='background-color: rgb(15 23 42 / {$opacity});' class={`w-3/4 flex justify-center backdrop-blur-md max-md:h-screen max-md:border-b-2 max-md:border-accent max-md:w-screen max-md:fixed max-md:flex-col max-md:transition-transform max-md:duration-500 max-md:ease-in-out ${$toggled === true ? 'max-md:translate-y-0' : 'max-md:-translate-y-[calc(100%-6rem)]'}`} id='mobile'> -->
         <div class='w-2/3 flex items-center gap-8 max-md:basis-3/5 max-md:gap-16 max-md:flex-col justify-center max-md:w-full' id='links'>
             <a on:click={toggleNav} href='/' class='text-3xl md:text-2xl text-light1 hover:text-accent'>HOME</a>
             <a on:click={toggleNav} href='/raves' class='text-3xl md:text-2xl text-light1 hover:text-accent'>RAVES</a>

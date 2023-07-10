@@ -7,9 +7,10 @@
     import Dialog from "$lib/components/Dialog.svelte";
     import Loading from "$lib/components/Loading.svelte";
     import { goto } from "$app/navigation";
-    import Button from "$lib/components/Button.svelte";
+    import CustomButton from "$lib/components/CustomButton.svelte";
     import { title } from "../stores";
     import MdAdd from "svelte-icons/md/MdAdd.svelte";
+    import { Button, SpeedDial, SpeedDialButton } from "flowbite-svelte";
 
     $: title.set('Groups')
 
@@ -129,12 +130,11 @@
                     </div>
                 </div>
             </a>
-            <!-- <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-                <Button type='button' on:click={() => dialog.showModal()} text='CREATE' />
-            </div> -->
-            <button on:click={() => dialog.showModal()} class='active:text-accent active:shadow-accent active:rotate-45 absolute rounded-md h-12 w-12 p-2 bottom-8 right-8 bg-dark1 backdrop-blur-sm shadow-sm shadow-light1 flex justify-center items-center'>
-                <MdAdd />
-            </button>
+            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' class='absolute bottom-8 right-8 h-12 w-12 p-0'>
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+            </Button>
             <Dialog bind:dialog >
                 <div class='text-lg p-8'>
                     <form method="dialog" on:submit={() => createGroup(formGroupName)} class='text-lg'>
@@ -143,8 +143,8 @@
                             <input type="text" id="name" name="name" bind:value={formGroupName} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
                         </div>
                         <div class='flex gap-8 justify-center'>
-                            <Button type='button' on:click={() => dialog.close()} text='CLOSE' />
-                            <Button type='submit' text='CONFIRM' />
+                            <CustomButton type='button' on:click={() => dialog.close()} text='CLOSE' />
+                            <CustomButton type='submit' text='CONFIRM' />
                         </div>
                         </form>
                 </div>

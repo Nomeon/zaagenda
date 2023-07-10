@@ -1,7 +1,7 @@
 <script lang='ts'>
     import { onMount } from "svelte";
     import { height } from "../../stores";
-    import Button from "$lib/components/Button.svelte";
+    import CustomButton from "$lib/components/CustomButton.svelte";
     import CheckboxRave from "$lib/components/CheckboxRave.svelte";
 
     export let data: { session: any, raveObject: Rave };
@@ -65,7 +65,7 @@
                 </div>
             {/each}
             <div class='flex flex-row mt-4 justify-center'>
-                <Button type='submit' text='SAVE' />
+                <CustomButton type='submit' text='SAVE' />
             </div>
         </div>
     </form>

@@ -1,6 +1,6 @@
 <script lang='ts'>
     import { page } from "$app/stores";
-    import Button from "$lib/components/Button.svelte";
+    import CustomButton from "$lib/components/CustomButton.svelte";
     import { onMount } from "svelte";
     import { title } from "../stores";
     import Loading from "$lib/components/Loading.svelte";
@@ -76,7 +76,7 @@
     <form on:submit|preventDefault={() => changeName()} class='flex flex-col'>
         <label for="name"></label>
         <input bind:value={nickname} type="text" name="name" id="name" placeholder="{user.name}" class="mb-4 py-2 px-4 text-sm bg-light1 text-dark1 rounded-sm" />
-        <Button type='submit' text='Change' />
+        <CustomButton type='submit' text='Change' />
     </form>
 </div>
 {:else}

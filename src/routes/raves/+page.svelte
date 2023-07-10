@@ -7,7 +7,7 @@
 	import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
-	import Button from '$lib/components/Button.svelte';
+	import CustomButton from '$lib/components/CustomButton.svelte';
 	import { title } from "../stores";
     import Loading from '$lib/components/Loading.svelte';
 	import FaAngleUp from 'svelte-icons/fa/FaAngleUp.svelte'
@@ -190,7 +190,7 @@
 			</div>
 			{/if}
 		<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-			<Button type='button' on:click={() => dialog.showModal()} text='Add Rave' />
+			<CustomButton type='button' on:click={() => dialog.showModal()} text='Add Rave' />
 			<button type='button' on:click={() => filters = !filters} class='absolute duration-500 right-8 h-8 w-8 {filters ? 'text-accent -rotate-180' : 'text-light1'}'>
 				<FaAngleUp />
 			</button>
@@ -225,8 +225,8 @@
 						<MultiSelect id='tickets' name='tickets' bind:selected={formTickets} options={tickets} liOptionClass='!text-dark1 !text-sm' liSelectedClass='!bg-accent !text-sm !text-light1' ulOptionsClass='text-accent !text-sm' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1 !text-sm'/>
 					</div>
 					<div class='flex gap-8 justify-center'>
-						<Button type='button' on:click={() => dialog.close()} text='CLOSE' />
-						<Button type='submit' text='CONFIRM' />
+						<CustomButton type='button' on:click={() => dialog.close()} text='CLOSE' />
+						<CustomButton type='submit' text='CONFIRM' />
 					</div>
 				</form>
 			</div>

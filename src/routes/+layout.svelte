@@ -12,21 +12,9 @@
   
 <div id='body-div' style='height: {$height}px;' class='grid-rows-[6rem_1fr] grid gap-0'>
     <Navbar />
-    <main class='flex flex-col justify-center w-full m-0 bg-black text-light1'>
+    <main class='flex flex-col justify-center w-full m-0 text-light1'>
         <slot />
     </main>
     <Background />
 </div>
 <svelte:window bind:innerHeight={$height} />
-
-<style lang="postcss">
-    :global(body) {
-		font-family: "Roboto", sans-serif;
-		overflow: hidden;
-	}
-
-    :global(::-webkit-scrollbar) {
-        width: 0;
-        background: transparent;
-    }
-</style>

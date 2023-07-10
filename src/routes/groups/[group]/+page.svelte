@@ -7,7 +7,7 @@
     import Dialog from "$lib/components/Dialog.svelte";
     import UserCard from "$lib/components/UserCard.svelte";
     import Loading from "$lib/components/Loading.svelte";
-    import Button from "$lib/components/Button.svelte";
+    import CustomButton from "$lib/components/CustomButton.svelte";
     import MdAdd from 'svelte-icons/md/MdAdd.svelte'
     import { title } from "../../stores";
     
@@ -137,8 +137,8 @@
                     <input type="email" id="email" name="email" bind:value={formEmail} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
                 </div>
                 <div class='flex gap-8 justify-center'>
-                    <Button type='button' on:click={() => dialog.close()} text='CLOSE' />
-                    <Button type='submit' text='CONFIRM' />
+                    <CustomButton type='button' on:click={() => dialog.close()} text='CLOSE' />
+                    <CustomButton type='submit' text='CONFIRM' />
                 </div>
                 </form>
         </div>
