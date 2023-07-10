@@ -35,6 +35,27 @@
 		const users = await response.json();
         return users
 	}
+
+    async function updateTicketAttendees(): Promise<void> {
+        const url = `/api/raves?rave_id=${rave._id}`
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: rave._id,
+                attendees: formAttendees,
+                tickets: formTickets
+            })
+        })
+        if (response.status === 200) {
+            window.location.reload();
+        } else {
+            alert('Something went wrong')
+        }
+    }
+
 </script>
 
 <svelte:head>
@@ -48,7 +69,7 @@
         <div class='text-lg font-bold italic'>{new Date(rave.startDate).toLocaleDateString("nl-NL", { day: 'numeric', month: "long", year: "numeric"}) }</div>
         <div class=''>{new Date(rave.startDate).toLocaleTimeString().split(':').slice(0, 2).join(':')} - {new Date(rave.endDate).toLocaleTimeString().split(':').slice(0, 2).join(':')}</div>
     </div>
-    <form on:submit={() => console.log(formAttendees)} class='w-11/12'>
+    <form on:submit={updateTicketAttendees} class='w-11/12'>
         <div id='header-row' class='flex font-bold flex-row w-full mt-4 mb-2'>
             <div class='w-1/2 flex justify-center'>Attendees</div>
             <div class='w-1/2 flex justify-center'>Tickets</div>

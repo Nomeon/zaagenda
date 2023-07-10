@@ -65,6 +65,27 @@ export async function POST({ request }: any): Promise<Response> {
     }
 }
 
+export async function PUT({ request }: any): Promise<Response> {
+    try {
+        const collection = db.collection("raves");
+        const body = await request.json();
+        const { id, attendees, tickets } = body;
+
+        if (id && attendees && tickets) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $set: { attendees: attendees.map((id: string) => new ObjectId(id)), tickets: tickets.map((id: string) => new ObjectId(id)) }});
+        } else if (id && attendees) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $set: { attendees: attendees.map((id: string) => new ObjectId(id)) }});
+        } else if (id && tickets) {
+            collection.updateOne({ _id: new ObjectId(id) }, { $set: { tickets: tickets.map((id: string) => new ObjectId(id)) }});
+        }
+
+        return new Response(JSON.stringify(body), { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return new Response("Internal Server Error", { status: 500 })
+    }
+}
+
 export async function DELETE({ request }: any): Promise<Response> {
     try {
         const collection = db.collection("raves");
