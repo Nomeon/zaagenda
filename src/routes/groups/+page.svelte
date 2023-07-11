@@ -3,7 +3,9 @@
     import { page } from "$app/stores";
     import { userStore } from "../stores";
     import { fade } from 'svelte/transition'
+    // @ts-ignore
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
+    // @ts-ignore
     import MdAdd from 'svelte-icons/md/MdAdd.svelte'
     import Dialog from "$lib/components/Dialog.svelte";
     import Loading from "$lib/components/Loading.svelte";
@@ -131,7 +133,7 @@
                     </div>
                 </div>
             </a>
-            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' class='absolute bottom-8 right-8 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
+            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' class='absolute bottom-4 right-4 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
                 <MdAdd />
             </Button>
             <Dialog bind:dialog >

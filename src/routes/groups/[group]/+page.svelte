@@ -121,9 +121,6 @@
         {#each users as user}
             <UserCard user={user} />
         {/each}
-    <!-- <div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-        <Button type='button' on:click={() => dialog.showModal()} text='ADD' />
-    </div> -->
     <button on:click={() => dialog.showModal()} class='absolute bottom-8 right-8 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
         <MdAdd />
     </button>

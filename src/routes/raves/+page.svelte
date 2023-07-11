@@ -10,12 +10,12 @@
 	import CustomButton from '$lib/components/CustomButton.svelte';
 	import { title } from "../stores";
     import Loading from '$lib/components/Loading.svelte';
-	import FaAngleUp from 'svelte-icons/fa/FaAngleUp.svelte'
-    import { fly } from 'svelte/transition';
+	// @ts-ignore
+	import MdAdd from 'svelte-icons/md/MdAdd.svelte'
+    import { Button, SpeedDial, SpeedDialButton } from 'flowbite-svelte';
 
 	$: title.set('Raves')
 
-	let filters: boolean = false;
 	let loaded: boolean;
 	let today = new Date();
 	let userList: User[] = [];
@@ -170,7 +170,7 @@
 	<meta name="description" content="Check out your raves here" />
 </svelte:head>
 
-<div id='scrollable' class='h-[calc(100dvh-3rem)] overflow-y-scroll w-screen flex flex-col items-center pt-8 {filters ? 'pb-52' : 'pb-36'}'>
+<div id='scrollable' class='h-[calc(100dvh-3rem)] overflow-y-scroll w-screen flex flex-col items-center pt-8 pb-32'>
 	{#if loaded}
 		{#if raveList}
 			{#each activeRaveList
@@ -180,21 +180,16 @@
 					<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
 				{/each}
 			{/each}		  
-			{#if filters}
-			<div transition:fly={{ y: 100, duration: 500 }} class='absolute bottom-16 z-10 flex items-center justify-center w-full py-8 bg-gradient-to-t from-[#000] from-85%'>
-				<ul class='flex w-11/12 items-center justify-center gap-4 font-bold '>
+			<div class='absolute bottom-0 z-10 flex items-center justify-center w-full h-20 pr-16 bg-gradient-to-t from-[#000] from-85%'>
+				<ul class='flex w-11/12 items-center justify-center gap-4 font-bold'>
 					{#each raveList as group}
 						<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
 					{/each}
 				</ul>
+				<Button type='button' on:click={() => dialog.showModal()} text='Add' class='absolute bottom-4 right-4 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
+					<MdAdd />
+				</Button>
 			</div>
-			{/if}
-		<div class='absolute bottom-0 h-24 flex items-center overflow-hidden justify-center bg-gradient-to-t from-[#000] from-85% z-20 w-full'>
-			<CustomButton type='button' on:click={() => dialog.showModal()} text='Add Rave' />
-			<button type='button' on:click={() => filters = !filters} class='absolute duration-500 right-8 h-8 w-8 {filters ? 'text-accent -rotate-180' : 'text-light1'}'>
-				<FaAngleUp />
-			</button>
-		</div>
 		<Dialog bind:dialog >
 			<div class='text-sm p-4'>
 				<form method="dialog" on:submit|preventDefault={() => addRaveToGroup()} class='text-lg'>
