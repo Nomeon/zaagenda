@@ -17,6 +17,6 @@
   "background_color": "#0F172A",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#FF4533",
+  "theme_color": "##0f172a",
   "description": "Zaagplanner | Create groups and plan your next raves"
 }
