@@ -8,7 +8,7 @@
     let SPEEDARRAY: number[] = [];
 
     // Pattern properties
-    let mult: number = 0.001; // Branching
+    let mult: number = 0.004; // Branching
     const noiseDetail: number = 20; // spread
     const falloff: number = 0.1; // Spread based on octaves, 0.5 means half the amplitude of the previous octave
 

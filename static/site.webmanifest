@@ -14,7 +14,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ff4533",
+    "theme_color": "#FFFFFF",
     "background_color": "#0f172a",
     "display": "standalone",
     "description": "Zaagplanner | Create groups and plan your next raves"
