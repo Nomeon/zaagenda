@@ -56,3 +56,25 @@ body {
         opacity: 0;
     }
 }
+
+/* Navbar toggle button */
+#menu-toggle.toggled > #icon:before {
+    top: 0px;
+}
+#menu-toggle.toggled > #icon:after {
+    bottom: 0px;
+}
+#icon:before,
+#icon:after {
+    height: 0.2rem;
+    left: 0px;
+    position: absolute;
+    transition: all 0.25s;
+    width: 1.8rem;
+}
+#icon:before {
+    top: -0.55rem;
+}
+#icon:after {
+    bottom: -0.55rem;
+}

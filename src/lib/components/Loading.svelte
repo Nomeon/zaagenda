@@ -30,8 +30,8 @@
         height: 80px;
     }
     .plotlybars-bar {
-        background: rgb(255,69,51);
-        background: linear-gradient(0deg, rgba(255,69,51,1) 60%, rgba(0,0,0,0) 100%);
+        background: #00FFFF;
+        background: linear-gradient(0deg, #00FFFF 60%, rgba(0,0,0,0) 100%);
         height: 100%;
         width: 12%;
         position: absolute;

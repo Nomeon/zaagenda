@@ -4,6 +4,7 @@
     import { userStore } from "../stores";
     import { fade } from 'svelte/transition'
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
+    import MdAdd from 'svelte-icons/md/MdAdd.svelte'
     import Dialog from "$lib/components/Dialog.svelte";
     import Loading from "$lib/components/Loading.svelte";
     import { goto } from "$app/navigation";
@@ -130,10 +131,8 @@
                     </div>
                 </div>
             </a>
-            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' class='absolute bottom-8 right-8 h-12 w-12 p-0'>
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                </svg>
+            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' class='absolute bottom-8 right-8 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
+                <MdAdd />
             </Button>
             <Dialog bind:dialog >
                 <div class='text-lg p-8'>

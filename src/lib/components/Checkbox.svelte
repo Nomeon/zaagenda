@@ -26,7 +26,7 @@
 	}
 </script>
 
-<label class='{checked ? 'bg-dark1 border-accent2' : 'bg-dark1 border-dark1'} flex border cursor-pointer w-full items-center justify-center rounded-sm'>
+<label class='{checked ? 'bg-dark1 border-accent' : 'bg-dark1 border-dark1'} flex border cursor-pointer w-full items-center justify-center rounded-sm'>
     <input class='absolute opacity-0 cursor-pointer h-0 w-0' type="checkbox" bind:checked={checked} value={value} />
     <span>{value.name}</span>
 </label>

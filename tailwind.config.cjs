@@ -26,7 +26,7 @@ const config = {
                 },
                 dark1: "#0f172a",
                 light1: "#ffffff",
-                accent: "#ff4533",
+                accent: "#00FFFF",
                 accent2: "#075ea6",
             },
             keyframes: {

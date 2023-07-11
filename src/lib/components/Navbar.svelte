@@ -1,8 +1,11 @@
 <script lang='ts'>
     // @ts-ignore
     import FaSpotify from 'svelte-icons/fa/FaSpotify.svelte'
+        // @ts-ignore
     import FaCapsules from 'svelte-icons/fa/FaCapsules.svelte'
+        // @ts-ignore
     import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte'
+        // @ts-ignore
     import FaSignOutAlt from 'svelte-icons/fa/FaSignOutAlt.svelte'
     import { signIn, signOut } from "@auth/sveltekit/client"
     import { toggled, isMobile, title } from '../../routes/stores';
@@ -38,7 +41,7 @@
     <div class='w-1/4 flex items-center justify-center z-20' id='logo'>
     {#if $page.data.session?.user?.image ?? false}
         <a href='/account'>
-            <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md shadow-sm shadow-accent' referrerpolicy="no-referrer" />
+            <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md' referrerpolicy="no-referrer" />
         </a> 
     {:else}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -83,26 +86,3 @@
 		</div>
 </nav>
 <svelte:window bind:innerWidth={width} on:resize={handleResize}/>
-
-<style>
-	#menu-toggle.toggled > #icon:before {
-		top: 0px;
-	}
-	#menu-toggle.toggled > #icon:after {
-		bottom: 0px;
-	}
-	#icon:before,
-	#icon:after {
-		height: 0.2rem;
-		left: 0px;
-		position: absolute;
-		transition: all 0.25s;
-		width: 1.8rem;
-	}
-	#icon:before {
-		top: -0.55rem;
-	}
-	#icon:after {
-		bottom: -0.55rem;
-	}
-</style>
