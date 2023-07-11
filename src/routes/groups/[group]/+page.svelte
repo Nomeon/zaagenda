@@ -7,8 +7,10 @@
     import UserCard from "$lib/components/UserCard.svelte";
     import Loading from "$lib/components/Loading.svelte";
     import CustomButton from "$lib/components/CustomButton.svelte";
+    // @ts-ignore
     import MdAdd from 'svelte-icons/md/MdAdd.svelte'
     import { title } from "../../stores";
+    import { Button } from "flowbite-svelte";
     
     export let data: PageData;
     let loaded: boolean;
@@ -121,24 +123,23 @@
         {#each users as user}
             <UserCard user={user} />
         {/each}
-    <button on:click={() => dialog.showModal()} class='absolute bottom-8 right-8 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
-        <MdAdd />
-    </button>
-
-    <Dialog bind:dialog >
-        <div class='text-lg p-8'>
-            <form method="dialog" on:submit={() => addUserToGroup(formEmail)} class='text-lg'>
-                <div class='flex flex-col'>
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" bind:value={formEmail} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
-                </div>
-                <div class='flex gap-8 justify-center'>
-                    <CustomButton type='button' on:click={() => dialog.close()} text='CLOSE' />
-                    <CustomButton type='submit' text='CONFIRM' />
-                </div>
-                </form>
-        </div>
-    </Dialog>
+        <Button type='button' on:click={() => dialog.showModal()} text='Add' class='absolute bottom-4 right-4 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
+            <MdAdd />
+        </Button>
+        <Dialog bind:dialog >
+            <div class='text-lg p-8'>
+                <form method="dialog" on:submit={() => addUserToGroup(formEmail)} class='text-lg'>
+                    <div class='flex flex-col'>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" bind:value={formEmail} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
+                    </div>
+                    <div class='flex gap-8 justify-center'>
+                        <CustomButton type='button' on:click={() => dialog.close()} text='CLOSE' />
+                        <CustomButton type='submit' text='CONFIRM' />
+                    </div>
+                    </form>
+            </div>
+        </Dialog>
     {:else}
         <Loading />
     {/if}
