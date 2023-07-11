@@ -1,6 +1,6 @@
 <script lang='ts'>
 	import { onMount } from 'svelte';
-	import { height, userStore } from '../stores';
+	import { userStore } from '../stores';
 	import { page } from '$app/stores';
 	// @ts-ignore
 	import MultiSelect from 'svelte-multiselect';
@@ -170,7 +170,7 @@
 	<meta name="description" content="Check out your raves here" />
 </svelte:head>
 
-<div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pt-8 {filters ? 'pb-52' : 'pb-36'}'>
+<div id='scrollable' class='h-[calc(100dvh-3rem)] overflow-y-scroll w-screen flex flex-col items-center pt-8 {filters ? 'pb-52' : 'pb-36'}'>
 	{#if loaded}
 		{#if raveList}
 			{#each activeRaveList

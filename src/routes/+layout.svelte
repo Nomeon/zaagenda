@@ -1,5 +1,5 @@
 <script lang='ts'>
-    import { isMobile, height } from "./stores";
+    import { isMobile } from "./stores";
     import { useMediaQuery } from "svelte-breakpoints";
     import Navbar from "$lib/components/Navbar.svelte";
     import Background from "$lib/components/Background.svelte";
@@ -10,11 +10,10 @@
 
 </script>
   
-<div id='body-div' style='height: {$height}px;' class='grid-rows-[6rem_1fr] grid gap-0'>
+<div id='body-div' class='grid-rows-[6rem_1fr] grid gap-0 h-[100dvh]'>
     <Navbar />
     <main class='flex flex-col justify-center w-full m-0 text-light1'>
         <slot />
     </main>
     <Background />
 </div>
-<svelte:window bind:innerHeight={$height} />

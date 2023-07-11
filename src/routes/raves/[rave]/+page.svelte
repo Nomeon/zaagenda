@@ -1,6 +1,6 @@
 <script lang='ts'>
     import { onMount } from "svelte";
-    import { height } from "../../stores";
+    import { goto } from "$app/navigation";
     import CustomButton from "$lib/components/CustomButton.svelte";
     import CheckboxRave from "$lib/components/CheckboxRave.svelte";
 
@@ -14,7 +14,6 @@
         if (rave) {
             if (rave.attendees || rave.tickets) {
                 await getGroup(rave._id)
-                // userList = await getUsers(users)
                 formAttendees = rave.attendees?.toString().split(',') || []
                 formTickets = rave.tickets?.toString().split(',') || []
             }
@@ -50,7 +49,7 @@
             })
         })
         if (response.status === 200) {
-            window.location.reload();
+            goto('/raves')
         } else {
             alert('Something went wrong')
         }
@@ -62,8 +61,7 @@
 	<title>Zaag | Rave page</title>
 	<meta name="description" content="Zaagplanner | Create groups and plan your next raves" />
 </svelte:head>
-
-<div id='scrollable' style="height: calc({$height}px - 3rem);" class='w-screen flex flex-col items-center pt-8 pb-36'>
+<div id='scrollable' class='w-screen flex flex-col items-center pt-8 pb-36 h-[calc(100dvh-3rem)]'>
     <h1 class='text-light1 font-bold text-2xl mb-2'>{rave.event}</h1>
     <div class='flex flex-col items-center justify-center w-11/12'>
         <div class='text-lg font-bold italic'>{new Date(rave.startDate).toLocaleDateString("nl-NL", { day: 'numeric', month: "long", year: "numeric"}) }</div>

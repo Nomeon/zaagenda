@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import { onMount, setContext } from "svelte";
-    import { height } from "../../stores";
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
     import Dialog from "$lib/components/Dialog.svelte";
@@ -117,7 +116,7 @@
 	<meta name="description" content="Zaagplanner | Create groups and plan your next raves" />
 </svelte:head>
 
-<div id='scrollable' style="height: calc({$height}px - 3rem);" class='overflow-y-scroll w-screen flex flex-col items-center pt-8 pb-36'>
+<div id='scrollable' class='h-[calc(100dvh-3rem)] overflow-y-scroll w-screen flex flex-col items-center pt-8 pb-36'>
     {#if loaded}
         {#each users as user}
             <UserCard user={user} />
