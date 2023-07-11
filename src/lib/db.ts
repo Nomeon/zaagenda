@@ -1,7 +1,7 @@
-import { DB_URI } from '$env/static/private';
+import { NEXT_PUBLIC_DB_URI } from '$env/static/private';
 import { MongoClient } from 'mongodb';
 
-const client = new MongoClient(DB_URI);
+const client = new MongoClient(NEXT_PUBLIC_DB_URI);
 
 export async function connect(): Promise<void> {
     await client.connect();

@@ -1,6 +1,6 @@
 import { SvelteKitAuth } from '@auth/sveltekit'
 import Google from '@auth/core/providers/google'
-import { GOOGLE_ID, GOOGLE_SECRET } from '$env/static/private'
+import { NEXT_PUBLIC_GOOGLE_ID, NEXT_PUBLIC_GOOGLE_SECRET, NEXT_PUBLIC_AUTH_SECRET } from '$env/static/private'
 import { redirect } from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks';
 import { connect, getDB } from '$lib/db'
@@ -29,7 +29,8 @@ export const handle = sequence(
   SvelteKitAuth({
     providers: [
       // @ts-ignore
-      Google({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET })],
+      Google({ clientId: NEXT_PUBLIC_GOOGLE_ID, clientSecret: NEXT_PUBLIC_GOOGLE_SECRET })],
+    secret: NEXT_PUBLIC_AUTH_SECRET,
     theme: {
       colorScheme: "dark",
       brandColor: "#ff4533"
