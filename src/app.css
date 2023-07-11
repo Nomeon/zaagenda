@@ -27,3 +27,32 @@ body {
 #depth {
     text-shadow: 1px 1px 5px #000;
 }
+
+/* Header fade animation */
+#fadeIN {
+    animation: fadeIn 400ms ease-in forwards;
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#fadeOUT {
+    animation: fadeOut 300ms forwards;
+
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
