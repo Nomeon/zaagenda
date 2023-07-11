@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { page } from "$app/stores";
-    import { height, userStore } from "../stores";
+    import { userStore } from "../stores";
     import { fade } from 'svelte/transition'
     import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
     import Dialog from "$lib/components/Dialog.svelte";
@@ -9,7 +9,7 @@
     import { goto } from "$app/navigation";
     import CustomButton from "$lib/components/CustomButton.svelte";
     import { title } from "../stores";
-    import MdAdd from "svelte-icons/md/MdAdd.svelte";
+    // import MdAdd from "svelte-icons/md/MdAdd.svelte";
     import { Button, SpeedDial, SpeedDialButton } from "flowbite-svelte";
 
     $: title.set('Groups')
