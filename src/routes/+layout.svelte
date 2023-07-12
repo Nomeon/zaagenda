@@ -4,15 +4,19 @@
     import Navbar from "$lib/components/Navbar.svelte";
     import Background from "$lib/components/Background.svelte";
     import "../app.css";
+    import ThreeBG from "$lib/components/ThreeBG.svelte";
 
     const mobile = useMediaQuery("(max-width: 768px)");
     $: $mobile, ($isMobile = $mobile);
 </script>
 
 <div id="body-div" class="grid-rows-[6rem_1fr] grid gap-0 h-[100dvh]">
+
     <Navbar />
     <main class="flex flex-col justify-center w-full m-0 text-light1" id="{$toggled ? "fadeOUT" : "fadeIN"}">
         <slot />
     </main>
     <Background />
+    <!-- Zet aan ipv Background voor ooster eitje -->
+    <!-- <ThreeBG /> -->
 </div>
