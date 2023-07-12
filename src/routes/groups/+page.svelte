@@ -3,17 +3,12 @@
     import { page } from "$app/stores";
     import { userStore } from "../stores";
     import { fade } from 'svelte/transition'
-    // @ts-ignore
-    import MdCallMade from 'svelte-icons/md/MdCallMade.svelte'
-    // @ts-ignore
-    import MdAdd from 'svelte-icons/md/MdAdd.svelte'
+    import { goto } from "$app/navigation";
+    import { title } from "../stores";
+    import { Button } from "flowbite-svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import Loading from "$lib/components/Loading.svelte";
-    import { goto } from "$app/navigation";
     import CustomButton from "$lib/components/CustomButton.svelte";
-    import { title } from "../stores";
-    // import MdAdd from "svelte-icons/md/MdAdd.svelte";
-    import { Button, SpeedDial, SpeedDialButton } from "flowbite-svelte";
 
     $: title.set('Groups')
 
@@ -117,7 +112,7 @@
             <a in:fade href={`/groups/${group.id}`} class='rounded-lg relative flex flex-row overflow-hidden min-h-[6rem] w-11/12 bg-dark1/60 backdrop-blur-sm shadow-sm shadow-accent hover:border-light1 hover:shadow-light1 hover:shadow-md group mb-8'>
                 <div class='flex flex-col justify-center ml-4'>
                     <div class='absolute top-8 right-4 h-8 w-8 text-accent group-hover:text-light1'>
-                        <MdCallMade />
+                        <iconify-icon icon="material-symbols:call-made" width="32" height="32" />
                     </div>
                     <p class='text-lg font-bold italic'>{group.name}</p>
                     <div class='flex text-lg'>
@@ -133,8 +128,8 @@
                     </div>
                 </div>
             </a>
-            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' class='absolute bottom-4 right-4 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
-                <MdAdd />
+            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' class='flex items-center justify-center absolute bottom-4 right-4 w-12 h-12 p-0 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
+                <iconify-icon icon="material-symbols:group-add" width="32" height="32" />
             </Button>
             <Dialog bind:dialog >
                 <div class='text-lg p-8'>
@@ -147,7 +142,7 @@
                             <CustomButton type='button' on:click={() => dialog.close()} text='CLOSE' />
                             <CustomButton type='submit' text='CONFIRM' />
                         </div>
-                        </form>
+                    </form>
                 </div>
             </Dialog>
         {:else}

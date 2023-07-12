@@ -1,6 +1,4 @@
 <script lang='ts'>
-    import MdDeleteForever from "svelte-icons/md/MdDeleteForever.svelte";
-    import MdAccountCircle from 'svelte-icons/md/MdAccountCircle.svelte'
     import { fade } from "svelte/transition";
     import { getContext } from "svelte";
 
@@ -16,7 +14,7 @@
             {#if user.image}
                 <img src={user.image} alt="user profile" class='z-20 h-11/12 w-11/12 object-cover rounded-full' referrerpolicy="no-referrer"/>
             {:else}
-                <MdAccountCircle />
+                <iconify-icon icon="material-symbols:account-circle" width="59" height="59" />
             {/if}
         </div>
     </div>
@@ -24,7 +22,7 @@
         <p class='text-xl'>{user.name}</p>
     </div>
     <button on:click={() => deleteUserFromGroup(user._id)} class='absolute top-8 right-4 h-8 w-8 text-accent hover:text-light1'>
-        <MdDeleteForever />
+        <iconify-icon icon="material-symbols:person-remove" width="32" height="32" />
     </button>
 </div>
 

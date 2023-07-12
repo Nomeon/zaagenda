@@ -1,6 +1,4 @@
 <script lang="ts">
-    import MdDeleteForever from 'svelte-icons/md/MdDeleteForever.svelte'
-    import MdCallMade from 'svelte-icons/md/MdCallMade.svelte';
     import { fade } from "svelte/transition";
 
     export let rave: Rave;
@@ -39,11 +37,11 @@
         <p class='text-md italic font-bold'>{raveGroup.name}</p>
     </div>
     <div class='flex flex-col absolute right-4 h-full w-8 justify-around py-2'>
-        <a id='editbtn' href={link} class='h-6 text-accent hover:text-light1'>
-            <MdCallMade />
+        <a id='editbtn' href={link} class='h-6 w-6 text-accent hover:text-light1'>
+            <iconify-icon icon="material-symbols:call-made" width="24" height="24" />
         </a>
-        <button on:click|preventDefault={() => deleteRave(rave)} class='h-6 text-accent hover:text-light1'>
-            <MdDeleteForever />
+        <button on:click|preventDefault={() => deleteRave(rave)} class='h-6 w-6 text-accent hover:text-light1'>
+            <iconify-icon icon="material-symbols:delete-forever-sharp" width="24" height="24" />
         </button>
     </div>
 </div>

@@ -1,12 +1,4 @@
 <script lang='ts'>
-    // @ts-ignore
-    import FaSpotify from 'svelte-icons/fa/FaSpotify.svelte'
-        // @ts-ignore
-    import FaCapsules from 'svelte-icons/fa/FaCapsules.svelte'
-        // @ts-ignore
-    import FaSignInAlt from 'svelte-icons/fa/FaSignInAlt.svelte'
-        // @ts-ignore
-    import FaSignOutAlt from 'svelte-icons/fa/FaSignOutAlt.svelte'
     import { signIn, signOut } from "@auth/sveltekit/client"
     import { toggled, isMobile, title } from '../../routes/stores';
     import { page } from '$app/stores';
@@ -44,10 +36,9 @@
             <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md' referrerpolicy="no-referrer" />
         </a> 
     {:else}
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div on:click={() => signIn()} class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
-            <FaCapsules />
-        </div>
+        <button type="button" on:click={() => signIn()} class='flex items-center cursor-pointer w-8 h-8 text-light1 hover:text-accent'>
+            <iconify-icon icon="vaadin:pills" width="2rem" height="2rem"></iconify-icon>
+        </button>
     {/if}
     </div> 
     {#if $toggled === true && width <= 768}
@@ -62,18 +53,16 @@
         </div>
         <div class='w-1/2 flex items-center gap-8 justify-center max-md:w-full max-md:gap-16' id='socials'>
             {#if $page.data.session}
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <div on:click|preventDefault={() => signOut()} data-sveltekit-preload-data="off" class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
-                    <FaSignOutAlt />
-                </div>
+                <button type="button" on:click|preventDefault={() => signOut()} data-sveltekit-preload-data="off" class='flex items-center cursor-pointer w-10 h-10 text-light1 hover:text-accent'>
+                    <iconify-icon icon="material-symbols:logout-sharp" width="2.5rem" height="2.5rem" />
+                </button>
             {:else}
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <div on:click|preventDefault={() => signIn()} data-sveltekit-preload-data="off" class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
-                    <FaSignInAlt />
-                </div>
+                <button type="button" on:click|preventDefault={() => signIn()} data-sveltekit-preload-data="off" class='flex items-center cursor-pointer w-10 h-10 text-light1 hover:text-accent'>
+                    <iconify-icon icon="material-symbols:login-sharp" width="2.5rem" height="2.5rem" />
+                </button>
             {/if}
-            <a href='https://open.spotify.com/playlist/0qOFLLUh5jmsxTVLQrKspp?si=6c98f1713f4741bd' class='w-6 flex items-center cursor-pointer max-md:w-8 text-light1 hover:text-accent'>
-                <FaSpotify />
+            <a href='https://open.spotify.com/playlist/0qOFLLUh5jmsxTVLQrKspp?si=6c98f1713f4741bd' class='flex items-center cursor-pointer w-10 h-10 text-light1 hover:text-accent'>
+                <iconify-icon icon="mdi:spotify" width="2.5rem" height="2.5rem"></iconify-icon>
             </a>
         </div>
     </div>

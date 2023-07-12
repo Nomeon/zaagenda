@@ -3,16 +3,15 @@
     import { onMount, setContext } from "svelte";
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
+    import { title } from "../../stores";
+    import { Button } from "flowbite-svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import UserCard from "$lib/components/UserCard.svelte";
     import Loading from "$lib/components/Loading.svelte";
     import CustomButton from "$lib/components/CustomButton.svelte";
-    // @ts-ignore
-    import MdAdd from 'svelte-icons/md/MdAdd.svelte'
-    import { title } from "../../stores";
-    import { Button } from "flowbite-svelte";
     
     export let data: PageData;
+    
     let loaded: boolean;
     let group = data.groupObject;
     let users: User[] = [];
@@ -124,7 +123,7 @@
             <UserCard user={user} />
         {/each}
         <Button type='button' on:click={() => dialog.showModal()} text='Add' class='absolute bottom-4 right-4 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
-            <MdAdd />
+            <iconify-icon icon="material-symbols:person-add" width="32" height="32" />
         </Button>
         <Dialog bind:dialog >
             <div class='text-lg p-8'>

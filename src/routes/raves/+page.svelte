@@ -2,17 +2,15 @@
 	import { onMount } from 'svelte';
 	import { userStore } from '../stores';
 	import { page } from '$app/stores';
+	import { title } from "../stores";
+    import { Button } from 'flowbite-svelte';
 	// @ts-ignore
 	import MultiSelect from 'svelte-multiselect';
 	import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import CustomButton from '$lib/components/CustomButton.svelte';
-	import { title } from "../stores";
     import Loading from '$lib/components/Loading.svelte';
-	// @ts-ignore
-	import MdAdd from 'svelte-icons/md/MdAdd.svelte'
-    import { Button, SpeedDial, SpeedDialButton } from 'flowbite-svelte';
 
 	$: title.set('Raves')
 
@@ -187,7 +185,7 @@
 					{/each}
 				</ul>
 				<Button type='button' on:click={() => dialog.showModal()} text='Add' class='absolute bottom-4 right-4 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
-					<MdAdd />
+                    <iconify-icon icon="material-symbols:add-ad-sharp" width="32" height="32" />
 				</Button>
 			</div>
 		<Dialog bind:dialog >

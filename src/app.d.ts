@@ -14,6 +14,4 @@ declare module '$env/static/private' {
 	export const GOOGLE_SECRET: string;
 }
 
-declare module '*';
-
 export {};
