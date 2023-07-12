@@ -1,7 +1,9 @@
 {
+    "lang": "en",
     "name": "Zaagplanner",
     "short_name": "Zaagplanner",
     "start_url": "/",
+    "scope": "/",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -14,8 +16,8 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#FFFFFF",
-    "background_color": "#0f172a",
+    "theme_color": "#00FFFF",
+    "background_color": "#00FFFF",
     "display": "standalone",
     "description": "Zaagplanner | Create groups and plan your next raves"
 }
