@@ -1,9 +1,9 @@
 import { SvelteKitAuth } from '@auth/sveltekit'
-import Google from '@auth/core/providers/google'
 import { NEXT_PUBLIC_GOOGLE_ID, NEXT_PUBLIC_GOOGLE_SECRET, NEXT_PUBLIC_AUTH_SECRET } from '$env/static/private'
-import { redirect } from '@sveltejs/kit'
+import { redirect, type Handle } from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks';
 import { connect, getDB } from '$lib/db'
+import Google from '@auth/core/providers/google'
 
 let db: { collection: (arg0: string) => any; };
 
@@ -18,25 +18,20 @@ connect().then(():void => {
 async function authorization({ event, resolve }: any) {
   if (event.url.pathname.includes("groups") || event.url.pathname.includes("raves")) {
     const session = await event.locals.getSession();
-    if (!session?.user) {
+    if (!session) {
       throw redirect(303, "/")
     }
   }
   return resolve(event);
 }
 
-export const handle = sequence(
+export const handle: Handle = sequence(
   SvelteKitAuth({
-    providers: [
-      // @ts-ignore
-      Google({ clientId: NEXT_PUBLIC_GOOGLE_ID, clientSecret: NEXT_PUBLIC_GOOGLE_SECRET })],
+    // @ts-ignore
+    providers: [Google({ clientId: NEXT_PUBLIC_GOOGLE_ID, clientSecret: NEXT_PUBLIC_GOOGLE_SECRET })],
     secret: NEXT_PUBLIC_AUTH_SECRET,
-    theme: {
-      colorScheme: "dark",
-      brandColor: "#ff4533"
-    },
     callbacks: {
-      async signIn({ user, account, profile, email, credentials }: any) {
+      async signIn({ profile }: any) {
         const collection = db.collection("users");
         const checkExistingUser = await collection.findOne({ email: profile.email })
         if (checkExistingUser) {
@@ -48,5 +43,5 @@ export const handle = sequence(
       }
     }
   }),
-  authorization
+//   authorization
 )
