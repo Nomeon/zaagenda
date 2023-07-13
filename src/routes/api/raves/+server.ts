@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 import { getDB } from "$lib/db";
 
 const db = getDB();
@@ -11,7 +11,7 @@ export async function GET(request: Request): Promise<Response> {
         const id = url.searchParams.get("id") || "";
 
         if (id) {
-            const groups = await groupCol.find({ user_ids: new ObjectId(id) }).toArray();
+            const groups = await groupCol.find({ user_ids: new mongoose.Types.ObjectId(id) }).toArray();
             let raveList: { name?: string | undefined; raves?: Object[] | undefined; amount?: number | undefined }[] = [];
           
             await Promise.all(groups.map(async (element: Group) => {
@@ -49,11 +49,11 @@ export async function POST({ request }: any): Promise<Response> {
         }
         let response;
         if (attendees && tickets) {
-            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, attendees: attendees.map((id: string) => new ObjectId(id)), tickets: tickets.map((id: string) => new ObjectId(id))});
+            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, attendees: attendees.map((id: string) => new mongoose.Types.ObjectId(id)), tickets: tickets.map((id: string) => new mongoose.Types.ObjectId(id))});
         } else if (attendees) {
-            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, attendees: attendees.map((id: string) => new ObjectId(id))});
+            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, attendees: attendees.map((id: string) => new mongoose.Types.ObjectId(id))});
         } else if (tickets) {
-            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, tickets: tickets.map((id: string) => new ObjectId(id))});
+            response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON, tickets: tickets.map((id: string) => new mongoose.Types.ObjectId(id))});
         } else {
             response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON});
         }
@@ -72,11 +72,11 @@ export async function PUT({ request }: any): Promise<Response> {
         const { id, attendees, tickets } = body;
 
         if (id && attendees && tickets) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $set: { attendees: attendees.map((id: string) => new ObjectId(id)), tickets: tickets.map((id: string) => new ObjectId(id)) }});
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $set: { attendees: attendees.map((id: string) => new mongoose.Types.ObjectId(id)), tickets: tickets.map((id: string) => new mongoose.Types.ObjectId(id)) }});
         } else if (id && attendees) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $set: { attendees: attendees.map((id: string) => new ObjectId(id)) }});
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $set: { attendees: attendees.map((id: string) => new mongoose.Types.ObjectId(id)) }});
         } else if (id && tickets) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $set: { tickets: tickets.map((id: string) => new ObjectId(id)) }});
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $set: { tickets: tickets.map((id: string) => new mongoose.Types.ObjectId(id)) }});
         }
 
         return new Response(JSON.stringify(body), { status: 200 });
@@ -93,9 +93,9 @@ export async function DELETE({ request }: any): Promise<Response> {
         const { id } = body;
 
         if (id) {
-            collection.deleteOne({ _id: new ObjectId(id) });
+            collection.deleteOne({ _id: new mongoose.Types.ObjectId(id) });
             const groupcollection = db.collection("groups");
-            groupcollection.updateMany({}, { $pull: { rave_ids: new ObjectId(id) } });
+            groupcollection.updateMany({}, { $pull: { rave_ids: new mongoose.Types.ObjectId(id) } });
         } else {
             return new Response("Bad Request", { status: 400 });
         }

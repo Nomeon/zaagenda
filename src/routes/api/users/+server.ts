@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 import { getDB } from "$lib/db";
 
 const db = getDB();
@@ -19,15 +19,15 @@ export async function GET(request: Request): Promise<Response> {
         let user;
     
         if (id) {
-            const o_id = new ObjectId(id);
+            const o_id = new mongoose.Types.ObjectId(id);
             user = await collection.find({ _id: o_id }).toArray();
         } else if (email) {
             query.email = email;
             user = await collection.find(query).toArray();
         } else if (ids) {
-            let o_ids: ObjectId[] = [];
+            let o_ids: mongoose.Types.ObjectId[] = [];
             ids.forEach((element: string) => {
-                o_ids.push(new ObjectId(element))        
+                o_ids.push(new mongoose.Types.ObjectId(element))        
             });
             user = await collection.find({ _id: {$in: o_ids }}).toArray();
         }
@@ -45,7 +45,7 @@ export async function PUT({ request }: any): Promise<Response> {
         const { id, name } = body;
 
         if (name) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $set: { name } });
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $set: { name } });
         }
         return new Response(JSON.stringify({ id, name }));
     } catch (error) {

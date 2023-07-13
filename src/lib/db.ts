@@ -1,16 +1,14 @@
-import { NEXT_PUBLIC_DB_URI } from '$env/static/private';
-import { MongoClient } from 'mongodb';
-
-const client = new MongoClient(NEXT_PUBLIC_DB_URI);
+import { NEXT_PUBLIC_MONGOOSE } from '$env/static/private';
+import mongoose from 'mongoose';
 
 export async function connect(): Promise<void> {
-    await client.connect();
+    await mongoose.connect(NEXT_PUBLIC_MONGOOSE);
 }
 
 export async function disconnect(): Promise<void> {
-    await client.close();
+    await mongoose.disconnect();
 }
 
 export function getDB(): any {
-    return client.db('zaagplanner');
+    return mongoose.connection.db;
 }

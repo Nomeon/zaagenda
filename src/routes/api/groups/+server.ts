@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 import { getDB } from "$lib/db";
 
 const db = getDB();
@@ -15,13 +15,13 @@ export async function GET(request: Request): Promise<Response> {
         const query: { [key: string]: any } = {};
     
         if (id) {
-            query._id = new ObjectId(id);
+            query._id = new mongoose.Types.ObjectId(id);
         } else if (user) {
-            query.user_ids = new ObjectId(user);
+            query.user_ids = new mongoose.Types.ObjectId(user);
         } else if (name) {
             query.group_name = name;
         } else if (rave) {
-            query.rave_ids = new ObjectId(rave);
+            query.rave_ids = new mongoose.Types.ObjectId(rave);
         }
     
         const groups = await collection.find(query).toArray();
@@ -44,7 +44,7 @@ export async function POST({ request }: any): Promise<Response> {
         if (!group_name || (user_ids.length === 0)) {
             return new Response("Bad Request", { status: 400 });
         }
-        const { insertedId } = await collection.insertOne({ group_name: group_name, user_ids: user_ids.map((id: string) => new ObjectId(id)), rave_ids: [] });
+        const { insertedId } = await collection.insertOne({ group_name: group_name, user_ids: user_ids.map((id: string) => new mongoose.Types.ObjectId(id)), rave_ids: [] });
         return new Response(JSON.stringify(insertedId.toString()), { status: 201 });
     } catch (error) {
         console.error(error);
@@ -59,11 +59,11 @@ export async function PUT({ request }: any): Promise<Response> {
         const { id, user_ids, rave_ids } = body;
 
         if (id && user_ids && rave_ids) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { user_ids: { $each: user_ids.map((id: string) => new ObjectId(id)) }, rave_ids: { $each: rave_ids.map((id: string) => new ObjectId(id)) }}});
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $addToSet: { user_ids: { $each: user_ids.map((id: string) => new mongoose.Types.ObjectId(id)) }, rave_ids: { $each: rave_ids.map((id: string) => new mongoose.Types.ObjectId(id)) }}});
         } else if (id && user_ids) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { user_ids: { $each: user_ids.map((id: string) => new ObjectId(id)) }}});
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $addToSet: { user_ids: { $each: user_ids.map((id: string) => new mongoose.Types.ObjectId(id)) }}});
         } else if (id && rave_ids) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $addToSet: { rave_ids: { $each: rave_ids.map((id: string) => new ObjectId(id)) }}});
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $addToSet: { rave_ids: { $each: rave_ids.map((id: string) => new mongoose.Types.ObjectId(id)) }}});
         }
 
         return new Response(JSON.stringify(body), { status: 200 });
@@ -80,11 +80,11 @@ export async function DELETE({ request }: any): Promise<Response> {
         const { id, users, raves } = body;
 
         if (id && !users && !raves) {
-            collection.deleteOne({ _id: new ObjectId(id) });
+            collection.deleteOne({ _id: new mongoose.Types.ObjectId(id) });
         } else if (id && (users.length > 0)) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $pullAll: { user_ids: users.map((id: string) => new ObjectId(id)) }});
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $pullAll: { user_ids: users.map((id: string) => new mongoose.Types.ObjectId(id)) }});
         } else if (id && (raves.length > 0)) {
-            collection.updateOne({ _id: new ObjectId(id) }, { $pullAll: { rave_ids: raves.map((id: string) => new ObjectId(id)) }});
+            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $pullAll: { rave_ids: raves.map((id: string) => new mongoose.Types.ObjectId(id)) }});
         }
 
         return new Response(JSON.stringify(body), { status: 200 });

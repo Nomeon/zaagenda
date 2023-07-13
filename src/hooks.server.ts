@@ -1,29 +1,20 @@
 import { SvelteKitAuth } from '@auth/sveltekit'
 import { NEXT_PUBLIC_GOOGLE_ID, NEXT_PUBLIC_GOOGLE_SECRET, NEXT_PUBLIC_AUTH_SECRET } from '$env/static/private'
-import { redirect, type Handle } from '@sveltejs/kit'
+import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { connect, getDB } from '$lib/db'
 import Google from '@auth/core/providers/google'
+import type mongoose from 'mongoose';
 
-let db: { collection: (arg0: string) => any; };
+let db: mongoose.mongo.Db;
 
 connect().then(():void => {
   db = getDB();
-  console.log("MongoDB started");
+  console.log("Mongoose connected");
 }).catch((e) => {
-  console.log("MongoDB failed to start");
+  console.log("Mongoose failed to start");
   console.log(e);
 });
-
-async function authorization({ event, resolve }: any) {
-  if (event.url.pathname.includes("groups") || event.url.pathname.includes("raves")) {
-    const session = await event.locals.getSession();
-    if (!session) {
-      throw redirect(303, "/")
-    }
-  }
-  return resolve(event);
-}
 
 export const handle: Handle = sequence(
   SvelteKitAuth({
@@ -43,5 +34,4 @@ export const handle: Handle = sequence(
       }
     }
   }),
-//   authorization
 )

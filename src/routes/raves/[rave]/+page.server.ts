@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
-import { ObjectId } from 'mongodb';
 import { getDB } from '$lib/db';
+import mongoose from 'mongoose';
 
 const db = getDB();
 
@@ -9,7 +9,7 @@ export async function load({ params }: { params: { rave: string } }) {
     if (params) {
         const id = params.rave;
         const collection = db.collection("raves");
-        const rave_id = new ObjectId(id);
+        const rave_id = new mongoose.Types.ObjectId(id);
         const rave = await collection.find({ _id: rave_id }).next();
         let raveObject: Rave = {
             _id: id,
