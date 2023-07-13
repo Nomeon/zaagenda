@@ -2,9 +2,9 @@
     import { isMobile, toggled } from "./stores";
     import { useMediaQuery } from "svelte-breakpoints";
     import Navbar from "$lib/components/Navbar.svelte";
-    import Background from "$lib/components/Background.svelte";
+    // import Background from "$lib/components/Background.svelte";
+    import Flower from "$lib/components/Flower.svelte";
     import "../app.css";
-    import ThreeBG from "$lib/components/ThreeBG.svelte";
 
     const mobile = useMediaQuery("(max-width: 768px)");
     $: $mobile, ($isMobile = $mobile);
@@ -16,7 +16,6 @@
     <main class="flex flex-col justify-center w-full m-0 text-light1" id="{$toggled ? "fadeOUT" : "fadeIN"}">
         <slot />
     </main>
-    <Background />
-    <!-- Zet aan ipv Background voor ooster eitje -->
-    <!-- <ThreeBG /> -->
+    <!-- <Background /> -->
+    <Flower />
 </div>
