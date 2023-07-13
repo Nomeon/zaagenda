@@ -190,5 +190,5 @@
     }
 
 </script>
-<canvas bind:this={canvas} class="fixed w-full h-full -z-10 " />
+<canvas bind:this={canvas} class="fixed w-full h-full bg-black -z-10 " />
 <svelte:window bind:innerWidth={w} bind:innerHeight={h} on:resize={onWindowResize} />
