@@ -19,8 +19,21 @@ let db: mongoose.mongo.Db;
 })();
 
 export const handle: Handle = SvelteKitAuth({
-    // @ts-ignore
-    providers: [Google({ clientId: NEXT_PUBLIC_GOOGLE_ID, clientSecret: NEXT_PUBLIC_GOOGLE_SECRET })],
+
+    providers: [
+        // @ts-ignore
+        Google({ 
+            clientId: NEXT_PUBLIC_GOOGLE_ID, 
+            clientSecret: NEXT_PUBLIC_GOOGLE_SECRET,
+            authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
+                }
+            },
+        })
+    ],
     secret: NEXT_PUBLIC_AUTH_SECRET,
     callbacks: {
       async signIn({ user, account, profile, email, credentials }: any) {
