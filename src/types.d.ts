@@ -3,6 +3,7 @@ type User = {
     name: string;
     email: string;
     image: string;
+    code: string;
 }
 
 type Group = {

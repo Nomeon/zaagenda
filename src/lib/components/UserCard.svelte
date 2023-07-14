@@ -20,6 +20,7 @@
     </div>
     <div id='right-card' class='flex flex-col absolute left-32 justify-center h-full'>
         <p class='text-xl'>{user.name}</p>
+        <p class='text-lg'>Code: <span class='font-bold italic'>{user.code}</span></p>
     </div>
     <button on:click={() => deleteUserFromGroup(user._id)} class='absolute top-8 right-4 h-8 w-8 text-accent hover:text-light1'>
         <iconify-icon icon="material-symbols:person-remove" width="32" height="32" />

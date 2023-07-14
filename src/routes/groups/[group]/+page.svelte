@@ -16,7 +16,7 @@
     let group = data.groupObject;
     let users: User[] = [];
     let dialog: Dialog;
-    let formEmail: string;
+    let formCode: string;
 
     setContext('deletion', {
         deleteUserFromGroup
@@ -31,8 +31,8 @@
         loaded = true
     })
 
-    async function getUser(email: string): Promise<User[]> {
-        const url = `/api/users?email=${email}`
+    async function getUser(code: string): Promise<User[]> {
+        const url = `/api/users?code=${code}`
 		const response = await fetch(url);
 		const user = await response.json();
         return user
@@ -86,8 +86,8 @@
         })
     }
 
-    async function addUserToGroup(email: string): Promise<void> {
-        let user_id = await getUser(email)
+    async function addUserToGroup(code: string): Promise<void> {
+        let user_id = await getUser(code)
         if (user_id.length > 0 && confirm(`Do you want to add ${user_id[0].name} to the group?`)) {
             let user_ids = [user_id[0]._id]
             await fetch(`/api/groups`, {
@@ -127,10 +127,10 @@
         </Button>
         <Dialog bind:dialog >
             <div class='text-lg p-8'>
-                <form method="dialog" on:submit={() => addUserToGroup(formEmail)} class='text-lg'>
+                <form method="dialog" on:submit={() => addUserToGroup(formCode)} class='text-lg'>
                     <div class='flex flex-col'>
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" bind:value={formEmail} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
+                        <label for="code">Code</label>
+                        <input type="text" id="code" name="code" bind:value={formCode} required class='text-dark1 mb-8 py-1 px-2 rounded-sm'/>
                     </div>
                     <div class='flex gap-8 justify-center'>
                         <CustomButton type='button' on:click={() => dialog.close()} text='CLOSE' />

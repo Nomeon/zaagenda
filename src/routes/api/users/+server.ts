@@ -9,13 +9,14 @@ export async function GET(request: Request): Promise<Response> {
         const url = new URL(request.url);
         const id = url.searchParams.get("id") || "";
         const email = url.searchParams.get("email") || "";
+        const code = url.searchParams.get("code") || "";
         const JSONids = url.searchParams.get("ids") || "";
         let ids: string[] = [];
         
         if (JSONids !== "") {
             ids = JSON.parse(decodeURIComponent(JSONids))
         }
-        const query: { id?: string; name?: string; email?: string; ids?: [] } = {};
+        const query: { id?: string; name?: string; email?: string; ids?: []; code?: string; } = {};
         let user;
     
         if (id) {
@@ -23,6 +24,9 @@ export async function GET(request: Request): Promise<Response> {
             user = await collection.find({ _id: o_id }).toArray();
         } else if (email) {
             query.email = email;
+            user = await collection.find(query).toArray();
+        } else if (code) {
+            query.code = code;
             user = await collection.find(query).toArray();
         } else if (ids) {
             let o_ids: mongoose.Types.ObjectId[] = [];
