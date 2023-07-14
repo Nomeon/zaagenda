@@ -20,7 +20,7 @@ export const handle: Handle = SvelteKitAuth({
     providers: [Google({ clientId: NEXT_PUBLIC_GOOGLE_ID, clientSecret: NEXT_PUBLIC_GOOGLE_SECRET })],
     secret: NEXT_PUBLIC_AUTH_SECRET,
     callbacks: {
-      async signIn({ profile }: any) {
+      async signIn({ user, account, profile, email, credentials }: any) {
         const collection = db.collection("users");
         const existingUser = await collection.findOne({ email: profile.email })
         if (existingUser) {
