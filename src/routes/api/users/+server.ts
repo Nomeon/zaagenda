@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import { getDB } from "$lib/db";
 
-const db = getDB();
+
 
 export async function GET(request: Request): Promise<Response> {
     try {
+        const db = getDB();
         const collection = db.collection("users");
         const url = new URL(request.url);
         const id = url.searchParams.get("id") || "";
@@ -44,6 +45,7 @@ export async function GET(request: Request): Promise<Response> {
 
 export async function PUT({ request }: any): Promise<Response> {
     try {
+        const db = getDB();
         const collection = db.collection("users");
         const body = await request.json();
         const { id, name } = body;
@@ -60,6 +62,7 @@ export async function PUT({ request }: any): Promise<Response> {
 
 
 export async function POST({ request }: any): Promise<Response> {
+    const db = getDB();
     const collection = db.collection("users");
     const body = await request.json();
     const { name, email, image } = body;
