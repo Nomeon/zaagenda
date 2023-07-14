@@ -7,13 +7,16 @@ import type mongoose from 'mongoose';
 
 let db: mongoose.mongo.Db;
 
-connect().then(():void => {
-  db = getDB();
-  console.log("Mongoose connected");
-}).catch((e) => {
-  console.log("Mongoose failed to start");
-  console.log(e);
-});
+(async () => {
+    try {
+      await connect();
+      db = getDB();
+      console.log("Mongoose connected");
+    } catch (e) {
+      console.log("Mongoose failed to start");
+      console.error(e);
+    }
+})();
 
 export const handle: Handle = SvelteKitAuth({
     // @ts-ignore
@@ -27,7 +30,7 @@ export const handle: Handle = SvelteKitAuth({
             return true;
         } else {
             const code = await generateCode();
-            collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture, code: code })
+            await collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture, code: code })
             return true;
         }
       }
