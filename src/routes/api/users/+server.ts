@@ -6,6 +6,7 @@ import { getDB } from "$lib/db";
 export async function GET(request: Request): Promise<Response> {
     try {
         const db = getDB();
+        console.log(db)
         const collection = db.collection("users");
         const url = new URL(request.url);
         const id = url.searchParams.get("id") || "";
