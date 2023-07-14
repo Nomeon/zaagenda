@@ -1,5 +1,5 @@
 import { SvelteKitAuth } from '@auth/sveltekit'
-import { GOOGLE_ID, GOOGLE_SECRET, NEXTAUTH_SECRET } from '$env/static/private'
+import { GOOGLE_ID, GOOGLE_SECRET } from '$env/static/private'
 import { connect, getDB } from '$lib/db'
 import Google from '@auth/core/providers/google'
 import type { Handle } from '@sveltejs/kit';
@@ -19,18 +19,14 @@ let db: mongoose.mongo.Db;
 })();
 
 export const handle: Handle = SvelteKitAuth({
-
     providers: [
-        // @ts-ignore
         Google({ 
             clientId: GOOGLE_ID, 
             clientSecret: GOOGLE_SECRET,
         })
     ],
-    secret: NEXTAUTH_SECRET,
-    trustHost: true,
     callbacks: {
-      async signIn({ user, account, profile, email, credentials }: any) {
+      async signIn({ profile }: any) {
         const collection = db.collection("users");
         const existingUser = await collection.findOne({ email: profile.email })
         if (existingUser) {

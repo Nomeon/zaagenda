@@ -9,9 +9,4 @@ declare global {
 	}
 }
 
-declare module '$env/static/private' {
-	export const GOOGLE_ID: string;
-	export const GOOGLE_SECRET: string;
-}
-
 export {};
