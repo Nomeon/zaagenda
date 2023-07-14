@@ -1,8 +1,8 @@
 <script lang="ts">
     import { isMobile, toggled } from "./stores";
     import Navbar from "$lib/components/Navbar.svelte";
-    // import Background from "$lib/components/Background.svelte";
-    import Flower from "$lib/components/Flower.svelte";
+    import Background from "$lib/components/Background.svelte";
+    // import Flower from "$lib/components/Flower.svelte";
     import "../app.css";
 
     let w: number;
@@ -14,7 +14,7 @@
     <main class="flex flex-col justify-center w-full m-0 text-light1" id="{$toggled ? "fadeOUT" : "fadeIN"}">
         <slot />
     </main>
-    <!-- <Background /> -->
-    <Flower />
+    <Background />
+    <!-- <Flower /> -->
 </div>
 <svelte:window bind:innerWidth={w} />
