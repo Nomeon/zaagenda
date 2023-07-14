@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { getDB } from "$lib/db";
 
-
-
 export async function GET(request: Request): Promise<Response> {
     try {
         const db = getDB();
@@ -14,18 +12,18 @@ export async function GET(request: Request): Promise<Response> {
         if (id) {
             const groups = await groupCol.find({ user_ids: new mongoose.Types.ObjectId(id) }).toArray();
             let raveList: { name?: string | undefined; raves?: Object[] | undefined; amount?: number | undefined }[] = [];
-          
-            await Promise.all(groups.map(async (element: Group) => {
-              let rave_ids = element.rave_ids;
-              let raves = await raveCol.find({ _id: { $in: rave_ids } }).toArray();
-              if (raves) {
-                let ravesObj: { group_id?: string, name?: string, raves?: Object[], group_members?: string[] } = {};
-                ravesObj.group_id = element._id?.toString();
-                ravesObj.name = element.group_name;
-                ravesObj.raves = raves;
-                ravesObj.group_members = element.user_ids;
-                raveList = [...raveList, ravesObj];
-              }
+        
+            await Promise.all(groups.map(async (element) => {
+                let rave_ids = element.rave_ids;
+                let raves = await raveCol.find({ _id: { $in: rave_ids } }).toArray();
+                if (raves) {
+                    let ravesObj: { group_id?: string, name?: string, raves?: Object[], group_members?: string[] } = {};
+                    ravesObj.group_id = element._id?.toString();
+                    ravesObj.name = element.group_name;
+                    ravesObj.raves = raves;
+                    ravesObj.group_members = element.user_ids;
+                    raveList = [...raveList, ravesObj];
+                }
             }));
             return new Response(JSON.stringify(raveList), { status: 200 });
         } 
@@ -97,9 +95,10 @@ export async function DELETE({ request }: any): Promise<Response> {
         const { id } = body;
 
         if (id) {
-            collection.deleteOne({ _id: new mongoose.Types.ObjectId(id) });
-            const groupcollection = db.collection("groups");
-            groupcollection.updateMany({}, { $pull: { rave_ids: new mongoose.Types.ObjectId(id) } });
+            const objectToDelete = new mongoose.Types.ObjectId(id);
+            collection.deleteOne({ _id: objectToDelete });
+            // const groupcollection = db.collection("groups");
+            // await groupcollection.updateMany({}, { $pull: { rave_ids: objectToDelete } });
         } else {
             return new Response("Bad Request", { status: 400 });
         }

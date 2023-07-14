@@ -9,6 +9,7 @@ let db: mongoose.mongo.Db;
 
 connect().then(():void => {
     console.log("MongoDB started");
+    db = getDB();
 }).catch((e) => {
     console.log("MongoDB failed to start");
     console.log(e);
