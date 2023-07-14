@@ -7,6 +7,13 @@ import type mongoose from 'mongoose';
 
 let db: mongoose.mongo.Db;
 
+connect().then(():void => {
+    console.log("MongoDB started");
+}).catch((e) => {
+    console.log("MongoDB failed to start");
+    console.log(e);
+});
+
 export const handle: Handle = SvelteKitAuth({
     providers: [
         Google({ 
@@ -16,7 +23,6 @@ export const handle: Handle = SvelteKitAuth({
     ],
     callbacks: {
         async signIn({ profile }: any) {
-            await connect();
             db = getDB();
             const collection = db.collection("users");
             const existingUser = await collection.findOne({ email: profile.email })
