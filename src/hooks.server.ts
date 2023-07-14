@@ -7,16 +7,16 @@ import type mongoose from 'mongoose';
 
 let db: mongoose.mongo.Db;
 
-(async () => {
-    try {
-      await connect();
-      db = getDB();
-      console.log("Mongoose connected");
-    } catch (e) {
-      console.log("Mongoose failed to start");
-      console.error(e);
-    }
-})();
+// (async () => {
+//     try {
+//       await connect();
+//       db = getDB();
+//       console.log("Mongoose connected");
+//     } catch (e) {
+//       console.log("Mongoose failed to start");
+//       console.error(e);
+//     }
+// })();
 
 export const handle: Handle = SvelteKitAuth({
     providers: [
@@ -25,6 +25,21 @@ export const handle: Handle = SvelteKitAuth({
             clientSecret: GOOGLE_SECRET,
         })
     ],
+    callbacks: {
+        async signIn({ profile }: any) {
+            await connect();
+            db = getDB();
+            const collection = db.collection("users");
+            const existingUser = await collection.findOne({ email: profile.email })
+            if (existingUser) {
+                return true;
+            } else {
+                const code = await generateCode();
+                await collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture, code: code })
+                return true;
+            }
+        }
+    }
     // callbacks: {
     //   async signIn({ profile }: any) {
     //     const collection = db.collection("users");

@@ -39,6 +39,6 @@ export async function disconnect(): Promise<void> {
     console.log("Disconnected");
 }
 
-export function getDB(): any {
+export function getDB(): mongoose.mongo.Db {
     return mongoose.connection.db;
 }
