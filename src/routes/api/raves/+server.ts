@@ -95,12 +95,10 @@ export async function DELETE({ request }: any): Promise<Response> {
         const { id } = body;
 
         if (id) {
-            const objectToDelete = new ObjectId(id);
-            collection.deleteOne({ _id: objectToDelete });
-            // FIX THIS
-
-            // const groupcollection = db.collection("groups");
-            // await groupcollection.updateMany({}, { $pull: { rave_ids: objectToDelete } });
+            collection.deleteOne({ _id: new ObjectId(id) });
+            const groupCollection = db.collection("groups");
+            // @ts-ignore Deze werkt wel gewoon, maar typescript ziet het niet
+            groupCollection.updateMany({}, { $pull: { rave_ids: new ObjectId(id) }});
         } else {
             return new Response("Bad Request", { status: 400 });
         }
