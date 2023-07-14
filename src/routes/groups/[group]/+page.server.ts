@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { getDB } from '$lib/db';
-import mongoose from 'mongoose';
+import { ObjectId} from 'mongodb';
 
 const db = getDB();
 
@@ -9,7 +9,7 @@ export async function load({ params }: { params: { group: string } }) {
     if (params) {
         const id = params.group;
         const collection = db.collection("groups");
-        const group_id = new mongoose.Types.ObjectId(id);
+        const group_id = new ObjectId(id);
         const group = await collection.find({ _id: group_id }).next();
         let groupObject: { _id?: string; group_name?: string; user_ids?: Array<string>; rave_ids?: Array<string>} = {};
     

@@ -1,12 +1,10 @@
-import mongoose from "mongoose";
 import { getDB } from "$lib/db";
+import { ObjectId } from "mongodb";
 
-
+const db = getDB();
 
 export async function GET(request: Request): Promise<Response> {
     try {
-        const db = getDB();
-        console.log(db)
         const collection = db.collection("users");
         const url = new URL(request.url);
         const id = url.searchParams.get("id") || "";
@@ -22,7 +20,7 @@ export async function GET(request: Request): Promise<Response> {
         let user;
     
         if (id) {
-            const o_id = new mongoose.Types.ObjectId(id);
+            const o_id = new ObjectId(id);
             user = await collection.find({ _id: o_id }).toArray();
         } else if (email) {
             query.email = email;
@@ -31,9 +29,9 @@ export async function GET(request: Request): Promise<Response> {
             query.code = code;
             user = await collection.find(query).toArray();
         } else if (ids) {
-            let o_ids: mongoose.Types.ObjectId[] = [];
+            let o_ids: ObjectId[] = [];
             ids.forEach((element: string) => {
-                o_ids.push(new mongoose.Types.ObjectId(element))        
+                o_ids.push(new ObjectId(element))        
             });
             user = await collection.find({ _id: {$in: o_ids }}).toArray();
         }
@@ -46,13 +44,12 @@ export async function GET(request: Request): Promise<Response> {
 
 export async function PUT({ request }: any): Promise<Response> {
     try {
-        const db = getDB();
         const collection = db.collection("users");
         const body = await request.json();
         const { id, name } = body;
 
         if (name) {
-            collection.updateOne({ _id: new mongoose.Types.ObjectId(id) }, { $set: { name } });
+            collection.updateOne({ _id: new ObjectId(id) }, { $set: { name } });
         }
         return new Response(JSON.stringify({ id, name }));
     } catch (error) {
@@ -63,7 +60,6 @@ export async function PUT({ request }: any): Promise<Response> {
 
 
 export async function POST({ request }: any): Promise<Response> {
-    const db = getDB();
     const collection = db.collection("users");
     const body = await request.json();
     const { name, email, image } = body;

@@ -3,13 +3,13 @@ import { GOOGLE_ID, GOOGLE_SECRET } from '$env/static/private'
 import { connect, getDB } from '$lib/db'
 import Google from '@auth/core/providers/google'
 import type { Handle } from '@sveltejs/kit';
-import type mongoose from 'mongoose';
+import type { Db } from 'mongodb';
 
-let db: mongoose.mongo.Db;
+let db: Db;
 
 connect().then(():void => {
-    console.log("MongoDB started");
     db = getDB();
+    console.log("MongoDB started");
 }).catch((e) => {
     console.log("MongoDB failed to start");
     console.log(e);
@@ -24,7 +24,6 @@ export const handle: Handle = SvelteKitAuth({
     ],
     callbacks: {
         async signIn({ profile }: any) {
-            db = getDB();
             const collection = db.collection("users");
             const existingUser = await collection.findOne({ email: profile.email })
             if (existingUser) {

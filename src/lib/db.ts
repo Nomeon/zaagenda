@@ -1,44 +1,18 @@
-import { MONGOOSE } from '$env/static/private';
-import mongoose from 'mongoose';
+import { MONGODB_URI } from '$env/static/private';
+import { MongoClient, Db } from "mongodb";
 
-/* 
-  0 - disconnected
-  1 - connected
-  2 - connecting
-  3 - disconnecting
-  4 - uninitialized
-*/
-
-const mongoConnection = {
-    isConnected: 0,
-}
+const client: MongoClient = new MongoClient(MONGODB_URI);
 
 export async function connect(): Promise<void> {
-    if (mongoConnection.isConnected === 1) {
-        console.log("Using existing connection");
-        return;
-    }
-
-    if (mongoose.connections.length > 0) {
-        mongoConnection.isConnected = mongoose.connections[0].readyState;
-        if (mongoConnection.isConnected === 1) {
-            console.log("Using existing connection");
-            return;
-        }
-        await mongoose.disconnect();
-    }
-    await mongoose.connect(MONGOOSE);
-    mongoConnection.isConnected = 1;
-    console.log("Using new connection");
+    await client.connect();
 }
 
+// disconnect from the database
 export async function disconnect(): Promise<void> {
-    if (mongoConnection.isConnected === 0) return;
-    await mongoose.disconnect();
-    mongoConnection.isConnected = 0;
-    console.log("Disconnected");
+    await client.close();
 }
 
-export function getDB(): mongoose.mongo.Db {
-    return mongoose.connection.db;
+// get the database
+export function getDB(): Db {
+    return client.db();
 }
