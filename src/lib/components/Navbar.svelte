@@ -36,7 +36,7 @@
             <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md' referrerpolicy="no-referrer" />
         </a> 
     {:else}
-        <button type="button" on:click={() => signIn("google")} data-sveltekit-preload-data="off" class='flex items-center cursor-pointer w-8 h-8 text-light1 hover:text-accent'>
+        <button aria-label="Login" type="button" on:click={() => signIn("google")} data-sveltekit-preload-data="off" class='flex items-center cursor-pointer w-8 h-8 text-light1 hover:text-accent'>
             <iconify-icon icon="vaadin:pills" width="2rem" height="2rem"></iconify-icon>
         </button>
     {/if}
@@ -69,7 +69,7 @@
     {#if !$toggled && $isMobile && $title}
         <Header title={$title}/>
     {/if}
-    <button class="bg-transparent flex md:hidden z-20 items-center relative justify-center w-1/4" type="button" on:click={toggleNav}>
+    <button title="Menu" class="bg-transparent flex md:hidden z-20 items-center relative justify-center w-1/4" type="button" on:click={toggleNav}>
 		<div id="menu-toggle" class={$toggled ? 'toggled' : ''}>
 			<div id="icon" class="relative h-[0.2rem] w-[1.8rem] transition-all duration-200 {$toggled ? 'bg-transparent before:bg-accent after:bg-accent after:rotate-45 before:-rotate-45' : 'bg-light1 before:bg-light1 after:bg-light1'}"/>
 		</div>

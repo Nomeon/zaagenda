@@ -5,17 +5,17 @@
     import { fade } from 'svelte/transition'
     import { goto } from "$app/navigation";
     import { title } from "../stores";
-    import { Button } from "flowbite-svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import Loading from "$lib/components/Loading.svelte";
     import CustomButton from "$lib/components/CustomButton.svelte";
+    import SmallButton from "$lib/components/SmallButton.svelte";
 
     $: title.set('Groups')
 
     let groupList: Grouplist = [];
     let loaded: boolean;
 
-    let dialog: Dialog;
+    let dialog: HTMLDialogElement;
     let formGroupName: string;
 
     onMount(async() => {
@@ -128,9 +128,7 @@
                     </div>
                 </div>
             </a>
-            <Button type='button' on:click={() => dialog.showModal()} text='CREATE' class='flex items-center justify-center absolute bottom-4 right-4 w-12 h-12 p-0 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
-                <iconify-icon icon="material-symbols:group-add" width="32" height="32" />
-            </Button>
+            <SmallButton type='button' size={32} icon='material-symbols:group-add' btnClass='bottom-4 right-4' on:click={() => dialog.showModal()} />
             <Dialog bind:dialog >
                 <div class='text-lg p-8'>
                     <form method="dialog" on:submit={() => createGroup(formGroupName)} class='text-lg'>

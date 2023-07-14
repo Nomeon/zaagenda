@@ -2,8 +2,7 @@
     import { fade } from "svelte/transition";
     import { getContext } from "svelte";
 
-    // @ts-ignore
-    const { deleteUserFromGroup } = getContext('deletion');
+    const { deleteUserFromGroup }: any = getContext('deletion');
 
     export let user: User;
 </script>

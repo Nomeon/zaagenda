@@ -3,14 +3,13 @@
 	import { userStore } from '../stores';
 	import { page } from '$app/stores';
 	import { title } from "../stores";
-    import { Button } from 'flowbite-svelte';
-	// @ts-ignore
 	import MultiSelect from 'svelte-multiselect';
 	import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import CustomButton from '$lib/components/CustomButton.svelte';
     import Loading from '$lib/components/Loading.svelte';
+    import SmallButton from '$lib/components/SmallButton.svelte';
 
 	$: title.set('Raves')
 
@@ -24,13 +23,13 @@
 	let attendees: string[] = [];
 	let tickets: string[] = [];
 
-	let dialog: Dialog;
+	let dialog: HTMLDialogElement;
 	let formGroup: string;
 	let formEvent: string;
 	let formDateStart: string;
 	let formDateEnd: string;
-	let formAttendees: [{label: string, value: string}] | [];
-	let formTickets: [{label: string, value: string}] | [];
+	let formAttendees: any[];
+	let formTickets: any[];
 
 	onMount(async () => {
 		loaded = false
@@ -184,9 +183,7 @@
 						<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
 					{/each}
 				</ul>
-				<Button type='button' on:click={() => dialog.showModal()} text='Add' class='absolute bottom-4 right-4 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
-                    <iconify-icon icon="material-symbols:add-ad-sharp" width="32" height="32" />
-				</Button>
+                <SmallButton type='button' size={32} icon='material-symbols:add-ad-sharp' btnClass='bottom-4 right-4' on:click={() => dialog.showModal()} />
 			</div>
 		<Dialog bind:dialog >
 			<div class='text-sm p-4'>

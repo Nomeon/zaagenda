@@ -4,18 +4,18 @@
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
     import { title } from "../../stores";
-    import { Button } from "flowbite-svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import UserCard from "$lib/components/UserCard.svelte";
     import Loading from "$lib/components/Loading.svelte";
     import CustomButton from "$lib/components/CustomButton.svelte";
+    import SmallButton from "$lib/components/SmallButton.svelte";
     
     export let data: PageData;
     
     let loaded: boolean;
     let group = data.groupObject;
     let users: User[] = [];
-    let dialog: Dialog;
+    let dialog: HTMLDialogElement;
     let formCode: string;
 
     setContext('deletion', {
@@ -122,9 +122,7 @@
         {#each users as user}
             <UserCard user={user} />
         {/each}
-        <Button type='button' on:click={() => dialog.showModal()} text='Add' class='absolute bottom-4 right-4 h-12 w-12 p-2 bg-dark1/60 backdrop-blur-sm focus:ring-0 text-accent hover:bg-dark1/60 hover:text-white'>
-            <iconify-icon icon="material-symbols:person-add" width="32" height="32" />
-        </Button>
+        <SmallButton type='button' size={32} icon='material-symbols:person-add' btnClass='bottom-4 right-4' on:click={() => dialog.showModal()} />
         <Dialog bind:dialog >
             <div class='text-lg p-8'>
                 <form method="dialog" on:submit={() => addUserToGroup(formCode)} class='text-lg'>
