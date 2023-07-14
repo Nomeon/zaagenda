@@ -1,4 +1,4 @@
-import { NEXT_PUBLIC_MONGOOSE } from '$env/static/private';
+import { MONGOOSE } from '$env/static/private';
 import mongoose from 'mongoose';
 
 /* 
@@ -27,7 +27,7 @@ export async function connect(): Promise<void> {
         }
         await mongoose.disconnect();
     }
-    await mongoose.connect(NEXT_PUBLIC_MONGOOSE);
+    await mongoose.connect(MONGOOSE);
     mongoConnection.isConnected = 1;
     console.log("Using new connection");
 }
