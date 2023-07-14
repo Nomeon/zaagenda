@@ -30,7 +30,7 @@
 		"@auth/sveltekit": "^0.3.2",
 		"@fontsource/space-mono": "^5.0.3",
 		"@popperjs/core": "^2.11.8",
-		"@sveltejs/adapter-vercel": "^3.0.1",
+		"@sveltejs/adapter-auto": "^2.1.0",
 		"flowbite": "^1.7.0",
 		"flowbite-svelte": "^0.39.2",
 		"gsap": "^3.12.2",
