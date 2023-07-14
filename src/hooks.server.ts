@@ -25,19 +25,21 @@ export const handle: Handle = SvelteKitAuth({
             clientSecret: GOOGLE_SECRET,
         })
     ],
-    callbacks: {
-      async signIn({ profile }: any) {
-        const collection = db.collection("users");
-        const existingUser = await collection.findOne({ email: profile.email })
-        if (existingUser) {
-            return true;
-        } else {
-            const code = await generateCode();
-            await collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture, code: code })
-            return true;
-        }
-      }
-    }
+    // callbacks: {
+    //   async signIn({ profile }: any) {
+    //     const collection = db.collection("users");
+    //     const existingUser = await collection.findOne({ email: profile.email })
+    //     if (existingUser) {
+    //         console.log('Success')
+    //         return true;
+    //     } else {
+    //         const code = await generateCode();
+    //         await collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture, code: code })
+    //         console.log('Success')
+    //         return true;
+    //     }
+    //   }
+    // }
 });
 
 async function generateCode(): Promise<string> {
