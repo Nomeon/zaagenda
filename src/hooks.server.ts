@@ -7,17 +7,6 @@ import type mongoose from 'mongoose';
 
 let db: mongoose.mongo.Db;
 
-// (async () => {
-//     try {
-//       await connect();
-//       db = getDB();
-//       console.log("Mongoose connected");
-//     } catch (e) {
-//       console.log("Mongoose failed to start");
-//       console.error(e);
-//     }
-// })();
-
 export const handle: Handle = SvelteKitAuth({
     providers: [
         Google({ 
@@ -40,21 +29,6 @@ export const handle: Handle = SvelteKitAuth({
             }
         }
     }
-    // callbacks: {
-    //   async signIn({ profile }: any) {
-    //     const collection = db.collection("users");
-    //     const existingUser = await collection.findOne({ email: profile.email })
-    //     if (existingUser) {
-    //         console.log('Success')
-    //         return true;
-    //     } else {
-    //         const code = await generateCode();
-    //         await collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture, code: code })
-    //         console.log('Success')
-    //         return true;
-    //     }
-    //   }
-    // }
 });
 
 async function generateCode(): Promise<string> {
