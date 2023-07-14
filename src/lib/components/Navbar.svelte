@@ -36,7 +36,7 @@
             <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md' referrerpolicy="no-referrer" />
         </a> 
     {:else}
-        <button type="button" on:click={() => signIn("google")} class='flex items-center cursor-pointer w-8 h-8 text-light1 hover:text-accent'>
+        <button type="button" on:click={() => signIn("google")} data-sveltekit-preload-data="off" class='flex items-center cursor-pointer w-8 h-8 text-light1 hover:text-accent'>
             <iconify-icon icon="vaadin:pills" width="2rem" height="2rem"></iconify-icon>
         </button>
     {/if}
@@ -53,7 +53,7 @@
         </div>
         <div class='w-1/2 flex items-center gap-8 justify-center max-md:w-full max-md:gap-16' id='socials'>
             {#if $page.data.session}
-                <button type="button" on:click|preventDefault={() => signOut()} data-sveltekit-preload-data="off" class='flex items-center cursor-pointer w-10 h-10 text-light1 hover:text-accent'>
+                <button type="button" on:click|preventDefault={() => signOut({ callbackUrl: '/'})} data-sveltekit-preload-data="off" class='flex items-center cursor-pointer w-10 h-10 text-light1 hover:text-accent'>
                     <iconify-icon icon="material-symbols:logout-sharp" width="2.5rem" height="2.5rem" />
                 </button>
             {:else}

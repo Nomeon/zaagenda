@@ -1,8 +1,9 @@
 import { SvelteKitAuth } from '@auth/sveltekit'
 import { GOOGLE_ID, GOOGLE_SECRET } from '$env/static/private'
 import { connect, getDB } from '$lib/db'
+import { redirect, type Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 import Google from '@auth/core/providers/google'
-import type { Handle } from '@sveltejs/kit';
 import type { Db } from 'mongodb';
 
 let db: Db;
@@ -15,27 +16,40 @@ connect().then(():void => {
     console.log(e);
 });
 
-export const handle: Handle = SvelteKitAuth({
-    providers: [
-        Google({ 
-            clientId: GOOGLE_ID, 
-            clientSecret: GOOGLE_SECRET,
-        })
-    ],
-    callbacks: {
-        async signIn({ profile }: any) {
-            const collection = db.collection("users");
-            const existingUser = await collection.findOne({ email: profile.email })
-            if (existingUser) {
-                return true;
-            } else {
-                const code = await generateCode();
-                await collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture, code: code })
-                return true;
-            }
+async function authorization({ event, resolve }: any) {
+    if (event.url.pathname.includes("groups") || event.url.pathname.includes("raves")) {
+        const session = await event.locals.getSession();
+        if (!session) {
+            throw redirect(303, "/")
         }
     }
-});
+    return resolve(event);
+}
+
+export const handle: Handle = sequence(
+    SvelteKitAuth({
+        providers: [
+            Google({ 
+                clientId: GOOGLE_ID, 
+                clientSecret: GOOGLE_SECRET,
+            })
+        ],
+        callbacks: {
+            async signIn({ profile }: any) {
+                const collection = db.collection("users");
+                const existingUser = await collection.findOne({ email: profile.email })
+                if (existingUser) {
+                    return true;
+                } else {
+                    const code = await generateCode();
+                    await collection.insertOne({ name: profile.name, email: profile.email, image: profile.picture, code: code })
+                    return true;
+                }
+            }
+        }
+    }),
+    authorization
+);
 
 async function generateCode(): Promise<string> {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
