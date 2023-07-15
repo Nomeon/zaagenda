@@ -26,6 +26,12 @@ async function authorization({ event, resolve }: any) {
     return resolve(event);
 }
 
+function delay(milliseconds: number){
+    return new Promise(resolve => {
+        setTimeout(resolve, milliseconds);
+    });
+}
+
 export const handle: Handle = sequence(
     SvelteKitAuth({
         providers: [
@@ -36,6 +42,8 @@ export const handle: Handle = sequence(
         ],
         callbacks: {
             async signIn({ profile }: any) {
+                db = getDB();
+                delay(300); // Dit moet echt beter kunnen...
                 const collection = db.collection("users");
                 const existingUser = await collection.findOne({ email: profile.email })
                 if (existingUser) {
