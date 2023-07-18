@@ -99,6 +99,16 @@
             return
         }
     }
+
+    function handleCreateGroup() {
+        // If there are more than 3 groups, don't allow creation of more
+        if (groupList.length >= 3) {
+            alert('You can only have 3 groups.')
+            return
+        }        
+        dialog.showModal()
+    }
+
 </script>
 
 <svelte:head>
@@ -128,7 +138,7 @@
                     </div>
                 </div>
             </a>
-            <SmallButton type='button' size={32} icon='material-symbols:group-add' btnClass='bottom-4 right-4' on:click={() => dialog.showModal()} />
+            <SmallButton type='button' size={32} icon='material-symbols:group-add' btnClass='bottom-4 right-4' on:click={handleCreateGroup} />
             <Dialog bind:dialog >
                 <div class='text-lg p-8'>
                     <form method="dialog" on:submit={() => createGroup(formGroupName)} class='text-lg'>

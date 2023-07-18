@@ -160,6 +160,17 @@
 		})
 	}
 
+    function handleCreateRave() {
+        if (raveList.length === 0) {
+            alert('You need to create a group first.')
+            return
+        } else if (raveList.length >= 1) {
+            formGroup = raveList[0].name
+            setAttendeesTickets()
+        }
+        dialog.showModal()
+    }
+
 </script>
 
 <svelte:head>
@@ -183,7 +194,7 @@
 						<Checkbox bind:group={activeRaveList} value={group} checked={activeRaveList.includes(group)} />
 					{/each}
 				</ul>
-                <SmallButton type='button' size={32} icon='material-symbols:add-ad-sharp' btnClass='bottom-4 right-4' on:click={() => dialog.showModal()} />
+                <SmallButton type='button' size={32} icon='material-symbols:add-ad-sharp' btnClass='bottom-4 right-4' on:click={handleCreateRave} />
 			</div>
 		<Dialog bind:dialog >
 			<div class='text-sm p-4'>
@@ -210,8 +221,8 @@
 							</div>
 						</div>
 						<label for="attendees" class='text-base'>Who's attending?</label>
-						<MultiSelect id='attendees' name='attendees' bind:selected={formAttendees} options={attendees} liOptionClass='!text-dark1 !text-sm' liSelectedClass='!bg-accent !text-sm !text-light1' ulOptionsClass='text-accent !text-sm' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1 !text-sm'/>
-						<label for="tickets" class='text-base'>Who's got tickets?</label>
+                        <MultiSelect id='attendees' name='attendees' bind:selected={formAttendees} options={attendees} liOptionClass='!text-dark1 !text-sm' liSelectedClass='!bg-accent !text-sm !text-light1' ulOptionsClass='text-accent !text-sm' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1 !text-sm'/>
+                        <label for="tickets" class='text-base'>Who's got tickets?</label>
 						<MultiSelect id='tickets' name='tickets' bind:selected={formTickets} options={tickets} liOptionClass='!text-dark1 !text-sm' liSelectedClass='!bg-accent !text-sm !text-light1' ulOptionsClass='text-accent !text-sm' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1 !text-sm'/>
 					</div>
 					<div class='flex gap-8 justify-center'>
