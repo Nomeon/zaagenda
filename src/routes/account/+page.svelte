@@ -105,7 +105,7 @@
     <h1 id='depth' class='text-2xl font-medium text-light1 text-center'>Code: <span class='font-bold italic'>{user.code}</span></h1>
         <div class='w-48 h-48 m-4 flex justify-center items-center'>
             {#if showQR}
-                <div class='w-full h-full flex items-center justify-center rounded-lg bg-dark1/60 backdrop-blur-sm'>
+                <div class='w-full h-full flex items-center justify-center rounded-lg bg-dark1'>
                     {@html svgCode}
                 </div>
             {:else}
