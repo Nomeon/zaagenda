@@ -11,7 +11,6 @@ export async function GET(request: Request): Promise<Response> {
         const id = url.searchParams.get("id") || "";
         const user = url.searchParams.get("user_id") || "";
         const rave = url.searchParams.get("rave_id") || "";
-        
         const query: { [key: string]: any } = {};
     
         if (id) {

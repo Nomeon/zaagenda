@@ -16,8 +16,6 @@
     const lineThickness: number = 2;
     let totalColors = 100;
     let pointsPerColor = 3;
-    
-
 
     const sketch: Sketch = (p5) => {
         p5.setup = () => {
@@ -111,5 +109,3 @@
     <P5 {sketch} />  
 </div>
 <svelte:window bind:innerHeight={height} bind:innerWidth={width} />
-
- 

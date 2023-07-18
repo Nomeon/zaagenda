@@ -2,37 +2,23 @@
     import { signIn, signOut } from "@auth/sveltekit/client"
     import { toggled, isMobile, title } from '../../routes/stores';
     import { page } from '$app/stores';
-    import { tweened } from 'svelte/motion';
-    import { cubicOut } from 'svelte/easing';
     import Header from './Header.svelte';
 
     let width: number;
 
     function toggleNav() {
-        $toggled ? $toggled = false : $toggled = true;
+        $toggled = !$toggled;
     }
 
     function handleResize() {
         if (width <= 768) { $toggled = false}
     }
-
-    const opacity = tweened($toggled ? 1 : 0.2, {
-        duration: 500,
-        easing: cubicOut
-    });
-
-    $: if ($toggled) {
-        $opacity = 1;
-    } else {
-        $opacity = 0.2;
-    }
-
 </script>
 
 <nav class='h-24 flex justify-between relative z-30 font-semibold box-border'>
     <div class='w-1/4 flex items-center justify-center z-20' id='logo'>
     {#if $page.data.session?.user?.image ?? false}
-        <a href='/account'>
+        <a on:click={() => $toggled && toggleNav()} href='/account'>
             <img src={$page.data.session?.user?.image} alt='user profile' class='w-10 h-10 rounded-md' referrerpolicy="no-referrer" />
         </a> 
     {:else}
@@ -44,12 +30,12 @@
     {#if $toggled === true && width <= 768}
         <div id='navunderlay' class='h-24  w-full z-10 absolute top-0'/>
     {/if}
-    <div class='bg-dark1/20 backdrop-blur-sm w-3/4 flex justify-center max-md:h-screen max-md:border-b-2 max-md:w-screen max-md:fixed max-md:flex-col max-md:transition-transform max-md:duration-500 max-md:ease-in-out {$toggled === true ? "max-md:translate-y-0" : "max-md:-translate-y-[calc(100%-6rem)]"}' id='mobile'>
-        <div class='w-2/3 flex items-center gap-8 max-md:basis-3/5 max-md:gap-16 max-md:flex-col justify-center max-md:w-full' id='links'>
-            <a on:click={toggleNav} href='/' class='text-3xl md:text-2xl text-light1 hover:text-accent'>HOME</a>
-            <a on:click={toggleNav} href='/raves' class='text-3xl md:text-2xl text-light1 hover:text-accent'>RAVES</a>
-            <a on:click={toggleNav} href='/groups' class='text-3xl md:text-2xl text-light1 hover:text-accent'>GROUPS</a>
-            <a on:click={toggleNav} href='/about' class='text-3xl md:text-2xl text-light1 hover:text-accent'>ABOUT</a>
+    <div class='{$toggled ? "max-md:translate-y-0" : "max-md:-translate-y-[calc(100dvh-6rem)]"} bg-dark1/20 backdrop-blur-sm w-3/4 flex justify-center max-md:h-screen max-md:border-b-2 max-md:w-screen max-md:fixed max-md:flex-col max-md:transition-transform max-md:duration-500 max-md:ease-in-out' id='mobile'>
+        <div class='w-2/3 flex items-center gap-8 max-md:basis-3/5 max-md:gap-16 max-md:flex-col justify-center max-md:w-full text-3xl md:text-2xl' id='links'>
+            <a on:click={toggleNav} href='/' class='text-light1 hover:text-accent'>HOME</a>
+            <a on:click={toggleNav} href='/raves' class='text-light1 hover:text-accent'>RAVES</a>
+            <a on:click={toggleNav} href='/groups' class='text-light1 hover:text-accent'>GROUPS</a>
+            <a on:click={toggleNav} href='/about' class='text-light1 hover:text-accent'>ABOUT</a>
         </div>
         <div class='w-1/2 flex items-center gap-8 justify-center max-md:w-full max-md:gap-16' id='socials'>
             {#if $page.data.session}
