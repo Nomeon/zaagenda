@@ -30,7 +30,7 @@
     {#if $toggled === true && width <= 768}
         <div id='navunderlay' class='h-24 w-full z-10 absolute top-0'/>
     {/if}
-    <div class='{$toggled ? "max-md:translate-y-0" : "max-md:-translate-y-[calc(100dvh-6rem)]"} bg-dark1/20 backdrop-blur-sm w-3/4 flex justify-center max-md:h-screen max-md:border-b-2 max-md:w-screen max-md:fixed max-md:flex-col max-md:transition-transform max-md:duration-500 max-md:ease-in-out' id='mobile'>
+    <div class='{$toggled ? "max-md:translate-y-0" : "max-md:-translate-y-[calc(100%-6rem)]"} bg-dark1/20 backdrop-blur-sm w-3/4 flex justify-center max-md:h-screen max-md:border-b-2 max-md:w-screen max-md:fixed max-md:flex-col max-md:transition-transform max-md:duration-500 max-md:ease-in-out' id='mobile'>
         <div class='w-2/3 flex items-center gap-8 max-md:basis-3/5 max-md:gap-16 max-md:flex-col justify-center max-md:w-full text-3xl md:text-2xl' id='links'>
             <a on:click={toggleNav} href='/' class='text-light1 hover:text-accent'>HOME</a>
             <a on:click={toggleNav} href='/raves' class='text-light1 hover:text-accent'>RAVES</a>
