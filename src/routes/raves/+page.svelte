@@ -193,7 +193,7 @@
 			{/each}
 			
 			<!-- PAST RAVES -->
-			<h1 class="font-bold fill-light1 mb-3 mt-4">PAST RAVES</h1>
+			<h1 class="font-bold fill-light1 mb-3 mt-4">HISTORY</h1>
 				{#each activeRaveList
 					.flatMap(raveGroup => raveGroup.raves)
 					.sort((a,b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()) as rave}
