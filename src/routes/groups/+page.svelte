@@ -24,7 +24,7 @@
             if (!$userStore) {
                 const { email } = $page.data.session?.user || {};
                 if (email) {
-                    const userArr = await getUser('', email);
+                    const userArr = await getUser(email);
                     const user = userArr[0]
                     $userStore = user
                 }
@@ -38,8 +38,8 @@
         loaded = true
     })
     
-    async function getUser(id: string, email: string) {
-        const url = `/api/users?email=${email}&id=${id}`
+    async function getUser(email: string) {
+        const url = `/api/users?email=${email}`
 		const response = await fetch(url);
 		const user = await response.json();
         return user
