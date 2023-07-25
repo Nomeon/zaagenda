@@ -14,6 +14,7 @@
 	$: title.set('Raves')
 
 	let loaded: boolean;
+	let pastRavesToggle: boolean = false;
 	let today = new Date();
 	let userList: User[] = [];
 	let raveList: RaveList = [];
@@ -181,13 +182,29 @@
 <div id='scrollable' class='h-[calc(100dvh-3rem)] overflow-y-scroll w-screen flex flex-col items-center pt-8 pb-32'>
 	{#if loaded}
 		{#if raveList}
+			<!-- UPCOMING RAVES -->
+			<h1 class="font-bold fill-light1 mb-3"> UPCOMING </h1>
 			{#each activeRaveList
 				.flatMap(raveGroup => raveGroup.raves)
 				.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()) as rave}
-				{#each activeRaveList.filter(raveGroup => raveGroup.raves.includes(rave)) as raveGroup}
+				{#each activeRaveList.filter(raveGroup => raveGroup.raves.includes(rave) && (new Date(rave.endDate) > new Date())) as raveGroup}
 					<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
 				{/each}
-			{/each}		  
+			{/each}
+			
+			<!-- PAST RAVES -->
+			<button on:click={() => {pastRavesToggle = !pastRavesToggle}}>
+				<h1 class="font-bold fill-light1 mb-3 mt-4">PAST RAVES</h1>
+			</button>
+			{#if pastRavesToggle}
+				{#each activeRaveList
+					.flatMap(raveGroup => raveGroup.raves)
+					.sort((a,b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()) as rave}
+					{#each activeRaveList.filter(raveGroup => raveGroup.raves.includes(rave) && (new Date(rave.endDate) < new Date())) as raveGroup}
+						<RaveCardV3 rave={rave} raveGroup={raveGroup} link={`/raves/${rave._id}`}/>
+					{/each}
+				{/each}
+			{/if}
 			<div class='absolute bottom-0 z-10 flex items-center justify-center w-full h-20 pr-16 bg-gradient-to-t from-[#000] from-85%'>
 				<ul class='flex w-11/12 items-center justify-center gap-4 font-bold'>
 					{#each raveList as group}
@@ -241,3 +258,7 @@
 		<Loading />
 	{/if}
 </div>
+
+<style>
+
+</style>
