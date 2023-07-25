@@ -4,7 +4,7 @@
     export let btnClass: string = "";
 </script>
 
-<button type={type} class="{btnClass} relative bg-dark1 border overflow-hidden py-2 px-12 text-sm font-bold rounded-sm md:text-xl before:bg-light1" id='btn' on:click>
+<button type={type} class="{btnClass} relative bg-dark1 border overflow-hidden py-2 px-12 flex justify-center text-sm font-bold rounded-sm md:text-xl before:bg-light1" id='btn' on:click>
     <span class="mix-blend-difference">{text.toUpperCase()}</span>
 </button>
 

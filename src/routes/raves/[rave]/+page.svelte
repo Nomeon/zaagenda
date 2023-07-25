@@ -102,7 +102,10 @@
                                 </button>
                             </div>
                         {:else}
-                            <button type='button' on:click={() => openButtons = !openButtons} class='{formTickets.filter(item => item === user._id).length > 0 ? 'border-accent' : 'border-dark1'} border bg-dark1 flex py-1 cursor-pointer w-full items-center justify-center rounded-sm'>
+                            <button type='button' on:click={() => openButtons = !openButtons} class='{formTickets.filter(item => item === user._id).length > 0 ? 'border-accent' : 'border-dark1'} relative border bg-dark1 flex py-1 cursor-pointer w-full items-center justify-center rounded-sm'>
+                                {#if formTickets.filter(item => item === user._id).length > 0}
+                                    <span class='absolute rounded-full -top-3 -right-3 bg-accent text-dark1 h-6 w-6 flex items-center justify-center'>{formTickets.filter(item => item === user._id).length}</span>
+                                {/if}
                                 <span>{user.name}</span>
                             </button>
                         {/if}
