@@ -9,7 +9,6 @@ import type { Db } from 'mongodb';
 let db: Db;
 
 connect().then(():void => {
-    db = getDB();
     console.log("MongoDB started");
 }).catch((e) => {
     console.log("MongoDB failed to start");
