@@ -43,7 +43,7 @@ export const handle: Handle = sequence(
         callbacks: {
             async signIn({ profile }: any) {
                 db = getDB();
-                delay(300); // Dit moet echt beter kunnen...
+                delay(500); // Dit moet echt beter kunnen...
                 const collection = db.collection("users");
                 const existingUser = await collection.findOne({ email: profile.email })
                 if (existingUser) {
