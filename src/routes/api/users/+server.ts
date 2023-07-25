@@ -1,7 +1,7 @@
 import { getDB } from "$lib/db";
 import { ObjectId } from "mongodb";
 
-const db = getDB();
+const db = await getDB();
 
 export async function GET(request: Request): Promise<Response> {
     try {

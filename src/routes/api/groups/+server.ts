@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 
 export async function GET(request: Request): Promise<Response> {
     try {
-        const db = getDB();
+        const db = await getDB();
         const collection = db.collection("groups");
         const url = new URL(request.url);
         const name = url.searchParams.get("name") || "";
@@ -36,7 +36,7 @@ export async function GET(request: Request): Promise<Response> {
 
 export async function POST({ request }: any): Promise<Response> {
     try {
-        const db = getDB();
+        const db = await getDB();
         const collection = db.collection("groups");
         const body = await request.json();
         const { group_name, user_ids } = body;
@@ -54,7 +54,7 @@ export async function POST({ request }: any): Promise<Response> {
 
 export async function PUT({ request }: any): Promise<Response> {
     try {
-        const db = getDB();
+        const db = await getDB();
         const collection = db.collection("groups");
         const body = await request.json();
         const { id, user_ids, rave_ids } = body;
@@ -76,7 +76,7 @@ export async function PUT({ request }: any): Promise<Response> {
 
 export async function DELETE({ request }: any): Promise<Response> {
     try {
-        const db = getDB();
+        const db = await getDB();
         const collection = db.collection("groups");
         const body = await request.json();
         const { id, users, raves } = body;

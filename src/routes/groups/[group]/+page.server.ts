@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { getDB } from '$lib/db';
 import { ObjectId} from 'mongodb';
 
-const db = getDB();
+const db = await getDB();
 
 /** @type {import('@sveltejs/kit').PageServerLoad}*/
 export async function load({ params }: { params: { group: string } }) {

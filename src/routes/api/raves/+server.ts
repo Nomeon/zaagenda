@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 export async function GET(request: Request): Promise<Response> {
     try {
-        const db = getDB();
+        const db = await getDB();
         const groupCol = db.collection("groups");
         const raveCol = db.collection("raves");
         const url = new URL(request.url);
@@ -37,7 +37,7 @@ export async function GET(request: Request): Promise<Response> {
 
 export async function POST({ request }: any): Promise<Response> {
     try {
-        const db = getDB();
+        const db = await getDB();
         const collection = db.collection("raves");
         const body = await request.json();
         const { event, startDate, endDate, attendees, tickets } = body;
@@ -67,7 +67,7 @@ export async function POST({ request }: any): Promise<Response> {
 
 export async function PUT({ request }: any): Promise<Response> {
     try {
-        const db = getDB();
+        const db = await getDB();
         const collection = db.collection("raves");
         const body = await request.json();
         const { id, attendees, tickets } = body;
@@ -89,7 +89,7 @@ export async function PUT({ request }: any): Promise<Response> {
 
 export async function DELETE({ request }: any): Promise<Response> {
     try {
-        const db = getDB();
+        const db = await getDB();
         const collection = db.collection("raves");
         const body = await request.json();
         const { id } = body;

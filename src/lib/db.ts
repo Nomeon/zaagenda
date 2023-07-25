@@ -11,6 +11,7 @@ export async function disconnect(): Promise<void> {
     await client.close();
 }
 
-export function getDB(): Db {
-    return client.db();
+export async function getDB(): Promise<Db> {
+    const db = await client.db();
+    return db
 }
