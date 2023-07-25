@@ -209,6 +209,7 @@
 				</ul>
                 <SmallButton type='button' size={32} icon='material-symbols:add-ad-sharp' btnClass='bottom-4 right-4' on:click={handleCreateRave} />
 			</div>
+		<!-- TODO: PUT IN COMPONENT -->
 		<Dialog bind:dialog >
 			<div class='text-sm p-4'>
 				<form method="dialog" on:submit|preventDefault={() => addRaveToGroup()} class='text-lg'>

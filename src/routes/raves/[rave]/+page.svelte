@@ -3,12 +3,15 @@
     import { goto } from "$app/navigation";
     import CustomButton from "$lib/components/CustomButton.svelte";
     import CheckboxRave from "$lib/components/CheckboxRave.svelte";
+    import { press } from 'svelte-gestures';
 
     export let data: { session: any, raveObject: Rave };
     let rave = data.raveObject;
     let userList: User[] = [];
     let formAttendees: string[] = [];
     let formTickets: string[] = []; 
+
+    let openStuff: boolean = false;
 
     onMount( async() => {
         if (rave) {
@@ -55,6 +58,10 @@
         }
     }
 
+    function longpress() {
+        openStuff = !openStuff;
+    }
+
 </script>
 
 <svelte:head>
@@ -75,10 +82,16 @@
         <div class='flex flex-col gap-2'>
             {#each userList as user}
                 <div id='user-row' class='flex flex-row w-full mt-2 justify-around'>
-                    <div class='w-1/2 mx-4 flex justify-center'>
+                    <div class='w-1/2 mx-4 flex justify-center'  use:press on:press={longpress}>
+                        {#if openStuff}
+                        <div class="h-full aspect-square bg-red-800"></div>
+                        {/if}
                         <CheckboxRave bind:group={formAttendees} value={user} checked={formAttendees.includes(user._id)} />
+                        {#if openStuff}
+                        <div class="h-full aspect-square bg-green-800"></div>
+                        {/if}
                     </div>
-                    <div class='w-1/2 mx-4 flex justify-center'>
+                    <div class='w-1/2 mx-4 flex justify-center flex-row'>
                         <CheckboxRave bind:group={formTickets} value={user} checked={formTickets.includes(user._id)} />
                     </div>
                 </div>
