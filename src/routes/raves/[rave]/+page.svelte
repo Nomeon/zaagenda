@@ -3,15 +3,14 @@
     import { goto } from "$app/navigation";
     import CustomButton from "$lib/components/CustomButton.svelte";
     import CheckboxRave from "$lib/components/CheckboxRave.svelte";
-    import { press } from 'svelte-gestures';
 
     export let data: { session: any, raveObject: Rave };
     let rave = data.raveObject;
     let userList: User[] = [];
     let formAttendees: string[] = [];
-    let formTickets: string[] = []; 
+    let formTickets: string[] = [];
 
-    let openStuff: boolean = false;
+    let openButtons: boolean = false;
 
     onMount( async() => {
         if (rave) {
@@ -58,10 +57,16 @@
         }
     }
 
-    function longpress() {
-        openStuff = !openStuff;
+    function addTicket(user: User) {
+        formTickets = [...formTickets, user._id]
     }
 
+    function removeTicket(user: User) {
+        const index = formTickets.indexOf(user._id)
+        if (index !== -1) {
+            formTickets = [...formTickets.slice(0, index), ...formTickets.slice(index + 1)];
+        }
+    }
 </script>
 
 <svelte:head>
@@ -82,17 +87,25 @@
         <div class='flex flex-col gap-2'>
             {#each userList as user}
                 <div id='user-row' class='flex flex-row w-full mt-2 justify-around'>
-                    <div class='w-1/2 mx-4 flex justify-center'  use:press on:press={longpress}>
-                        {#if openStuff}
-                        <div class="h-full aspect-square bg-red-800"></div>
-                        {/if}
+                    <div class='w-1/2 mx-4 flex justify-center' >
                         <CheckboxRave bind:group={formAttendees} value={user} checked={formAttendees.includes(user._id)} />
-                        {#if openStuff}
-                        <div class="h-full aspect-square bg-green-800"></div>
+                    </div> 
+                    <div class='w-1/2 mx-4 flex justify-center flex-row' >
+                        {#if openButtons}
+                            <div class='flex py-1 w-full justify-between items-center rounded-sm px-4'>
+                                <button type="button" on:click={() => removeTicket(user)} class="h-full aspect-square bg-dark1 border border-accent flex items-center justify-center">
+                                    <iconify-icon icon={'ic:baseline-minus'} />
+                                </button>
+                                <button type='button' on:click={() => openButtons = !openButtons} class='bg-dark1 border border-accent px-4'>{formTickets.filter(item => item === user._id).length}</button>
+                                <button type="button" on:click={() => addTicket(user)} class="h-full aspect-square bg-dark1 border border-accent flex items-center justify-center">
+                                    <iconify-icon icon={'ic:baseline-plus'} />
+                                </button>
+                            </div>
+                        {:else}
+                            <button type='button' on:click={() => openButtons = !openButtons} class='{formTickets.filter(item => item === user._id).length > 0 ? 'border-accent' : 'border-dark1'} border bg-dark1 flex py-1 cursor-pointer w-full items-center justify-center rounded-sm'>
+                                <span>{user.name}</span>
+                            </button>
                         {/if}
-                    </div>
-                    <div class='w-1/2 mx-4 flex justify-center flex-row'>
-                        <CheckboxRave bind:group={formTickets} value={user} checked={formTickets.includes(user._id)} />
                     </div>
                 </div>
             {/each}
