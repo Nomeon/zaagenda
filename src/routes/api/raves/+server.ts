@@ -58,7 +58,7 @@ export async function POST({ request }: any): Promise<Response> {
             response = await collection.insertOne({ event: event, startDate: startDateJSON, endDate: endDateJSON});
         }
         const { insertedId } = response;
-        return new Response(JSON.stringify(insertedId), { status: 201 });
+        return new Response(JSON.stringify(insertedId.toString()), { status: 201 });
     } catch (error) {
         console.error(error);
         return new Response("Internal Server Error", { status: 500 })

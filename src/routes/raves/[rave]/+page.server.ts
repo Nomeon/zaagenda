@@ -30,7 +30,6 @@ export async function load({ params }: { params: { rave: string } }) {
             raveObject.startDate = rave.startDate
             raveObject.endDate = rave.endDate
         }
-        
         return {
             raveObject
         };

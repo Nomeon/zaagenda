@@ -3,33 +3,26 @@
 	import { userStore } from '../stores';
 	import { page } from '$app/stores';
 	import { title } from "../stores";
-	import MultiSelect from 'svelte-multiselect';
 	import RaveCardV3 from '$lib/components/RaveCardV3.svelte';
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import CustomButton from '$lib/components/CustomButton.svelte';
     import Loading from '$lib/components/Loading.svelte';
     import SmallButton from '$lib/components/SmallButton.svelte';
+    import { goto } from '$app/navigation';
 
 	$: title.set('Raves')
 
 	let loaded: boolean;
 	let today = new Date();
-	let userList: User[] = [];
 	let raveList: RaveList = [];
-	let users: any[];
 	let activeRaveList: RaveList = [];
-
-	let attendees: string[] = [];
-	let tickets: string[] = [];
 
 	let dialog: HTMLDialogElement;
 	let formGroup: string;
 	let formEvent: string;
 	let formDateStart: string;
 	let formDateEnd: string;
-	let formAttendees: any[];
-	let formTickets: any[];
 
 	onMount(async () => {
 		loaded = false
@@ -47,10 +40,6 @@
 		raveList = await getUserRaves()
 		if (raveList) {
 			activeRaveList = [...raveList]
-			userList = await getUsers(raveList.map((group) => group.group_members).flat())
-			users = userList.map((user) => {
-				return {label: user.name, value: user._id}
-			})
 		}
 		loaded = true
 	})
@@ -60,14 +49,6 @@
 		const response = await fetch(url);
 		const user = await response.json();
         return user
-	}
-
-	async function getUsers(ids: string[]): Promise<User[]> {
-        const JSONids = encodeURIComponent(JSON.stringify(ids))
-        const url = `/api/users?ids=${JSONids}`
-		const response = await fetch(url);
-		const users = await response.json();
-        return users
 	}
 
 	async function getRaves() {
@@ -84,16 +65,8 @@
 	}
 
 	async function addRaveToGroup() {
-		let aanwezigen: string[] = [];
-		let ticketonis: string[] = [];
-		formAttendees.forEach((attendee) => {
-			aanwezigen.push(attendee.value)
-		})
-		formTickets.forEach((ticket) => {
-			ticketonis.push(ticket.value)
-		})
+		// TODO Client side form validation
 		let valid = true
-
 		if (valid) {
 			const response = await fetch(`/api/raves`, {
 					method: 'POST',
@@ -104,20 +77,23 @@
 						event: formEvent,
 						startDate: formDateStart,
 						endDate: formDateEnd,
-						attendees: aanwezigen,
-						tickets: ticketonis
+						attendees: [],
+						tickets: []
 					})
 			})
 			if (response.status === 201) {
 				const reply = await response.json();
-				putToGroup(reply)
+				await putToGroup(reply)
+				if (reply) {
+					goto(`/raves/${reply}`, {replaceState: true})
+				}
 			}
         } else {
-            alert('Rave creation failed.')
+			dialog.close()
+			resetDialog()
+			alert('Rave creation failed.')
             return
         }
-		dialog.close()
-		resetDialog()
 	}
 
 	async function putToGroup(reply: string) {
@@ -133,7 +109,7 @@
 			})
 		})
 		if (response.status === 200) {
-			window.location.reload()
+			return
 		} else {
 			alert('Rave was not added to group.')
 			return
@@ -145,19 +121,6 @@
 		formEvent = ''
 		formDateStart = ''
 		formDateEnd = ''
-		formAttendees = []
-		formTickets = []
-	}
-
-	const setAttendeesTickets = () => {
-		formAttendees = []
-		formTickets = []
-		raveList.forEach((group) => {
-			if (group.name === formGroup) {
-				attendees = users.filter((user) => group.group_members.includes(user.value))
-				tickets = users.filter((user) => group.group_members.includes(user.value))
-			}
-		})
 	}
 
     function handleCreateRave() {
@@ -166,7 +129,6 @@
             return
         } else if (raveList.length >= 1) {
             formGroup = raveList[0].name
-            setAttendeesTickets()
         }
         dialog.showModal()
     }
@@ -209,13 +171,12 @@
 				</ul>
                 <SmallButton type='button' size={32} icon='material-symbols:add-ad-sharp' btnClass='bottom-4 right-4' on:click={handleCreateRave} />
 			</div>
-		<!-- TODO: PUT IN COMPONENT -->
 		<Dialog bind:dialog >
 			<div class='text-sm p-4'>
 				<form method="dialog" on:submit|preventDefault={() => addRaveToGroup()} class='text-lg'>
 					<div class='flex flex-col'>
 						<label for="select" class='text-sm'>Group:</label>
-						<select bind:value={formGroup} on:change={setAttendeesTickets} class='py-1 px-2 text-sm text-dark1 bg-light1 mb-4 rounded-sm'>
+						<select bind:value={formGroup} class='py-1 px-2 text-sm text-dark1 bg-light1 mb-4 rounded-sm'>
 							{#each raveList as group}
 								<option value={group.name} class='text-dark1'>
 									{group.name}
@@ -234,10 +195,6 @@
 								<input min={formDateStart} type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='mb-8 py-1 px-2 text-sm bg-light1 text-dark1 rounded-sm max-w-fit'/>
 							</div>
 						</div>
-						<label for="attendees" class='text-base'>Who's attending?</label>
-                        <MultiSelect id='attendees' name='attendees' bind:selected={formAttendees} options={attendees} liOptionClass='!text-dark1 !text-sm' liSelectedClass='!bg-accent !text-sm !text-light1' ulOptionsClass='text-accent !text-sm' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1 !text-sm'/>
-                        <label for="tickets" class='text-base'>Who's got tickets?</label>
-						<MultiSelect id='tickets' name='tickets' bind:selected={formTickets} options={tickets} liOptionClass='!text-dark1 !text-sm' liSelectedClass='!bg-accent !text-sm !text-light1' ulOptionsClass='text-accent !text-sm' outerDivClass='!mb-8 !py-0 !px-0 !rounded-sm !text-dark1 !bg-light1 !text-sm'/>
 					</div>
 					<div class='flex gap-8 justify-center'>
 						<CustomButton type='button' on:click={() => dialog.close()} text='CLOSE' />
@@ -255,7 +212,3 @@
 		<Loading />
 	{/if}
 </div>
-
-<style>
-
-</style>

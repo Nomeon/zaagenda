@@ -30,7 +30,7 @@
     onMount(async() => {
         loaded = false
         if (group.user_ids) {
-            users = await getUsers(group.user_ids)        
+            users = await getUsers(group.user_ids)
         }
         title.set(group.group_name || '')
         loaded = true
