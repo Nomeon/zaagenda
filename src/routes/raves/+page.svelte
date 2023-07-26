@@ -188,11 +188,11 @@
 						<div class='flex flex-row w-full justify-between'>
 							<div class='flex flex-col w-[calc(50%-.5rem)]'>
 								<label for="dateStart" class='text-base'>Starts:</label>
-								<input on:change={() => formDateEnd = formDateStart} min={today.toISOString().slice(0, 16)} type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='mb-8 py-1 px-2 text-sm bg-light1 text-dark1 rounded-sm max-w-fit'/>
+								<input on:change={() => formDateEnd = formDateStart} min={today.toISOString().slice(0, 16)} type="datetime-local" id="dateStart" name="dateStart" bind:value={formDateStart} required class='mb-8 py-1 px-2 text-sm bg-light1 text-dark1 rounded-sm w-full'/>
 							</div>
 							<div class='flex flex-col w-[calc(50%-.5rem)]'>
 								<label for="dateEnd" class='text-base'>Ends:</label>
-								<input min={formDateStart} type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='mb-8 py-1 px-2 text-sm bg-light1 text-dark1 rounded-sm max-w-fit'/>
+								<input min={formDateStart} type="datetime-local" id="dateEnd" name="dateEnd" bind:value={formDateEnd} required class='mb-8 py-1 px-2 text-sm bg-light1 text-dark1 rounded-sm w-full'/>
 							</div>
 						</div>
 					</div>
