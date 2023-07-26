@@ -56,7 +56,7 @@
             })
         })
         if (response.status === 200) {
-            goto('/raves')
+            window.location.reload()
         } else {
             alert('Something went wrong')
         }

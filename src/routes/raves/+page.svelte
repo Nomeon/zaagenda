@@ -65,6 +65,7 @@
 	}
 
 	async function addRaveToGroup() {
+		dialog.close()
 		// TODO Client side form validation
 		let valid = true
 		if (valid) {
@@ -89,7 +90,6 @@
 				}
 			}
         } else {
-			dialog.close()
 			resetDialog()
 			alert('Rave creation failed.')
             return
