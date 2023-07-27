@@ -112,7 +112,7 @@
                                     {#if formTickets.filter(item => item === user._id).length > 0}
                                         <span class='absolute rounded-full -top-3 -right-3 bg-accent text-dark1 h-6 w-6 flex items-center justify-center'>{formTickets.filter(item => item === user._id).length}</span>
                                     {/if}
-                                    <span>{user.name}</span>
+                                    <span class=" truncate">{user.name}</span>
                                 </button>
                             {/if}
                         </div>

@@ -28,5 +28,5 @@
 
 <label class='{checked ? 'border-accent' : 'border-dark1'} border bg-dark1 flex py-1 cursor-pointer w-full items-center justify-center rounded-sm'>
     <input class='absolute opacity-0 cursor-pointer h-0 w-0' type="checkbox" bind:checked={checked} value={value} />
-    <span>{value.name}</span>
+    <span class="truncate">{value.name}</span>
 </label>
