@@ -92,27 +92,27 @@
             </div>
             <div class='flex flex-col gap-2'>
                 {#each userList as user}
-                    <div id='user-row' class='flex flex-row w-full mt-2 justify-around'>
-                        <div class='w-1/2 mx-4 flex justify-center' >
+                    <div id='user-row' class='grid grid-cols-2 w-full mt-2 gap-x-4'>
+                        <div class='w-full flex justify-center' >
                             <CheckboxRave bind:group={formAttendees} value={user} checked={formAttendees.includes(user._id)} />
                         </div> 
-                        <div class='w-1/2 mx-4 flex justify-center flex-row' >
+                        <div class='w-full flex justify-center' >
                             {#if openButtons}
-                                <div class='flex py-1 w-full justify-between items-center rounded-sm px-4'>
-                                    <button type="button" on:click={() => removeTicket(user)} class="h-full aspect-square bg-dark1 border border-accent flex items-center justify-center">
+                                <div class='flex w-full justify-between items-center rounded-sm'>
+                                    <button type="button" on:click={() => removeTicket(user)} class="w-16 h-full bg-dark1 border border-accent flex items-center justify-center">
                                         <iconify-icon icon={'ic:baseline-minus'} />
                                     </button>
-                                    <button type='button' on:click={() => openButtons = !openButtons} class='bg-dark1 border border-accent px-4'>{formTickets.filter(item => item === user._id).length}</button>
-                                    <button type="button" on:click={() => addTicket(user)} class="h-full aspect-square bg-dark1 border border-accent flex items-center justify-center">
+                                    <button type='button' on:click={() => openButtons = !openButtons} class='bg-dark1 border border-accent h-full w-full mx-2'>{formTickets.filter(item => item === user._id).length}</button>
+                                    <button type="button" on:click={() => addTicket(user)} class="w-16 h-full bg-dark1 border border-accent flex items-center justify-center">
                                         <iconify-icon icon={'ic:baseline-plus'} />
                                     </button>
                                 </div>
                             {:else}
-                                <button type='button' on:click={() => openButtons = !openButtons} class='{formTickets.filter(item => item === user._id).length > 0 ? 'border-accent' : 'border-dark1'} relative border bg-dark1 flex py-1 cursor-pointer w-full items-center justify-center rounded-sm'>
+                                <button type='button' on:click={() => openButtons = !openButtons} class='{formTickets.filter(item => item === user._id).length > 0 ? 'border-accent' : 'border-dark1'} relative border bg-dark1 flex py-1 cursor-pointer w-full items-center justify-center rounded-sm px-2'>
                                     {#if formTickets.filter(item => item === user._id).length > 0}
                                         <span class='absolute rounded-full -top-3 -right-3 bg-accent text-dark1 h-6 w-6 flex items-center justify-center'>{formTickets.filter(item => item === user._id).length}</span>
                                     {/if}
-                                    <span class=" truncate">{user.name}</span>
+                                    <span class="truncate">{user.name}</span>
                                 </button>
                             {/if}
                         </div>
